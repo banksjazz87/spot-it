@@ -1,15 +1,18 @@
 import { Text, View } from "react-native";
+import {Card} from "../components/Card";
 
 export default function Index() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
+		<View
+			style={{
+				flex: 1,
+				justifyContent: "center",
         alignItems: "center",
-      }}
-    >
-      <Text>Hello World</Text>
-    </View>
-  );
+        rowGap: 40
+			}}
+		>
+			<Card></Card>
+			<Card></Card>
+		</View>
+	);
 }
