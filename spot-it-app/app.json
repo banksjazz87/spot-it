@@ -28,16 +28,10 @@
             "favicon": "./assets/images/favicon.png"
         },
         "plugins": [
-            "expo-router", [
-                "expo-asset",
-                {
-                    "assets": ["/spot-it-app/assets/images/pokemon/abra.png"]
-                }
-            ]
+            "expo-router"
         ],
         "assetBundlePatterns": [
-            "**/*",
-            "/spot-it-app/assets/images/pokemon/*"
+            "**/*"
         ],
         "experiments": {
             "typedRoutes": true

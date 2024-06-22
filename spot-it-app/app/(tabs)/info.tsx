@@ -16,7 +16,7 @@ export default function Info() {
                     [
                         {
                             key: "test",
-                            url: "../../assets/images/pokemon/abra.png",
+                            url: require("../../assets/images/pokemon/abra.png"),
                             description: "Abra",
                         }
                     ]
