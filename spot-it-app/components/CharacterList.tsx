@@ -13,15 +13,18 @@ type CharacterListProps = {
 
 export default function CharacterList({ properties }: CharacterListProps) {
     return (
-			<SafeAreaView>
+			<SafeAreaView style={styles.listContainer}>
 				<FlatList
 					data={properties}
+					horizontal={false}
+					numColumns={3}
 					renderItem={({ item }) => (
-						<TouchableOpacity>
+						<TouchableOpacity style={styles.characterTile}>
 							<Image
 								source={item.url}
 								style={styles.image}
-								key={item.key}
+                                key={item.key}
+                                resizeMode={'contain'}
 							/>
 							<Text>{item.description}</Text>
 						</TouchableOpacity>
@@ -49,5 +52,19 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 32,
-	},
+    },
+    characterTile: {
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 20,
+        marginVertical: 20,
+
+    },
+    listContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 400,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 });
