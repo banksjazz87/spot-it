@@ -1,5 +1,6 @@
-import { FlatList, StyleSheet, Text, SafeAreaView, Image, StatusBar, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, Text, SafeAreaView, Image, View, StatusBar, TouchableOpacity } from "react-native";
 import React from "react";
+import { StyleClasses } from '../constants/StyleClasses';
 
 type ImageProperties = {
 	key: string;
@@ -17,8 +18,9 @@ export default function CharacterList({ properties }: CharacterListProps) {
 				<FlatList
 					data={properties}
 					horizontal={false}
-					numColumns={3}
-					renderItem={({ item }) => (
+					numColumns={2}
+                renderItem={({ item }) => (
+                
 						<TouchableOpacity style={styles.characterTile}>
 							<Image
 								source={item.url}
@@ -26,8 +28,9 @@ export default function CharacterList({ properties }: CharacterListProps) {
                                 key={item.key}
                                 resizeMode={'contain'}
 							/>
-							<Text>{item.description}</Text>
-						</TouchableOpacity>
+							<Text style={styles.descriptionText}>{item.description}</Text>
+                        </TouchableOpacity>
+                      
 					)}
 					keyExtractor={(item) => item.key}
 				/>
@@ -58,6 +61,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         rowGap: 20,
         marginVertical: 20,
+        borderRadius: 12,
+        padding: 12,
+        marginHorizontal: 12
 
     },
     listContainer: {
@@ -66,5 +72,11 @@ const styles = StyleSheet.create({
         rowGap: 400,
         justifyContent: 'center',
         alignItems: 'center'
+    }, 
+    descriptionText: {
+        fontFamily: 'cursive',
+        fontSize: 20,
+        fontWeight: 200
+
     }
 });
