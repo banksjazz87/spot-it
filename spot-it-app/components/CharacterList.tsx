@@ -55,28 +55,30 @@ const styles = StyleSheet.create({
 	},
 	title: {
 		fontSize: 32,
-    },
-    characterTile: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 20,
-        marginVertical: 20,
-        borderRadius: 12,
-        padding: 12,
-        marginHorizontal: 12
-
-    },
-    listContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        rowGap: 400,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }, 
-    descriptionText: {
-        fontFamily: 'cursive',
-        fontSize: 20,
-        fontWeight: 200
-
-    }
+	},
+	characterTile: {
+		display: "flex",
+		flexDirection: "column",
+		rowGap: 20,
+		marginVertical: 20,
+		borderRadius: 12,
+		padding: 12,
+		marginHorizontal: 12,
+        backgroundColor: 'white', 
+        shadowOffset: { width: 1, height: 4 },
+        shadowColor: 'black',
+        shadowOpacity: .4,
+	},
+	listContainer: {
+		display: "flex",
+		flexDirection: "column",
+		rowGap: 400,
+		justifyContent: "center",
+		alignItems: "center",
+	},
+	descriptionText: {
+		fontFamily: "cursive",
+		fontSize: 20,
+		fontWeight: 200,
+	},
 });

@@ -1,5 +1,6 @@
-import { Text, View, SafeAreaView } from "react-native";
+import { Text, SafeAreaView } from "react-native";
 import CharacterList from "../../components/CharacterList";
+import { StyleClasses } from "../../constants/StyleClasses";
 
 
 
@@ -120,9 +121,13 @@ export default function Info() {
 
     
     return (
-			<View>
-				<Text>This will have information about each image used.</Text>
+			<SafeAreaView>
+				<Text style={StyleClasses.headingOne}>Meet the Characters</Text>
 				<CharacterList properties={pokemonImages} />
-			</View>
+			</SafeAreaView>
 		);
 }
+
+
+
+
