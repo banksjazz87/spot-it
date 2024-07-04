@@ -1,4 +1,4 @@
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, FlatList } from 'react-native';
 
 type ImageProperties = {
     key: string;
@@ -33,6 +33,8 @@ export default function CharacterCardGrid({items}: CharacterCardProps): JSX.Elem
             </View>
         )
     });
+
+
 }
 
 const styles = StyleSheet.create({
