@@ -1,16 +1,17 @@
 import { Image, View, StyleSheet, FlatList } from 'react-native';
+import { ImageProperties } from '@/constants/interfaces';
+import LayoutConstructor from '../constants/modules/layoutConstructorClass';
 
-type ImageProperties = {
-    key: string;
-    url: any;
-    description: string;
-}
 
 type CharacterCardProps = {
     items: ImageProperties[][];
 } 
 
-export default function CharacterCardGrid({items}: CharacterCardProps): JSX.Element[] {
+export default function CharacterCardGrid({ items }: CharacterCardProps): JSX.Element[] {
+
+    const layout = new LayoutConstructor(items[0]);
+
+    console.log(layout.generateMatchingItem());
     
     return items.map((x: ImageProperties[], y: number): JSX.Element => {
         return (
@@ -39,8 +40,8 @@ export default function CharacterCardGrid({items}: CharacterCardProps): JSX.Elem
 
 const styles = StyleSheet.create({
     image: {
-        width: 50,
-        height: 50
+        width: 70,
+        height: 70
     },
     cardRow: {
         display: 'flex', 

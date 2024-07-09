@@ -28,5 +28,6 @@ const styles = StyleSheet.create({
 		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
+		rowGap: 20,
 	},
 });
