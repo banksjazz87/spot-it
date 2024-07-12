@@ -19,18 +19,16 @@ export default function CharacterList({ properties }: CharacterListProps) {
 					data={properties}
 					horizontal={false}
 					numColumns={2}
-                renderItem={({ item }) => (
-                
+					renderItem={({ item }) => (
 						<TouchableOpacity style={styles.characterTile}>
 							<Image
 								source={item.url}
 								style={styles.image}
-                                key={item.key}
-                                resizeMode={'contain'}
+								key={item.key}
+								resizeMode={"contain"}
 							/>
 							<Text style={styles.descriptionText}>{item.description}</Text>
-                        </TouchableOpacity>
-                      
+						</TouchableOpacity>
 					)}
 					keyExtractor={(item) => item.key}
 				/>
@@ -75,6 +73,7 @@ const styles = StyleSheet.create({
 		rowGap: 400,
 		justifyContent: "center",
 		alignItems: "center",
+		marginBottom: 140
 	},
 	descriptionText: {
 		fontFamily: "cursive",
