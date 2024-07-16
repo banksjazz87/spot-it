@@ -6,7 +6,7 @@ import CharacterImages from '../constants/CharacterImages';
 
 export function Card() {
 	const row1 = CharacterImages.slice(0, 2);
-	const row2 = CharacterImages.slice(2, 6);
+	const row2 = CharacterImages.slice(2, 6); 
 	const row3 = CharacterImages.slice(6, 8);
 
 	const grid = [row1, row2, row3];
