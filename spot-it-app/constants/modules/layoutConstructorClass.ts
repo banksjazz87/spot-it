@@ -1,4 +1,5 @@
 import { ImageProperties } from '@/constants/interfaces';
+import CharacterImages from '../CharacterImages';
 
 class LayoutConstructor {
     images: ImageProperties[];
@@ -12,6 +13,11 @@ class LayoutConstructor {
         // return Math.floor(Math.random() * maxNum);
         const randomNum = Math.floor(Math.random() * 10);
         return maxNum;
+    }
+
+    getRandomNumber(): number {
+        const randomNum = Math.floor(Math.random() * (this.images.length + 1)) - 1;
+        return randomNum;
     }
 
     getGrid(): ImageProperties[][] {
