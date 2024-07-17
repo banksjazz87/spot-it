@@ -11,8 +11,6 @@ export default function CharacterCardGrid({ items }: CharacterCardProps): JSX.El
 
     const layout = new LayoutConstructor(items[0]);
 
-    console.log(layout.generateMatchingItem());
-
     
     
     return items.map((x: ImageProperties[], y: number): JSX.Element => {

@@ -1,10 +1,28 @@
 import { StyleSheet, View, Text } from 'react-native';
+import { useState, useEffect } from 'react';
 import { StyleClasses } from '../constants/StyleClasses';
 import CharacterCardGrid from './CharacterCardGrid';
 import CharacterImages from '../constants/CharacterImages';
+import { ImageProperties } from '@/constants/interfaces';
 
 
 export function Card() {
+	const [sharedImage, setSharedImage] = useState<ImageProperties>({
+		key: '',
+		url: '',
+		description: ''
+	});
+
+
+	useEffect(() => {
+		const randomNum = Math.floor(Math.random() * (CharacterImages.length + 1)) - 1;
+		
+		setSharedImage(CharacterImages[randomNum]);
+
+		console.log(sharedImage);
+	}, []);
+
+
 	const row1 = CharacterImages.slice(0, 2);
 	const row2 = CharacterImages.slice(2, 6); 
 	const row3 = CharacterImages.slice(6, 8);
