@@ -16,7 +16,7 @@ class LayoutConstructor {
     }
 
     getRandomNumber(): number {
-        const randomNum = Math.floor(Math.random() * (this.images.length + 1)) - 1;
+        const randomNum = Math.floor(Math.random() * (this.images.length));
         return randomNum;
     }
 

@@ -3,12 +3,12 @@ import { ImageProperties } from "@/constants/interfaces";
 import LayoutConstructor from "../constants/modules/layoutConstructorClass";
 
 type CharacterCardProps = {
-	items: ImageProperties[][] | undefined;
+	items: ImageProperties[][];
 };
 
 export default function CharacterCardGrid({ items }: CharacterCardProps): JSX.Element[] | JSX.Element {
 
-    if (items && items.length > 0) {
+    if (items) {
         
 		return items.map((x: ImageProperties[], y: number): JSX.Element => {
 			return (
@@ -17,7 +17,7 @@ export default function CharacterCardGrid({ items }: CharacterCardProps): JSX.El
 					key={`row_${y}`}
 					style={styles.cardRow}
 				>
-                    {
+                    { 
                         x.map((a: ImageProperties, b: number): JSX.Element => (
 							<Image
 								source={a.url}
