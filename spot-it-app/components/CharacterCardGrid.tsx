@@ -1,12 +1,21 @@
-import { Image, View, StyleSheet, FlatList, Text } from "react-native";
+import { Image, View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import { ImageProperties } from "@/constants/interfaces";
 import LayoutConstructor from "../constants/modules/layoutConstructorClass";
+import GestureResponderEvent from 'react-native';
 
 type CharacterCardProps = {
 	items: ImageProperties[][];
+	getNewMatch: Function;
+	sharedImage: ImageProperties;
 };
 
-export default function CharacterCardGrid({ items }: CharacterCardProps): JSX.Element[] | JSX.Element {
+export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: CharacterCardProps): JSX.Element[] | JSX.Element {
+
+	const imageHandler = (e: GestureResponderEvent.GestureResponderEvent, match: ImageProperties, item: ImageProperties): void => {
+		if (item.url === match.url) {
+			getNewMatch();
+		}
+	}
 
     if (items) {
         
@@ -17,16 +26,18 @@ export default function CharacterCardGrid({ items }: CharacterCardProps): JSX.El
 					key={`row_${y}`}
 					style={styles.cardRow}
 				>
-                    { 
-                        x.map((a: ImageProperties, b: number): JSX.Element => (
-							<Image
-								source={a.url}
-								style={styles.image}
-								key={`image_${y}_${b}`}
-								resizeMode={"contain"}
-							></Image>
-						))
-                    }
+					{x.map(
+						(a: ImageProperties, b: number): JSX.Element => (
+							<Pressable onPress={(e) => imageHandler(e, sharedImage, a)}>
+								<Image
+									source={a.url}
+									style={styles.image}
+									key={`image_${y}_${b}`}
+									resizeMode={"contain"}
+								></Image>
+							</Pressable>
+						)
+					)}
 				</View>
 			);
 		});

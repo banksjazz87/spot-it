@@ -50,10 +50,12 @@ export default function Index() {
 		}
 
 		setCardImages(images);
-	}, [sharedImage]);
+    }, [sharedImage]);
+    
 
+    //Set the images of for the two different cards.
 	useEffect(() => {
-		if (cardImages.length > 1) {
+        if (cardImages.length > 1) {
 			const card1 = cardImages.slice(0, 8);
 			const card2 = cardImages.slice(8);
 
@@ -62,16 +64,15 @@ export default function Index() {
 
 			const finalCard1 = card1.toSpliced(card1MatchIndex, 1, sharedImage);
 			const finalCard2 = card2.toSpliced(card2MatchIndex, 1, sharedImage);
-			console.log("card1 Matched", card1MatchIndex);
-			console.log("card1", finalCard1);
-			console.log("card2 Matched", card2MatchIndex);
-			console.log("card2", finalCard2);
+			
 			setCardOne(finalCard1);
 			setCardTwo(finalCard2);
 		}
 	}, [cardImages]);
 
-	const createNewMatch = () => {
+
+    //Used to update the current match, when this is updated, everything else updates as well.
+	const createNewMatch = (): void => {
 		const randomNum = new LayoutConstructor(CharacterImages).getRandomNumber();
 		setMatchIndex(randomNum);
 		setSharedImage(CharacterImages[randomNum]);
@@ -87,9 +88,8 @@ export default function Index() {
 					rowGap: 40,
 				}}
 			>
-				<Text>Nothing set</Text>
 				<Pressable onPress={(): void => createNewMatch()}>
-					<Text>Generate</Text>
+					<Text>Start One Player Game</Text>
 				</Pressable>
 			</View>
 		);
@@ -112,7 +112,16 @@ export default function Index() {
 					images={cardTwo}
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
-				></Card>
+                ></Card>
+                <Pressable onPress={(): void => {
+                    setSharedImage(initImage);
+                    setMatchIndex(-1);
+
+                }}>
+                    <Text>
+                        Restart
+                    </Text>
+                </Pressable>
 			</View>
 		);
 	}

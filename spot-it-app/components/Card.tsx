@@ -1,15 +1,16 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { StyleClasses } from '../constants/StyleClasses';
-import CharacterCardGrid from './CharacterCardGrid';
-import CharacterImages from '../constants/CharacterImages';
-import { ImageProperties } from '@/constants/interfaces';
+import { StyleSheet, View, Text } from "react-native";
+import { StyleClasses } from "../constants/StyleClasses";
+import CharacterCardGrid from "./CharacterCardGrid";
+import CharacterImages from "../constants/CharacterImages";
+import { ImageProperties } from "@/constants/interfaces";
 
 interface CardProps {
 	images: ImageProperties[] | undefined;
+	newMatch: Function;
+	sharedImage: ImageProperties;
 }
 
-export function Card({images}: CardProps) {
-
+export function Card({ images, newMatch, sharedImage }: CardProps) {
 	if (images && images.length > 0) {
 		const row1 = images.slice(0, 2);
 		const row2 = images.slice(2, 6);
@@ -18,12 +19,14 @@ export function Card({images}: CardProps) {
 
 		return (
 			<View style={[styles.card, StyleClasses.boxShadow]}>
-				<CharacterCardGrid items={grid} />
+				<CharacterCardGrid
+					items={grid}
+					getNewMatch={newMatch}
+					sharedImage={sharedImage}
+				/>
 			</View>
 		);
-
 	} else {
-
 		return (
 			<View>
 				<Text>Nothing yet</Text>
