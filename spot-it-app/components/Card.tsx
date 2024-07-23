@@ -3,6 +3,7 @@ import { StyleClasses } from "../constants/StyleClasses";
 import CharacterCardGrid from "./CharacterCardGrid";
 import CharacterImages from "../constants/CharacterImages";
 import { ImageProperties } from "@/constants/interfaces";
+import TiltGenerator from "../constants/modules/TiltGenerator"
 
 interface CardProps {
 	images: ImageProperties[] | undefined;
@@ -17,8 +18,10 @@ export function Card({ images, newMatch, sharedImage }: CardProps) {
 		const row3 = images.slice(6, 8);
 		const grid = [row1, row2, row3];
 
+		const Tilt = new TiltGenerator();
+
 		return (
-			<View style={[styles.card, StyleClasses.boxShadow]}>
+			<View style={[styles.card, StyleClasses.boxShadow, Tilt.getTilt()]}>
 				<CharacterCardGrid
 					items={grid}
 					getNewMatch={newMatch}

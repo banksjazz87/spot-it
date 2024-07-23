@@ -8,15 +8,25 @@ type CharacterCardProps = {
 	items: ImageProperties[][];
 	getNewMatch: Function;
 	sharedImage: ImageProperties;
+
 };
 
 export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: CharacterCardProps): JSX.Element[] | JSX.Element {
+
+	/**
+	 * 
+	 * @param e press event
+	 * @param match type of ImageProperites: the item we are trying to match.
+	 * @param item the item that's clicked
+	 * @description this is used to generate a new match and is only called if the selected image matches the current match.
+	 */
 	const imageHandler = (e: GestureResponderEvent.GestureResponderEvent, match: ImageProperties, item: ImageProperties): void => {
 		if (item.url === match.url) {
 			getNewMatch();
 		}
 	};
 
+	//Instantiate the tilt class.
 	const Tilt = new TiltGenerator();
 
 	if (items) {
@@ -56,20 +66,8 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 
 const styles = StyleSheet.create({
 	image: {
-		width: 70,
-		height: 70,
-	},
-	rotateTopRight: {
-		transform: [{ rotate: "25deg" }],
-	},
-	rotateBottomRight: {
-		transform: [{ rotate: "135deg" }],
-	},
-	rotateTopLeft: {
-		transform: [{ rotate: "330deg" }],
-	},
-	rotateBottomLeft: {
-		transform: [{ rotate: "330deg" }],
+		width: 65,
+		height: 65,
 	},
 	cardRow: {
 		display: "flex",

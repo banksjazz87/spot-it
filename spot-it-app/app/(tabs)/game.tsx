@@ -113,7 +113,7 @@ export default function Index() {
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
                 />
-                <Pressable onPress={(): void => {
+                {/* <Pressable onPress={(): void => {
                     setSharedImage(initImage);
                     setMatchIndex(-1);
 
@@ -121,7 +121,7 @@ export default function Index() {
                     <Text>
                         Restart
                     </Text>
-                </Pressable>
+                </Pressable> */}
 			</View>
 		);
 	}
