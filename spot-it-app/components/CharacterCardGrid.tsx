@@ -29,6 +29,42 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 	//Instantiate the tilt class.
 	const Tilt = new TiltGenerator();
 
+	const positionMiddleRow = (arr: ImageProperties[], count: number): Object | undefined => {
+		if (arr.length === 4) {
+			if (count === 0) {
+				return {
+					top: -40,
+					left: 5
+				}
+			} else if (count === arr.length - 1) {
+				return {
+					bottom: -40,
+					right: 5
+				}
+			}
+		}
+	}
+
+	const positionBottomRow = (arr: ImageProperties[][], arrCount: number, count: number): Object | undefined => {
+		if (arr.length - 1 === arrCount) {
+			if (count === 0) {
+				return {
+					top: -20,
+					left: -25
+				}
+			}
+		} 
+	}
+
+	const positionTopRow = (arrCount: number, count: number): Object | undefined => {
+		if (arrCount === 0 && count === 1) {
+			return {
+				right: -20,
+				bottom: -15
+			}
+		}
+	}
+
 	if (items) {
 		return items.map((x: ImageProperties[], y: number): JSX.Element => {
 			return (
@@ -41,6 +77,7 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 						(a: ImageProperties, b: number): JSX.Element => (
 							<Pressable
 								key={`button_${y}_${b}`}
+								style={[positionTopRow(y, b), positionMiddleRow(x, b), positionBottomRow(items, y, b)]}
 								onPress={(e) => imageHandler(e, sharedImage, a)}
 							>
 								<Image
@@ -73,6 +110,8 @@ const styles = StyleSheet.create({
 		display: "flex",
 		flexDirection: "row",
 		flexWrap: "nowrap",
-		columnGap: 5,
+		justifyContent: 'center',
+		columnGap: 10,
+		rowGap: 10,
 	},
 });

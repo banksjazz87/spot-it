@@ -21,7 +21,7 @@ export function Card({ images, newMatch, sharedImage }: CardProps) {
 		const Tilt = new TiltGenerator();
 
 		return (
-			<View style={[styles.card, StyleClasses.boxShadow, Tilt.getTilt()]}>
+			<View style={[styles.card, StyleClasses.boxShadow]}>
 				<CharacterCardGrid
 					items={grid}
 					getNewMatch={newMatch}
@@ -48,5 +48,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		rowGap: 20,
+		position: 'relative'
 	},
 });
