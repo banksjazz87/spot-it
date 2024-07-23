@@ -1,7 +1,8 @@
 import { Image, View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import { ImageProperties } from "@/constants/interfaces";
 import LayoutConstructor from "../constants/modules/layoutConstructorClass";
-import GestureResponderEvent from 'react-native';
+import GestureResponderEvent from "react-native";
+import TiltGenerator from "../constants/modules/TiltGenerator";
 
 type CharacterCardProps = {
 	items: ImageProperties[][];
@@ -10,15 +11,15 @@ type CharacterCardProps = {
 };
 
 export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: CharacterCardProps): JSX.Element[] | JSX.Element {
-
 	const imageHandler = (e: GestureResponderEvent.GestureResponderEvent, match: ImageProperties, item: ImageProperties): void => {
 		if (item.url === match.url) {
 			getNewMatch();
 		}
-	}
+	};
 
-    if (items) {
-        
+	const Tilt = new TiltGenerator();
+
+	if (items) {
 		return items.map((x: ImageProperties[], y: number): JSX.Element => {
 			return (
 				<View
@@ -28,10 +29,13 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 				>
 					{x.map(
 						(a: ImageProperties, b: number): JSX.Element => (
-							<Pressable onPress={(e) => imageHandler(e, sharedImage, a)}>
+							<Pressable
+								key={`button_${y}_${b}`}
+								onPress={(e) => imageHandler(e, sharedImage, a)}
+							>
 								<Image
 									source={a.url}
-									style={styles.image}
+									style={[styles.image, Tilt.getTilt()]}
 									key={`image_${y}_${b}`}
 									resizeMode={"contain"}
 								></Image>
@@ -55,9 +59,22 @@ const styles = StyleSheet.create({
 		width: 70,
 		height: 70,
 	},
+	rotateTopRight: {
+		transform: [{ rotate: "25deg" }],
+	},
+	rotateBottomRight: {
+		transform: [{ rotate: "135deg" }],
+	},
+	rotateTopLeft: {
+		transform: [{ rotate: "330deg" }],
+	},
+	rotateBottomLeft: {
+		transform: [{ rotate: "330deg" }],
+	},
 	cardRow: {
 		display: "flex",
 		flexDirection: "row",
 		flexWrap: "nowrap",
+		columnGap: 5,
 	},
 });

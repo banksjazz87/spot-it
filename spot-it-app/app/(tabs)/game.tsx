@@ -107,12 +107,12 @@ export default function Index() {
 					images={cardOne}
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
-				></Card>
+				/>
 				<Card
 					images={cardTwo}
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
-                ></Card>
+                />
                 <Pressable onPress={(): void => {
                     setSharedImage(initImage);
                     setMatchIndex(-1);
