@@ -4,6 +4,7 @@ import { ImageProperties } from "@/constants/interfaces";
 import CharacterImages from "@/constants/CharacterImages";
 import LayoutConstructor from "@/constants/modules/layoutConstructorClass";
 import { Card } from "../../components/Card";
+import {Colors} from "../../constants/Colors";
 
 export default function Index() {
 	const initImage: ImageProperties = {
@@ -100,9 +101,26 @@ export default function Index() {
 					flex: 1,
 					justifyContent: "center",
 					alignItems: "center",
-					rowGap: 40,
+					rowGap: 20,
 				}}
 			>
+				<Pressable
+					style={{
+						backgroundColor: Colors.blue.background,
+						paddingTop: 10,
+						paddingBottom: 10,
+						paddingLeft: 40,
+						paddingRight: 40,
+						marginTop: 20,
+						borderRadius: 20,
+					}}
+					onPress={(): void => {
+						setSharedImage(initImage);
+						setMatchIndex(-1);
+					}}
+				>
+					<Text style={{color: 'white', textTransform: 'uppercase', fontWeight: 700}}>Restart</Text>
+				</Pressable>
 				<Card
 					images={cardOne}
 					newMatch={createNewMatch}
@@ -112,17 +130,9 @@ export default function Index() {
 					images={cardTwo}
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
-                />
-                {/* <Pressable onPress={(): void => {
-                    setSharedImage(initImage);
-                    setMatchIndex(-1);
-
-                }}>
-                    <Text>
-                        Restart
-                    </Text>
-                </Pressable> */}
+				/>
 			</View>
 		);
 	}
 }
+

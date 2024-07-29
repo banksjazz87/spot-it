@@ -41,8 +41,8 @@ export function Card({ images, newMatch, sharedImage }: CardProps) {
 const styles = StyleSheet.create({
 	card: {
 		backgroundColor: "white",
-		height: 300,
-		width: 300,
+		height: 280,
+		width: 280,
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",

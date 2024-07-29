@@ -29,6 +29,14 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 	//Instantiate the tilt class.
 	const Tilt = new TiltGenerator();
 
+
+	/**
+	 * 
+	 * @param arr ImageProperties[] 
+	 * @param count number
+	 * @returns Style object or undefined.
+	 * @description this is used to create the layout for the middle row of the card.
+	 */
 	const positionMiddleRow = (arr: ImageProperties[], count: number): Object | undefined => {
 		if (arr.length === 4) {
 			if (count === 0) {
@@ -45,6 +53,15 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 		}
 	}
 
+
+	/**
+	 * 
+	 * @param arr ImageProperties[][] the full layout grid.
+	 * @param arrCount Number the current count, the current row that we're on.
+	 * @param count the current item in the row.
+	 * @returns Style Object or undefined.
+	 * @description offsets the first item on the third row.
+	 */
 	const positionBottomRow = (arr: ImageProperties[][], arrCount: number, count: number): Object | undefined => {
 		if (arr.length - 1 === arrCount) {
 			if (count === 0) {
@@ -56,6 +73,14 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 		} 
 	}
 
+
+	/**
+	 * 
+	 * @param arrCount number
+	 * @param count number
+	 * @returns Style Object or undefined
+	 * @description offsets the second item of the first row on the card.
+	 */
 	const positionTopRow = (arrCount: number, count: number): Object | undefined => {
 		if (arrCount === 0 && count === 1) {
 			return {
@@ -64,6 +89,8 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 			}
 		}
 	}
+
+
 
 	if (items) {
 		return items.map((x: ImageProperties[], y: number): JSX.Element => {
@@ -74,20 +101,23 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 					style={styles.cardRow}
 				>
 					{x.map(
-						(a: ImageProperties, b: number): JSX.Element => (
-							<Pressable
-								key={`button_${y}_${b}`}
-								style={[positionTopRow(y, b), positionMiddleRow(x, b), positionBottomRow(items, y, b)]}
-								onPress={(e) => imageHandler(e, sharedImage, a)}
-							>
-								<Image
-									source={a.url}
-									style={[styles.image, Tilt.getTilt()]}
-									key={`image_${y}_${b}`}
-									resizeMode={"contain"}
-								></Image>
-							</Pressable>
-						)
+						(a: ImageProperties, b: number): JSX.Element => {
+							
+							return (
+								<Pressable
+									key={`button_${y}_${b}`}
+									style={[positionTopRow(y, b), positionMiddleRow(x, b), positionBottomRow(items, y, b)]}
+									onPress={(e) => imageHandler(e, sharedImage, a)}
+								>
+									<Image
+										source={a.url}
+										style={[styles.image, Tilt.getTilt()]}
+										key={`image_${y}_${b}`}
+										resizeMode={"contain"}
+									></Image>
+								</Pressable>
+							)
+						}
 					)}
 				</View>
 			);
@@ -103,8 +133,8 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 
 const styles = StyleSheet.create({
 	image: {
-		width: 65,
-		height: 65,
+		width: 55,
+		height: 55,
 	},
 	cardRow: {
 		display: "flex",
