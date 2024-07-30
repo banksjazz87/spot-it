@@ -4,7 +4,8 @@ import { ImageProperties } from "@/constants/interfaces";
 import CharacterImages from "@/constants/CharacterImages";
 import LayoutConstructor from "@/constants/modules/layoutConstructorClass";
 import { Card } from "../../components/Card";
-import {Colors} from "../../constants/Colors";
+import { Colors } from "../../constants/Colors";
+import PrimaryButton from "@/components/global/PrimaryButton"
 
 export default function Index() {
 	const initImage: ImageProperties = {
@@ -51,12 +52,11 @@ export default function Index() {
 		}
 
 		setCardImages(images);
-    }, [sharedImage]);
-    
+	}, [sharedImage]);
 
-    //Set the images of for the two different cards.
+	//Set the images of for the two different cards.
 	useEffect(() => {
-        if (cardImages.length > 1) {
+		if (cardImages.length > 1) {
 			const card1 = cardImages.slice(0, 8);
 			const card2 = cardImages.slice(8);
 
@@ -65,14 +65,13 @@ export default function Index() {
 
 			const finalCard1 = card1.toSpliced(card1MatchIndex, 1, sharedImage);
 			const finalCard2 = card2.toSpliced(card2MatchIndex, 1, sharedImage);
-			
+
 			setCardOne(finalCard1);
 			setCardTwo(finalCard2);
 		}
 	}, [cardImages]);
 
-
-    //Used to update the current match, when this is updated, everything else updates as well.
+	//Used to update the current match, when this is updated, everything else updates as well.
 	const createNewMatch = (): void => {
 		const randomNum = new LayoutConstructor(CharacterImages).getRandomNumber();
 		setMatchIndex(randomNum);
@@ -104,8 +103,20 @@ export default function Index() {
 					rowGap: 20,
 				}}
 			>
-				<Pressable
-					style={{
+
+				<PrimaryButton
+					method={(): void => {
+						setSharedImage(initImage);
+						setMatchIndex(-1);
+					}}
+					textStyle={{
+						color: "white",
+						textTransform: "uppercase",
+						fontWeight: 700,
+						fontSize: 20,
+						fontFamily: "Red Hat Display",
+					}}
+					pressStyle={{
 						backgroundColor: Colors.blue.background,
 						paddingTop: 10,
 						paddingBottom: 10,
@@ -114,13 +125,9 @@ export default function Index() {
 						marginTop: 20,
 						borderRadius: 20,
 					}}
-					onPress={(): void => {
-						setSharedImage(initImage);
-						setMatchIndex(-1);
-					}}
-				>
-					<Text style={{color: 'white', textTransform: 'uppercase', fontWeight: 700}}>Restart</Text>
-				</Pressable>
+					text={"Restart"}
+				/>
+
 				<Card
 					images={cardOne}
 					newMatch={createNewMatch}
@@ -135,4 +142,3 @@ export default function Index() {
 		);
 	}
 }
-
