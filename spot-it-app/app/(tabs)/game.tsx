@@ -88,9 +88,11 @@ export default function Index() {
 					rowGap: 40,
 				}}
 			>
-				<Pressable onPress={(): void => createNewMatch()}>
-					<Text>Start One Player Game</Text>
-				</Pressable>
+				<PrimaryButton
+					method={(): void => createNewMatch()}
+					text="Start One Player Game"
+					style={{paddingTop: 20, paddingBottom: 20}}
+				/>
 			</View>
 		);
 	} else {
@@ -108,22 +110,6 @@ export default function Index() {
 					method={(): void => {
 						setSharedImage(initImage);
 						setMatchIndex(-1);
-					}}
-					textStyle={{
-						color: "white",
-						textTransform: "uppercase",
-						fontWeight: 700,
-						fontSize: 20,
-						fontFamily: "Red Hat Display",
-					}}
-					pressStyle={{
-						backgroundColor: Colors.blue.background,
-						paddingTop: 10,
-						paddingBottom: 10,
-						paddingLeft: 40,
-						paddingRight: 40,
-						marginTop: 20,
-						borderRadius: 20,
 					}}
 					text={"Restart"}
 				/>

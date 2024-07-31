@@ -90,6 +90,26 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 		}
 	}
 
+	const generateImageSize = (): Object => {
+		const randomNum = Math.floor(Math.random() * 10);
+
+		const smallImage: Object = {
+			width: 50,
+			height: 50
+		}
+
+		const largeImage: Object = {
+			width: 62,
+			height: 62
+		}
+
+		if (randomNum % 2 === 0) {
+			return smallImage;
+		} else {
+			return largeImage;
+		}
+	}
+
 
 
 	if (items) {
@@ -111,7 +131,7 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 								>
 									<Image
 										source={a.url}
-										style={[styles.image, Tilt.getTilt()]}
+										style={[generateImageSize(), Tilt.getTilt()]}
 										key={`image_${y}_${b}`}
 										resizeMode={"contain"}
 									></Image>
@@ -132,10 +152,6 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 }
 
 const styles = StyleSheet.create({
-	image: {
-		width: 55,
-		height: 55,
-	},
 	cardRow: {
 		display: "flex",
 		flexDirection: "row",
