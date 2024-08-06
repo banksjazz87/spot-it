@@ -90,6 +90,12 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 		}
 	}
 
+
+	/**
+	 * 
+	 * @returns style object
+	 * @description using this function to determine if an image should be large or small, randomly.
+	 */
 	const generateImageSize = (): Object => {
 		const randomNum = Math.floor(Math.random() * 10);
 
@@ -157,7 +163,7 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		flexWrap: "nowrap",
 		justifyContent: 'center',
-		columnGap: 10,
-		rowGap: 10,
+		columnGap: 7,
+		rowGap: 7,
 	},
 });

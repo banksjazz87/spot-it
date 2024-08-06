@@ -16,9 +16,14 @@ export default function Index() {
 
 	const [sharedImage, setSharedImage] = useState<ImageProperties>(initImage);
 	const [matchIndex, setMatchIndex] = useState<number>(-1);
+
 	const [cardImages, setCardImages] = useState<ImageProperties[]>([initImage]);
 	const [cardOne, setCardOne] = useState<ImageProperties[]>([initImage]);
 	const [cardTwo, setCardTwo] = useState<ImageProperties[]>([initImage]);
+
+	const [countDownTimer, setCountDownTimer] = useState<number>(3);
+	const [gameTimer, setGameTimer] = useState<number>(0);
+	const [timedGame, setTimedGame] = useState<boolean>(false);
 
 	//Create an array of all of the images needed, excluding the shared image.
 	useEffect(() => {
@@ -71,6 +76,19 @@ export default function Index() {
 		}
 	}, [cardImages]);
 
+	useEffect(() => {
+		const intervalId: NodeJS.Timeout = setInterval(() => {
+			if (timedGame && countDownTimer > 0) {
+				setCountDownTimer(c => c - 1);
+			}
+		}, 5000);
+		
+
+		return () => clearInterval(intervalId);
+	}, [timedGame, countDownTimer]);
+
+	
+
 	//Used to update the current match, when this is updated, everything else updates as well.
 	const createNewMatch = (): void => {
 		const randomNum = new LayoutConstructor(CharacterImages).getRandomNumber();
@@ -93,6 +111,13 @@ export default function Index() {
 					text="Start One Player Game"
 					style={{paddingTop: 20, paddingBottom: 20}}
 				/>
+				<PrimaryButton
+					method={(): void => {
+						createNewMatch();
+						setTimedGame(true);
+					}}
+					text="Timed Game"
+				/>
 			</View>
 		);
 	} else {
@@ -113,6 +138,8 @@ export default function Index() {
 					}}
 					text={"Restart"}
 				/>
+
+				<Text style={timedGame ? {display: 'flex'} : {display: 'none'}}>{countDownTimer}</Text>
 
 				<Card
 					images={cardOne}
