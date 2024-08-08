@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { ImageProperties } from "@/constants/interfaces";
 import CharacterImages from "@/constants/CharacterImages";
@@ -77,15 +77,20 @@ export default function Index() {
 	}, [cardImages]);
 
 	useEffect(() => {
-		const intervalId: NodeJS.Timeout = setInterval(() => {
-			if (timedGame && countDownTimer > 0) {
+		if (timedGame && countDownTimer > 0) {
+			const intervalId: NodeJS.Timeout = setInterval(() => {
 				setCountDownTimer(c => c - 1);
-			}
-		}, 5000);
-		
+			}, 1000);
 
-		return () => clearInterval(intervalId);
+			return () => clearInterval(intervalId);
+		} 
 	}, [timedGame, countDownTimer]);
+
+	useEffect(() => {
+		if (countDownTimer === 0) {
+			createNewMatch();
+		}
+	}, [countDownTimer]);
 
 	
 
@@ -96,7 +101,7 @@ export default function Index() {
 		setSharedImage(CharacterImages[randomNum]);
 	};
 
-	if (matchIndex === -1) {
+	if (matchIndex === -1 && !timedGame) {
 		return (
 			<View
 				style={{
@@ -109,16 +114,21 @@ export default function Index() {
 				<PrimaryButton
 					method={(): void => createNewMatch()}
 					text="Start One Player Game"
-					style={{paddingTop: 20, paddingBottom: 20}}
+					style={{ paddingTop: 20, paddingBottom: 20 }}
 				/>
 				<PrimaryButton
 					method={(): void => {
-						createNewMatch();
 						setTimedGame(true);
 					}}
 					text="Timed Game"
 				/>
 			</View>
+		);
+	} else if (matchIndex === -1 && timedGame) {
+		return (
+		<View style={styles.countDown}>
+			<Text style={timedGame && countDownTimer !== 0 ? [{ display: "flex" }, styles.countDownNumber ]: { display: "none" } }>{countDownTimer}</Text>
+		</View>
 		);
 	} else {
 		return (
@@ -135,11 +145,11 @@ export default function Index() {
 					method={(): void => {
 						setSharedImage(initImage);
 						setMatchIndex(-1);
+						setCountDownTimer(3);
+						setTimedGame(false);
 					}}
 					text={"Restart"}
 				/>
-
-				<Text style={timedGame ? {display: 'flex'} : {display: 'none'}}>{countDownTimer}</Text>
 
 				<Card
 					images={cardOne}
@@ -155,3 +165,16 @@ export default function Index() {
 		);
 	}
 }
+
+const styles = StyleSheet.create({
+	countDown: {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center", 
+		flex: 1,
+	},
+	countDownNumber: {
+		fontSize: 80,
+		fontWeight: 700
+	}
+});
