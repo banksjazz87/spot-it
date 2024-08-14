@@ -5,7 +5,8 @@ import CharacterImages from "@/constants/CharacterImages";
 import LayoutConstructor from "@/constants/modules/layoutConstructorClass";
 import { Card } from "../../components/Card";
 import { Colors } from "../../constants/Colors";
-import PrimaryButton from "@/components/global/PrimaryButton"
+import PrimaryButton from "@/components/global/PrimaryButton";
+import Timer from "@/components/Timer";
 
 export default function Index() {
 	const initImage: ImageProperties = {
@@ -22,7 +23,7 @@ export default function Index() {
 	const [cardTwo, setCardTwo] = useState<ImageProperties[]>([initImage]);
 
 	const [countDownTimer, setCountDownTimer] = useState<number>(3);
-	const [gameTimer, setGameTimer] = useState<number>(0);
+	const [startGameTimer, setStartGameTimer] = useState<boolean>(false);
 	const [timedGame, setTimedGame] = useState<boolean>(false);
 
 	//Create an array of all of the images needed, excluding the shared image.
@@ -89,6 +90,7 @@ export default function Index() {
 	useEffect(() => {
 		if (countDownTimer === 0) {
 			createNewMatch();
+			setStartGameTimer(true);
 		}
 	}, [countDownTimer]);
 
@@ -126,9 +128,9 @@ export default function Index() {
 		);
 	} else if (matchIndex === -1 && timedGame) {
 		return (
-		<View style={styles.countDown}>
-			<Text style={timedGame && countDownTimer !== 0 ? [{ display: "flex" }, styles.countDownNumber ]: { display: "none" } }>{countDownTimer}</Text>
-		</View>
+			<View style={styles.countDown}>
+				<Text style={timedGame && countDownTimer !== 0 ? [{ display: "flex" }, styles.countDownNumber] : { display: "none" }}>{countDownTimer}</Text>
+			</View>
 		);
 	} else {
 		return (
@@ -141,15 +143,30 @@ export default function Index() {
 				}}
 			>
 
-				<PrimaryButton
-					method={(): void => {
-						setSharedImage(initImage);
-						setMatchIndex(-1);
-						setCountDownTimer(3);
-						setTimedGame(false);
+				<View
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
 					}}
-					text={"Restart"}
-				/>
+				
+				>
+					<PrimaryButton
+						method={(): void => {
+							setSharedImage(initImage);
+							setMatchIndex(-1);
+							setCountDownTimer(3);
+							setTimedGame(false);
+							setStartGameTimer(false);
+						}}
+						text={"Restart"}
+					/>
+					<Timer
+						start={startGameTimer}
+					/>
+
+				</View>
 
 				<Card
 					images={cardOne}
