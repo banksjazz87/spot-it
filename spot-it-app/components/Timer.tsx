@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { useEffect, useState } from "react";
+import TimerClass from "@/constants/modules/TimerClass";
 
 interface TimerProps{
     start: boolean;
@@ -15,14 +16,15 @@ export default function Timer({ start }: TimerProps) {
                     let currentSeconds = parseInt(seconds) + 1;
 
                     if (currentSeconds === 60) {
-                        let initSeconds = 0;
-                        setSeconds(initSeconds.toLocaleString('en-US', {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        }));
-                        setMinutes((c) => c + 1);
+                        let Seconds = new TimerClass(seconds);
+                        setSeconds(Seconds.resetTime());
+
+                        let Minutes = new TimerClass(minutes);
+                        setMinutes(Minutes.incrementTime());
+                            
                     } else {
-                        setSeconds((c) => c + 1)
+                        let Seconds = new TimerClass(seconds);
+                        setSeconds(Seconds.incrementTime());
                     }
 				}, 100);
 
@@ -33,7 +35,7 @@ export default function Timer({ start }: TimerProps) {
 
     return (
         <View>
-            <Text>{minutes}</Text>
+            <Text>{`${minutes}:${seconds}`}</Text>
         </View>
     )
 }
