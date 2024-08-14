@@ -8,7 +8,7 @@ import { Colors } from "../../constants/Colors";
 import PrimaryButton from "@/components/global/PrimaryButton";
 import Timer from "@/components/Timer";
 
-export default function Index() {
+export default function Game() {
 	const initImage: ImageProperties = {
 		key: "",
 		url: "",
@@ -146,9 +146,10 @@ export default function Index() {
 				<View
 					style={{
 						display: 'flex',
-						flexDirection: 'column',
+						flexDirection: 'row',
 						justifyContent: 'center',
 						alignItems: 'center',
+						columnGap: 20
 					}}
 				
 				>

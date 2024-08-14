@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import { useEffect, useState } from "react";
 import TimerClass from "@/constants/modules/TimerClass";
 
@@ -41,9 +41,22 @@ export default function Timer({ start }: TimerProps) {
 
 	if (start) {
 		return (
-			<View>
-				<Text>{`${minutes}:${seconds}`}</Text>
+			<View style={styles.container}>
+				<Text style={styles.timerText}>{`${minutes}:${seconds}`}</Text>
 			</View>
 		);
 	}
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 20,
+    },
+    timerText: {
+        fontFamily: "Red Hat Display",
+        letterSpacing: 2,
+        fontSize: 20,
+        fontWeight: 900,
+    }
+})
