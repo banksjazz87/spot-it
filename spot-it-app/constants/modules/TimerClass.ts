@@ -20,6 +20,16 @@ class TimerClass {
         return timeString;
     }
 
+    decrementTime(): string {
+        const newTime = parseInt(this.time) - 1;
+        const timeString = newTime.toLocaleString('en-US', {
+            minimumIntegerDigits: this.digits,
+            useGrouping: false,
+        });
+
+        return timeString;
+    }
+
     resetTime(): string {
         const initTime = 0;
         const timeString = initTime.toLocaleString('en-US', {

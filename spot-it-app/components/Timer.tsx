@@ -8,41 +8,45 @@ interface TimerProps {
 
 export default function Timer({ start }: TimerProps) {
 	const [seconds, setSeconds] = useState<string>("00");
-	const [minutes, setMinutes] = useState<string>("00");
+    const [minutes, setMinutes] = useState<string>("3");
+    const [milliSeconds, setMilliSeconds] = useState<string>("00");
 
 	useEffect(() => {
 		if (start) {
             const intervalId: NodeJS.Timeout = setInterval(() => {
-                //Get one second more than the current count.
-				let currentSeconds = parseInt(seconds) + 1;
 
-                    //If one minute has elapsed
-                    if (currentSeconds === 60) {
+                let currentMilliSeconds = parseInt(milliSeconds) - 1;
+                let currentSeconds = parseInt(seconds) - 1;
 
-                        //Reset the count for seconds
-						let Seconds = new TimerClass(seconds, 2);
-						setSeconds(Seconds.resetTime());
+                if (currentMilliSeconds === -1) {
+                    setMilliSeconds('59');
 
-                        //Increment minutes
-						let Minutes = new TimerClass(minutes, 2);
-                        setMinutes(Minutes.incrementTime());
-                        
+                    if (currentSeconds === -1) {
+                        setSeconds('59');
+
+                        let Minutes = new TimerClass(minutes, 1);
+                        setMinutes(Minutes.decrementTime());
+
                     } else {
-                        //Increment seconds
-						let Seconds = new TimerClass(seconds, 2);
-						setSeconds(Seconds.incrementTime());
-					}
+                        let Seconds = new TimerClass(seconds, 2);
+                        setSeconds(Seconds.decrementTime());
+                    }
+                    
+                } else {
+                    let Milli = new TimerClass(milliSeconds, 2);
+                    setMilliSeconds(Milli.decrementTime());
+                }
               
-			}, 1000);
+			}, 1);
 
 			return () => clearInterval(intervalId);
 		}
-	}, [start, seconds]);
+	}, [start, milliSeconds]);
 
 	if (start) {
 		return (
 			<View style={styles.container}>
-				<Text style={styles.timerText}>{`${minutes}:${seconds}`}</Text>
+				<Text style={styles.timerText}>{`${minutes}:${seconds}:${milliSeconds}`}</Text>
 			</View>
 		);
 	}
@@ -52,6 +56,7 @@ export default function Timer({ start }: TimerProps) {
 const styles = StyleSheet.create({
     container: {
         marginTop: 20,
+        width: 100,
     },
     timerText: {
         fontFamily: "Red Hat Display",
@@ -59,4 +64,4 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 900,
     }
-})
+});
