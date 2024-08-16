@@ -151,12 +151,12 @@ export default function Game() {
 					style={{
 						display: "flex",
 						flexDirection: "row",
-						justifyContent: "center",
+						justifyContent: 'space-between',
 						alignItems: "center",
 						columnGap: 20,
 					}}
 				>
-					<Text>{numberOfMatches}</Text>
+					<Text style={styles.countNumber}>{numberOfMatches}</Text>
 					<PrimaryButton
 						method={(): void => {
 							setSharedImage(initImage);
@@ -202,5 +202,12 @@ const styles = StyleSheet.create({
 	countDownNumber: {
 		fontSize: 80,
 		fontWeight: 700
+	},
+	countNumber: {
+		marginTop: 20,
+		fontFamily: "Red Hat Display", 
+		letterSpacing: 2, 
+		fontSize: 20, 
+		fontWeight: 900
 	}
 });

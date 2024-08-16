@@ -60,7 +60,7 @@ export default function Timer({ start, stop, display }: TimerProps) {
 const styles = StyleSheet.create({
 	container: {
 		marginTop: 20,
-		width: 100,
+		width: 60,
 	},
 	timerText: {
 		fontFamily: "Red Hat Display",
