@@ -1,9 +1,9 @@
 import { Pressable, Text, View } from "react-native";
 import { useState, useEffect } from "react";
 import { ImageProperties } from "@/constants/interfaces";
-import CharacterImages from "@/constants/CharacterImages";
+import CharacterImages from "@/constants/lib/CharacterImages";
 import LayoutConstructor from "@/constants/modules/layoutConstructorClass";
-import { Card } from "../../components/Card";
+import { Card } from "../../components/game/Card";
 
 export default function Index() {
 	const initImage: ImageProperties = {

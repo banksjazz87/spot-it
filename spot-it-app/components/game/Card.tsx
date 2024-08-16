@@ -1,17 +1,18 @@
 import { StyleSheet, View, Text } from "react-native";
-import { StyleClasses } from "../constants/StyleClasses";
+import { StyleClasses } from "../../constants/lib/StyleClasses";
 import CharacterCardGrid from "./CharacterCardGrid";
-import CharacterImages from "../constants/CharacterImages";
+import CharacterImages from "../../constants/lib/CharacterImages";
 import { ImageProperties } from "@/constants/interfaces";
-import TiltGenerator from "../constants/modules/TiltGenerator"
+import TiltGenerator from "../../constants/modules/TiltGenerator"
 
 interface CardProps {
 	images: ImageProperties[] | undefined;
 	newMatch: Function;
 	sharedImage: ImageProperties;
+	countHandler: Function;
 }
 
-export function Card({ images, newMatch, sharedImage }: CardProps) {
+export function Card({ images, newMatch, sharedImage, countHandler }: CardProps) {
 	if (images && images.length > 0) {
 		const row1 = images.slice(0, 2);
 		const row2 = images.slice(2, 6);
@@ -26,6 +27,7 @@ export function Card({ images, newMatch, sharedImage }: CardProps) {
 					items={grid}
 					getNewMatch={newMatch}
 					sharedImage={sharedImage}
+					countHandler={countHandler}
 				/>
 			</View>
 		);

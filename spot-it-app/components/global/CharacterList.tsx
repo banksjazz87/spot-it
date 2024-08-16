@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, SafeAreaView, Image, View, StatusBar, TouchableOpacity } from "react-native";
 import React from "react";
-import { StyleClasses } from '../constants/StyleClasses';
+import { StyleClasses } from '@/constants/lib/StyleClasses';
 
 type ImageProperties = {
 	key: string;

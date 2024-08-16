@@ -1,5 +1,5 @@
 import { ImageProperties } from '@/constants/interfaces';
-import CharacterImages from '../CharacterImages';
+import CharacterImages from '../lib/CharacterImages';
 
 class LayoutConstructor {
 	images: ImageProperties[];

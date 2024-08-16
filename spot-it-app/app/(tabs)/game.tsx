@@ -1,12 +1,12 @@
 import { Pressable, Text, View, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 import { ImageProperties } from "@/constants/interfaces";
-import CharacterImages from "@/constants/CharacterImages";
+import CharacterImages from "@/constants/lib/CharacterImages";
 import LayoutConstructor from "@/constants/modules/layoutConstructorClass";
-import { Card } from "../../components/Card";
-import { Colors } from "../../constants/Colors";
+import { Card } from "../../components/game/Card";
+import { Colors } from "../../constants/lib/Colors";
 import PrimaryButton from "@/components/global/PrimaryButton";
-import Timer from "@/components/Timer";
+import Timer from "@/components/game/Timer";
 
 export default function Game() {
 	const initImage: ImageProperties = {
@@ -25,6 +25,9 @@ export default function Game() {
 	const [countDownTimer, setCountDownTimer] = useState<number>(3);
 	const [startGameTimer, setStartGameTimer] = useState<boolean>(false);
 	const [timedGame, setTimedGame] = useState<boolean>(false);
+	const [showTimer, setShowTimer] = useState<boolean>(false);
+
+	const [numberOfMatches, setNumberOfMatches] = useState<number>(0);
 
 	//Create an array of all of the images needed, excluding the shared image.
 	useEffect(() => {
@@ -91,6 +94,7 @@ export default function Game() {
 		if (countDownTimer === 0) {
 			createNewMatch();
 			setStartGameTimer(true);
+			setShowTimer(true);
 		}
 	}, [countDownTimer]);
 
@@ -115,14 +119,15 @@ export default function Game() {
 			>
 				<PrimaryButton
 					method={(): void => createNewMatch()}
-					text="Start One Player Game"
-					style={{ paddingTop: 20, paddingBottom: 20 }}
+					text="One Player Game"
+					style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
 				/>
 				<PrimaryButton
 					method={(): void => {
 						setTimedGame(true);
 					}}
 					text="Timed Game"
+					style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
 				/>
 			</View>
 		);
@@ -142,17 +147,16 @@ export default function Game() {
 					rowGap: 20,
 				}}
 			>
-
 				<View
 					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'center',
-						alignItems: 'center',
-						columnGap: 20
+						display: "flex",
+						flexDirection: "row",
+						justifyContent: "center",
+						alignItems: "center",
+						columnGap: 20,
 					}}
-				
 				>
+					<Text>{numberOfMatches}</Text>
 					<PrimaryButton
 						method={(): void => {
 							setSharedImage(initImage);
@@ -160,24 +164,28 @@ export default function Game() {
 							setCountDownTimer(3);
 							setTimedGame(false);
 							setStartGameTimer(false);
+							setNumberOfMatches(0);
 						}}
 						text={"Restart"}
 					/>
 					<Timer
 						start={startGameTimer}
+						stop={(): void => setStartGameTimer(false)}
+						display={showTimer}
 					/>
-
 				</View>
 
 				<Card
 					images={cardOne}
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
+					countHandler={(): void => setNumberOfMatches((c) => c + 1)}
 				/>
 				<Card
 					images={cardTwo}
 					newMatch={createNewMatch}
 					sharedImage={sharedImage}
+					countHandler={(): void => setNumberOfMatches((c) => c + 1)}
 				/>
 			</View>
 		);

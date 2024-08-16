@@ -1,5 +1,5 @@
 import { GestureResponderEvent, Pressable, Text, StyleSheet } from 'react-native';
-import { Colors } from '@/constants/Colors';
+import { Colors } from '@/constants/lib/Colors';
 
 interface ButtonProps {
     text: string;
@@ -39,6 +39,7 @@ const Styles = StyleSheet.create({
         fontWeight: '700',
         letterSpacing: 1,
 		fontSize: 20,
-		fontFamily: "Red Hat Display",
+        fontFamily: "Red Hat Display",
+        margin: 'auto'
 	},
 });

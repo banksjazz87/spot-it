@@ -1,7 +1,7 @@
 import { Text, SafeAreaView,  } from "react-native";
-import CharacterList from "../../components/CharacterList";
-import { StyleClasses } from "../../constants/StyleClasses";
-import CharacterImages from "../../constants/CharacterImages";
+import CharacterList from "@/components/global/CharacterList";
+import { StyleClasses } from "../../constants/lib/StyleClasses";
+import CharacterImages from "../../constants/lib/CharacterImages";
 
 
 

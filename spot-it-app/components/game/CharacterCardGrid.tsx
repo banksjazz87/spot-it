@@ -1,17 +1,18 @@
 import { Image, View, StyleSheet, FlatList, Text, Pressable } from "react-native";
 import { ImageProperties } from "@/constants/interfaces";
-import LayoutConstructor from "../constants/modules/layoutConstructorClass";
+import LayoutConstructor from "../../constants/modules/layoutConstructorClass";
 import GestureResponderEvent from "react-native";
-import TiltGenerator from "../constants/modules/TiltGenerator";
+import TiltGenerator from "../../constants/modules/TiltGenerator";
 
 type CharacterCardProps = {
 	items: ImageProperties[][];
 	getNewMatch: Function;
 	sharedImage: ImageProperties;
+	countHandler: Function;
 
 };
 
-export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: CharacterCardProps): JSX.Element[] | JSX.Element {
+export default function CharacterCardGrid({ items, getNewMatch, sharedImage, countHandler }: CharacterCardProps): JSX.Element[] | JSX.Element {
 
 	/**
 	 * 
@@ -23,6 +24,7 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage }: C
 	const imageHandler = (e: GestureResponderEvent.GestureResponderEvent, match: ImageProperties, item: ImageProperties): void => {
 		if (item.url === match.url) {
 			getNewMatch();
+			countHandler();
 		}
 	};
 
