@@ -32,7 +32,8 @@
             "expo-router", [
                 "expo-font",
                 {
-                    "fonts": ["./assets/fonts/RedHatDisplay-Italic-VariableFont_wght.ttf",
+                    "fonts": [
+                        "./assets/fonts/RedHatDisplay-Italic-VariableFont_wght.ttf",
                         "./assets/fonts/RedHatDisplay-VariableFont_wght.ttf"
                     ]
                 }
