@@ -56,6 +56,7 @@ export default function TabLayout() {
 			});
 	}, []);
 
+	if (currentUser.loggedIn) {
 		return (
 			<Tabs
 				screenOptions={{
@@ -85,7 +86,6 @@ export default function TabLayout() {
 								color={color}
 							/>
 						),
-						headerShown: false 
 					}}
 				/>
 				<Tabs.Screen
@@ -102,4 +102,54 @@ export default function TabLayout() {
 				/>
 			</Tabs>
 		);
+	} else {
+		return (
+			<Tabs
+				screenOptions={{
+					tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+					headerShown: false,
+				}}
+			>
+				<Tabs.Screen
+					name="index"
+					options={{
+						title: "Home",
+						tabBarIcon: ({ color, focused }) => (
+							<TabBarIcon
+								name={focused ? "home" : "home-outline"}
+								color={color}
+							/>
+						),
+						href: null,
+					}}
+				/>
+				<Tabs.Screen
+					name="game"
+					options={{
+						title: "Game",
+						tabBarIcon: ({ color, focused }) => (
+							<TabBarIcon
+								name={focused ? "game-controller" : "game-controller-outline"}
+								color={color}
+							/>
+						),
+						href: null,
+					}}
+				/>
+				<Tabs.Screen
+					name="info"
+					options={{
+						title: "Info",
+						tabBarIcon: ({ color, focused }) => (
+							<TabBarIcon
+								name={focused ? "information-circle" : "information-circle-outline"}
+								color={color}
+							/>
+						),
+						href: null,
+					}}
+				/>
+			</Tabs>
+		);
+	}
 }
