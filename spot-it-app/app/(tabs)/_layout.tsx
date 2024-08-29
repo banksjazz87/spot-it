@@ -6,13 +6,9 @@ import { Colors } from "@/constants/lib/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "expo-dev-client";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '../../constants/interfaces';
+import UserClass from '../../constants/modules/UserClass';
 
-
-interface User {
-	username: string;
-	email: string;
-	loggedIn: boolean;
-}
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
@@ -22,28 +18,11 @@ export default function TabLayout() {
 		loggedIn: false
 	});
 	
-	
-	const getUserInfo = async (): Promise<User | null> => {
-		try {
-			const jsonValue = await AsyncStorage.getItem('userInfo');
-
-			if (jsonValue) {
-				const parsed: User = JSON.parse(jsonValue);
-				
-				return parsed;
-
-			} else {
-				return null;
-			}
-		} catch (e) {
-
-			console.log('Error in getting async storage ', e);
-			return null;
-		}
-	}
 
 	useEffect((): void => {
-		getUserInfo()
+		const systemUser = new UserClass();
+		
+		systemUser.getSystemUser()
 			.then((data) => {
 				if (data !== null) {
 					setCurrentUser({
