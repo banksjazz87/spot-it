@@ -45,10 +45,10 @@ export default function Login() {
 
 			<View style={{ display: "flex", flexDirection: "row", columnGap: 10 }}>
 				<Pressable>
-					<Text>Forgot your password?</Text>
+					<Text style={styles.rHFont}>Forgot your password?</Text>
 				</Pressable>
 				<Pressable>
-					<Text>New Here</Text>
+					<Text style={styles.rHFont}>New Here</Text>
 				</Pressable>
 			</View>
 
@@ -76,5 +76,8 @@ const styles = StyleSheet.create({
 		borderStyle: "solid",
 		fontSize: 18,
 		fontFamily: "Red Hat Display",
-	},
+    },
+    rHFont: {
+        fontFamily: "Red Hat Display",
+    }
 });
