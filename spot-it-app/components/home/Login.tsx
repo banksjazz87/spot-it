@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
 import PrimaryButton from "../global/PrimaryButton";
+import API from "../../constants/modules/ApiClass";
 
 interface UserLogin {
 	email: string;
@@ -18,6 +19,37 @@ export default function Login() {
 			...loginUser,
 			[key as keyof UserLogin]: text,
 		});
+	};
+
+	const getUser = async (): Promise<any> => {
+		const api = new API("/get-valid-user/");
+		const url = api.getUrl();
+		const fullUrl = `${url}/${loginUser.email}/${loginUser.password}`;
+
+		try {
+			const getUser = await fetch(fullUrl);
+			const userJSON = getUser.json();
+
+			return userJSON;
+		} catch (e: unknown) {
+			console.log(e);
+		}
+	};
+
+	const submitHandler = (): void => {
+		getUser()
+			.then((data: any) => {
+				console.log(data);
+			})
+			.catch((err: any) => {
+				console.log("error", err);
+        	});
+        
+        // const api = new API("/get-valid-user/");
+        // const url = api.getUrl();
+        // const fullUrl = `${url}/${loginUser.email}/${loginUser.password}`;
+
+        // console.log(fullUrl);
 	};
 
 	return (
@@ -54,7 +86,7 @@ export default function Login() {
 
 			<PrimaryButton
 				text="Log In"
-				method={() => console.log("Clicked")}
+				method={submitHandler}
 				style={{ paddingTop: 10, paddingBottom: 10 }}
 			/>
 		</View>
@@ -76,8 +108,8 @@ const styles = StyleSheet.create({
 		borderStyle: "solid",
 		fontSize: 18,
 		fontFamily: "Red Hat Display",
-    },
-    rHFont: {
-        fontFamily: "Red Hat Display",
-    }
+	},
+	rHFont: {
+		fontFamily: "Red Hat Display",
+	},
 });
