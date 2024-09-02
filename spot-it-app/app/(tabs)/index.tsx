@@ -1,4 +1,4 @@
-import { Pressable, Text, View, StyleSheet } from "react-native";
+import { Pressable, Text, View, StyleSheet, GestureResponderEvent } from "react-native";
 import { useState, useEffect } from "react";
 import { ImageProperties } from "@/constants/interfaces";
 import CharacterImages from "@/constants/lib/CharacterImages";
@@ -145,13 +145,29 @@ export default function Index() {
 
 	if (currentUser.loggedIn) {
 		return (
-			<Text>Welcome, {currentUser.username}</Text>
+			<View>
+				<Text>Welcome, {currentUser.username}</Text>
+			<Pressable onPress={(event: GestureResponderEvent): void => {
+					setCurrentUser({... currentUser, 
+						username: '',
+						loggedIn: false,
+						email: ''
+					});
+			}}><Text>Reset</Text></Pressable>
+			</View>
 		)
 	} else {
 		return (
 			<View style={styles.container}>
 				<Login
-				
+					loginUpdater={(name: string, userEmail: string): void => {
+						setCurrentUser({
+							...currentUser,
+							username: name,
+							email: userEmail,
+							loggedIn: true
+						});
+					}}
 				/>
 			</View>
 		)

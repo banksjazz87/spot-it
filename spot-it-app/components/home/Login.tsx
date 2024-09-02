@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, Alert } from "react-native";
 import PrimaryButton from "../global/PrimaryButton";
 import API from "../../constants/modules/ApiClass";
 
@@ -24,22 +24,36 @@ interface FullUser {
     username: string;
 }
 
-interface ApiResponse {
+interface ApiMessage {
+	data: object[];
+	message: string;
+	status: number;
+}
+interface ApiDataResponse extends ApiMessage {
 	data: object[];
 	message: string;
 	status: number;
 	valid: boolean;
 }
 
-interface LoginResponse extends ApiResponse {
+interface LoginResponse extends ApiDataResponse {
     data: FullUser[];
 }
 
+interface ApiErrorResponse {
+    status: number;
+    message: string;
+}
 
-export default function Login() {
+interface LoginProps {
+    loginUpdater: Function;
+}
+
+
+export default function Login({loginUpdater}: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
-		password: "Password",
+        password: "Password",
 	});
 
 	const loginChangeHandler = (text: string, key: string): void => {
@@ -66,12 +80,11 @@ export default function Login() {
     
     const login = async (obj: UserId): Promise<any> => {
         const api = new API('/login-user/', obj);
-        const url = api.getUrl();
         
         try {
             const loginUser = await api.putData();
-            console.log(loginUser);
             return loginUser;
+
         } catch (e: any) {
             console.log(e);
         }
@@ -80,28 +93,37 @@ export default function Login() {
 
 	const submitHandler = (): void => {
 		getUser()
-            .then((data: LoginResponse) => {
+            .then((data: LoginResponse): void => {
                 const userId = {
                     id: data.data[0].id,
                     username: data.data[0].username
                 }
                 login(userId)
-                    .then((data) => {
+                    .then((data: ApiMessage): void => {
                         console.log("Success ", data)
+
+                        if (data.status === 200) {
+                            loginUpdater(userId.username, loginUser.email);
+                        } else {
+                            Alert.alert('Invalid', 'Invalid user credentials have been provided', [
+                                {
+                                    text: 'Try Again', 
+                                    onPress: (): void => console.log('Retry Password'),
+                                }, 
+                                {
+                                    text: 'Sign Up', 
+                                    onPress: (): void => console.log('new user')
+                                }
+                           ])
+                        }
                     })
-                    .catch((err: any) => {
+                    .catch((err: ApiErrorResponse): void => {
                         console.log('FAILURE ', err.message);
                     });
 			})
-			.catch((err: any) => {
+			.catch((err: ApiErrorResponse): void => {
 				console.log("error", err);
         	});
-        
-        // const api = new API("/get-valid-user/");
-        // const url = api.getUrl();
-        // const fullUrl = `${url}/${loginUser.email}/${loginUser.password}`;
-
-        // console.log(fullUrl);
 	};
 
 	return (
@@ -138,7 +160,11 @@ export default function Login() {
 
 			<PrimaryButton
 				text="Log In"
-				method={submitHandler}
+                method={() => {
+                    submitHandler();
+                    
+
+                }}
 				style={{ paddingTop: 10, paddingBottom: 10 }}
 			/>
 		</View>
