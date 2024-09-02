@@ -8,6 +8,34 @@ interface UserLogin {
 	password: string;
 }
 
+interface UserId {
+    id: number;
+    username: string;
+}
+
+interface FullUser {
+    email: string;
+    id: number;
+    lastLoggedIn: string;
+    lastSeen: string;
+    loggedIn: number;
+    password: string;
+    tempPassword: string;
+    username: string;
+}
+
+interface ApiResponse {
+	data: object[];
+	message: string;
+	status: number;
+	valid: boolean;
+}
+
+interface LoginResponse extends ApiResponse {
+    data: FullUser[];
+}
+
+
 export default function Login() {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
@@ -34,12 +62,36 @@ export default function Login() {
 		} catch (e: unknown) {
 			console.log(e);
 		}
-	};
+    };
+    
+    const login = async (obj: UserId): Promise<any> => {
+        const api = new API('/login-user/', obj);
+        const url = api.getUrl();
+        
+        try {
+            const loginUser = await api.putData();
+            console.log(loginUser);
+            return loginUser;
+        } catch (e: any) {
+            console.log(e);
+        }
+    }
+
 
 	const submitHandler = (): void => {
 		getUser()
-			.then((data: any) => {
-				console.log(data);
+            .then((data: LoginResponse) => {
+                const userId = {
+                    id: data.data[0].id,
+                    username: data.data[0].username
+                }
+                login(userId)
+                    .then((data) => {
+                        console.log("Success ", data)
+                    })
+                    .catch((err: any) => {
+                        console.log('FAILURE ', err.message);
+                    });
 			})
 			.catch((err: any) => {
 				console.log("error", err);
