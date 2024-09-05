@@ -2,58 +2,13 @@ import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Pressable, Alert } from "react-native";
 import PrimaryButton from "../global/PrimaryButton";
 import API from "../../constants/modules/ApiClass";
+import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
+import UserClass from "../../constants/modules/UserClass";
 
-interface UserLogin {
-	email: string;
-	password: string;
-}
-
-interface UserId {
-    id: number;
-    username: string;
-}
-
-interface FullUser {
-    email: string;
-    id: number;
-    lastLoggedIn: string;
-    lastSeen: string;
-    loggedIn: number;
-    password: string;
-    tempPassword: string;
-    username: string;
-}
-
-interface ApiMessage {
-	data: object[];
-	message: string;
-	status: number;
-}
-interface ApiDataResponse extends ApiMessage {
-	data: object[];
-	message: string;
-	status: number;
-	valid: boolean;
-}
-
-interface LoginResponse extends ApiDataResponse {
-    data: FullUser[];
-}
-
-interface ApiErrorResponse {
-    status: number;
-    message: string;
-}
-
-interface LoginProps {
-    loginUpdater: Function;
-}
-
-
-export default function Login({loginUpdater}: LoginProps) {
+export default function Login({ loginUpdater }: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
-        password: "Password",
+		password: "Password",
 	});
 
 	const loginChangeHandler = (text: string, key: string): void => {
@@ -76,54 +31,93 @@ export default function Login({loginUpdater}: LoginProps) {
 		} catch (e: unknown) {
 			console.log(e);
 		}
-    };
-    
-    const login = async (obj: UserId): Promise<any> => {
-        const api = new API('/login-user/', obj);
+	};
+
+	const login = async (obj: UserId): Promise<any> => {
+        const api = new API("/login-user/", obj);
         
-        try {
+        console.log("URLLLLL ", api.getUrl());
+
+		try {
             const loginUser = await api.putData();
             return loginUser;
+		} catch (e: any) {
+			console.log(e);
+		}
+	};
 
-        } catch (e: any) {
-            console.log(e);
-        }
-    }
+	const throwInvalidUserAlert = (): void => {
+		Alert.alert("Invalid", "Invalid user credentials have been provided", [
+			{
+				text: "Try Again",
+				onPress: (): void => console.log("Retry Password"),
+			},
+			{
+				text: "Sign Up",
+				onPress: (): void => console.log("new user"),
+			},
+		]);
+	};
 
+	const throwServerError = (message: string): void => {
+		Alert.alert("Server Error", message, [
+			{
+				text: "Okay",
+				onPress: (): void => console.log("Server Error exited"),
+			},
+		]);
+	};
 
 	const submitHandler = (): void => {
-		getUser()
-            .then((data: LoginResponse): void => {
-                const userId = {
-                    id: data.data[0].id,
-                    username: data.data[0].username
-                }
-                login(userId)
-                    .then((data: ApiMessage): void => {
-                        console.log("Success ", data)
+        getUser()
+			.then((data: LoginResponse): void => {
+				//Check that we actually got a valid user
+				if (data.data.length > 0) {
+					
+					//create object to pass back to login
+					const currentUserId: UserId = {
+						id: data.data[0].id,
+						username: data.data[0].username,
+                    };
 
-                        if (data.status === 200) {
-                            loginUpdater(userId.username, loginUser.email);
-                        } else {
-                            Alert.alert('Invalid', 'Invalid user credentials have been provided', [
-                                {
-                                    text: 'Try Again', 
-                                    onPress: (): void => console.log('Retry Password'),
-                                }, 
-                                {
-                                    text: 'Sign Up', 
-                                    onPress: (): void => console.log('new user')
-                                }
-                           ])
-                        }
-                    })
-                    .catch((err: ApiErrorResponse): void => {
-                        console.log('FAILURE ', err.message);
-                    });
+                    console.log("USERRRR HERE ", currentUserId);
+                    
+					//Login the user
+					login(currentUserId)
+						.then((data: LoginResponse): void => {
+							if (data.status === 200) {
+								loginUpdater(currentUserId.username, loginUser.email);
+
+								// const CurrentUser = new UserClass();
+								// const userData = {
+								// 	username: data.data[0].username,
+								// 	email: data.data[0].email,
+								// 	loggedIn: data.data[0].loggedIn === 1 ? true : false,
+								// };
+
+								// CurrentUser.setSystemUser(userData)
+								// 	.then((data) => {
+								// 		CurrentUser.getSystemUser()
+								// 			.then((final) => console.log(final))
+								// 			.catch((err) => console.log("Error getting the system user ", err));
+								// 	})
+								// 	.catch((err) => console.log("Error in setting the current User ", err));
+							} else {
+								throwInvalidUserAlert();
+							}
+						})
+						.catch((err: ApiErrorResponse): void => {
+							console.log("FAILURE logging in ", err);
+							throwServerError(err.message);
+						});
+				} else {
+					throwInvalidUserAlert();
+				}
 			})
 			.catch((err: ApiErrorResponse): void => {
-				console.log("error", err);
-        	});
+				console.log("Error logging in ", err);
+				throwServerError(err.message);
+			});
 	};
 
 	return (
@@ -160,11 +154,9 @@ export default function Login({loginUpdater}: LoginProps) {
 
 			<PrimaryButton
 				text="Log In"
-                method={() => {
-                    submitHandler();
-                    
-
-                }}
+				method={() => {
+					submitHandler();
+				}}
 				style={{ paddingTop: 10, paddingBottom: 10 }}
 			/>
 		</View>

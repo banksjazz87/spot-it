@@ -20,4 +20,13 @@ export default class UserClass {
 			return null;
 		}
 	}
+
+	async setSystemUser(userValue: User): Promise<void> {
+		try {
+			const jsonValue = JSON.stringify(userValue);
+			await AsyncStorage.setItem('userInfo', jsonValue);
+		} catch (e: any) {
+			console.log('Error in setting storage ', e);
+		}
+	}
 }

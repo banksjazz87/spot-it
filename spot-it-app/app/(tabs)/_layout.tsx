@@ -21,7 +21,7 @@ export default function TabLayout() {
 
 	useEffect((): void => {
 		const systemUser = new UserClass();
-		
+
 		systemUser.getSystemUser()
 			.then((data) => {
 				if (data !== null) {
