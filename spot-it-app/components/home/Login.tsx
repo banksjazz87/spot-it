@@ -5,7 +5,7 @@ import API from "../../constants/modules/ApiClass";
 import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
 import UserClass from "../../constants/modules/UserClass";
 
-export default function Login({ loginUpdater }: LoginProps) {
+export default function Login({ loginUpdater, user }: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
 		password: "Password",
@@ -29,20 +29,18 @@ export default function Login({ loginUpdater }: LoginProps) {
 
 			return userJSON;
 		} catch (e: unknown) {
-			console.log(e);
+            return e;
 		}
 	};
 
 	const login = async (obj: UserId): Promise<any> => {
         const api = new API("/login-user/", obj);
         
-        console.log("URLLLLL ", api.getUrl());
-
 		try {
-            const loginUser = await api.putData();
-            return loginUser;
+			const loginUser = await api.putData();
+			return loginUser;
 		} catch (e: any) {
-			console.log(e);
+            return e;
 		}
 	};
 
@@ -68,46 +66,47 @@ export default function Login({ loginUpdater }: LoginProps) {
 		]);
 	};
 
+	const updateSystemUser = (obj: UserId): void => {
+		const CurrentUser = new UserClass();
+		const userData = {
+			username: obj.username,
+			email: obj.email,
+			loggedIn: obj.loggedIn,
+		};
+
+		CurrentUser.setSystemUser(userData)
+			.then((data) => {
+				CurrentUser.getSystemUser()
+					.then((final) => console.log("Final Credentials ", final))
+					.catch((err) => console.log("Error getting the system user ", err));
+			})
+			.catch((err) => console.log("Error in setting the current User ", err));
+	};
+
 	const submitHandler = (): void => {
-        getUser()
+		getUser()
 			.then((data: LoginResponse): void => {
 				//Check that we actually got a valid user
 				if (data.data.length > 0) {
-					
 					//create object to pass back to login
 					const currentUserId: UserId = {
 						id: data.data[0].id,
 						username: data.data[0].username,
-                    };
+						email: data.data[0].email,
+						loggedIn: 1 ? true : false,
+					};
 
-                    console.log("USERRRR HERE ", currentUserId);
-                    
 					//Login the user
 					login(currentUserId)
 						.then((data: LoginResponse): void => {
 							if (data.status === 200) {
 								loginUpdater(currentUserId.username, loginUser.email);
-
-								// const CurrentUser = new UserClass();
-								// const userData = {
-								// 	username: data.data[0].username,
-								// 	email: data.data[0].email,
-								// 	loggedIn: data.data[0].loggedIn === 1 ? true : false,
-								// };
-
-								// CurrentUser.setSystemUser(userData)
-								// 	.then((data) => {
-								// 		CurrentUser.getSystemUser()
-								// 			.then((final) => console.log(final))
-								// 			.catch((err) => console.log("Error getting the system user ", err));
-								// 	})
-								// 	.catch((err) => console.log("Error in setting the current User ", err));
+								updateSystemUser(currentUserId);
 							} else {
 								throwInvalidUserAlert();
 							}
 						})
 						.catch((err: ApiErrorResponse): void => {
-							console.log("FAILURE logging in ", err);
 							throwServerError(err.message);
 						});
 				} else {
@@ -115,7 +114,6 @@ export default function Login({ loginUpdater }: LoginProps) {
 				}
 			})
 			.catch((err: ApiErrorResponse): void => {
-				console.log("Error logging in ", err);
 				throwServerError(err.message);
 			});
 	};

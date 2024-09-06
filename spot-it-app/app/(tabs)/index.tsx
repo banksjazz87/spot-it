@@ -143,6 +143,17 @@ export default function Index() {
 	}, []);
 
 
+	//This is being used to update the current user, once the user's credentials have been verified in from the login.
+	const updateUser = (name: string, userEmail: string): void => {
+		setCurrentUser({
+			...currentUser,
+			username: name,
+			email: userEmail,
+			loggedIn: true,
+		});
+	}
+
+
 	if (currentUser.loggedIn) {
 		return (
 			<View>
@@ -160,14 +171,8 @@ export default function Index() {
 		return (
 			<View style={styles.container}>
 				<Login
-					loginUpdater={(name: string, userEmail: string): void => {
-						setCurrentUser({
-							...currentUser,
-							username: name,
-							email: userEmail,
-							loggedIn: true
-						});
-					}}
+					loginUpdater={updateUser}
+					user={currentUser}
 				/>
 			</View>
 		)

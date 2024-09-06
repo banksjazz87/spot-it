@@ -19,6 +19,8 @@ export interface UserLogin {
 export interface UserId {
 	id: number;
 	username: string;
+	email: string;
+	loggedIn: boolean;
 }
 
 export interface FullUser {
@@ -55,4 +57,5 @@ export interface ApiErrorResponse {
 
 export interface LoginProps {
 	loginUpdater: Function;
+	user: User;
 }
