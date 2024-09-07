@@ -4,8 +4,9 @@ import PrimaryButton from "../global/PrimaryButton";
 import API from "../../constants/modules/ApiClass";
 import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
 import UserClass from "../../constants/modules/UserClass";
+import { router } from "expo-router";
 
-export default function Login({ loginUpdater, user }: LoginProps) {
+export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
 		password: "Password",
@@ -74,9 +75,9 @@ export default function Login({ loginUpdater, user }: LoginProps) {
 			loggedIn: obj.loggedIn,
 		};
 
-		CurrentUser.setSystemUser(userData)
+		CurrentUser.set(userData)
 			.then((data) => {
-				CurrentUser.getSystemUser()
+				CurrentUser.get()
 					.then((final) => console.log("Final Credentials ", final))
 					.catch((err) => console.log("Error getting the system user ", err));
 			})
@@ -101,7 +102,8 @@ export default function Login({ loginUpdater, user }: LoginProps) {
 						.then((data: LoginResponse): void => {
 							if (data.status === 200) {
 								loginUpdater(currentUserId.username, loginUser.email);
-								updateSystemUser(currentUserId);
+                                updateSystemUser(currentUserId);
+                                router.navigate(targetUrl);
 							} else {
 								throwInvalidUserAlert();
 							}

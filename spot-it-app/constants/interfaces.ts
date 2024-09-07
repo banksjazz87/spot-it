@@ -58,4 +58,5 @@ export interface ApiErrorResponse {
 export interface LoginProps {
 	loginUpdater: Function;
 	user: User;
+	targetUrl: string;
 }

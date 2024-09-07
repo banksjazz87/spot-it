@@ -5,7 +5,7 @@ import { User } from "../interfaces";
  * @description a class used to get or modify the current system user.
  */
 export default class UserClass {
-	async getSystemUser(): Promise<User | null> {
+	async get(): Promise<User | null> {
 		try {
 			const jsonValue = await AsyncStorage.getItem("userInfo");
 
@@ -21,12 +21,21 @@ export default class UserClass {
 		}
 	}
 
-	async setSystemUser(userValue: User): Promise<void> {
+	async set(userValue: User): Promise<void> {
 		try {
 			const jsonValue = JSON.stringify(userValue);
 			await AsyncStorage.setItem('userInfo', jsonValue);
 		} catch (e: any) {
 			console.log('Error in setting storage ', e);
 		}
+	}
+
+	async clear(): Promise<void> {
+		try {
+			await AsyncStorage.clear();
+		} catch (e) {
+			console.log('Error in clearing the system user ', e);
+		}
+		console.log('System user cleared');
 	}
 }

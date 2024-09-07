@@ -1,38 +1,36 @@
 import { Tabs } from "expo-router";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/lib/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "expo-dev-client";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '../../constants/interfaces';
-import UserClass from '../../constants/modules/UserClass';
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { User } from "../../constants/interfaces";
+import UserClass from "../../constants/modules/UserClass";
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
 	const [currentUser, setCurrentUser] = useState<User>({
-		username: '',
-		email: '',
-		loggedIn: false
+		username: "",
+		email: "",
+		loggedIn: false,
 	});
-	
+	const SystemUser = new UserClass();
 
 	useEffect((): void => {
-		const systemUser = new UserClass();
+		SystemUser.get().then((data) => {
+			if (data !== null) {
+				setCurrentUser({
+					...currentUser,
+					username: data.username,
+					email: data.email,
+					loggedIn: true,
+				});
 
-		systemUser.getSystemUser()
-			.then((data) => {
-				if (data !== null) {
-					setCurrentUser({
-						...currentUser,
-						username: data.username,
-						email: data.email,
-						loggedIn: true,
-					});
-				}
-			});
+				console.log("SYSTEM USER IS SET!!!! ", data.username);
+			}
+		});
 	}, []);
 
 	if (currentUser.loggedIn) {
@@ -43,18 +41,6 @@ export default function TabLayout() {
 					headerShown: false,
 				}}
 			>
-				<Tabs.Screen
-					name="index"
-					options={{
-						title: "Home",
-						tabBarIcon: ({ color, focused }) => (
-							<TabBarIcon
-								name={focused ? "home" : "home-outline"}
-								color={color}
-							/>
-						),
-					}}
-				/>
 				<Tabs.Screen
 					name="game"
 					options={{
@@ -89,19 +75,6 @@ export default function TabLayout() {
 					headerShown: false,
 				}}
 			>
-				<Tabs.Screen
-					name="index"
-					options={{
-						title: "Home",
-						tabBarIcon: ({ color, focused }) => (
-							<TabBarIcon
-								name={focused ? "home" : "home-outline"}
-								color={color}
-							/>
-						),
-						href: null,
-					}}
-				/>
 				<Tabs.Screen
 					name="game"
 					options={{

@@ -18,4 +18,12 @@ export const StyleClasses = StyleSheet.create({
 		marginTop: 20,
 		marginBottom: 20,
 	},
+	mediumText: {
+		fontSize: 18,
+		fontFamily: "Red Hat Display",
+	},
+	largeText: {
+		fontSize: 32,
+		fontFamily: "Red Hat Display",
+	},
 });
