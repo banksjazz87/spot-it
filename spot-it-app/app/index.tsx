@@ -4,7 +4,7 @@ import { ImageProperties } from "@/constants/interfaces";
 import CharacterImages from "@/constants/lib/CharacterImages";
 import LayoutConstructor from "@/constants/modules/layoutConstructorClass";
 import { Card } from "../components/game/Card";
-import UserClass from "../constants/modules/UserClass";
+import SystemUser from "../constants/modules/SystemUserClass";
 import Login from "../components/home/Login";
 import { User } from "../constants/interfaces";
 import { StyleClasses } from "../constants/lib/StyleClasses";
@@ -16,10 +16,10 @@ export default function Index() {
 		loggedIn: false,
 	});
 
-	const SystemUser = new UserClass();
+	const SysUser = new SystemUser();
 
 	useEffect((): void => {
-		SystemUser.get().then((data) => {
+		SysUser.get().then((data) => {
 			if (data !== null) {
 				setCurrentUser({
 					...currentUser,
@@ -49,7 +49,7 @@ export default function Index() {
 					onPress={(event: GestureResponderEvent): void => {
 						setCurrentUser({ ...currentUser, username: "", loggedIn: false, email: "" });
 
-						SystemUser.clear().then(() => console.log("USER CLEARED!"));
+						SysUser.clear().then(() => console.log("USER CLEARED!"));
 					}}
 				>
 					<Text>Reset</Text>

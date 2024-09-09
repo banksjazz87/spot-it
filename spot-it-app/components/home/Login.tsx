@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, Pressable, Alert } from "react-nativ
 import PrimaryButton from "../global/PrimaryButton";
 import API from "../../constants/modules/ApiClass";
 import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
-import UserClass from "../../constants/modules/UserClass";
+import SystemUser from "../../constants/modules/SystemUserClass";
 import { router } from "expo-router";
 
 export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
@@ -68,7 +68,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	};
 
 	const updateSystemUser = (obj: UserId): void => {
-		const CurrentUser = new UserClass();
+		const CurrentUser = new SystemUser();
 		const userData = {
 			username: obj.username,
 			email: obj.email,

@@ -7,7 +7,7 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import "expo-dev-client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "../../constants/interfaces";
-import UserClass from "../../constants/modules/UserClass";
+import SystemUser from "../../constants/modules/SystemUserClass";
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
@@ -16,10 +16,10 @@ export default function TabLayout() {
 		email: "",
 		loggedIn: false,
 	});
-	const SystemUser = new UserClass();
+	const SysUser = new SystemUser();
 
 	useEffect((): void => {
-		SystemUser.get().then((data) => {
+		SysUser.get().then((data) => {
 			if (data !== null) {
 				setCurrentUser({
 					...currentUser,

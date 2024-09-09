@@ -1,41 +1,32 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { User } from "../interfaces";
+import SystemUser from "../modules/SystemUserClass";
+import API from "../modules/ApiClass";
 
-/**
- * @description a class used to get or modify the current system user.
- */
-export default class UserClass {
-	async get(): Promise<User | null> {
-		try {
-			const jsonValue = await AsyncStorage.getItem("userInfo");
+export default class UserClass extends SystemUser {
+    email: string;
+    id: number;
+    password: string;
 
-			if (jsonValue) {
-				const parsed: User = JSON.parse(jsonValue);
-				return parsed;
-			} else {
-				return null;
-			}
-		} catch (e) {
-			console.log("Error in getting async storage ", e);
-			return null;
-		}
-	}
 
-	async set(userValue: User): Promise<void> {
-		try {
-			const jsonValue = JSON.stringify(userValue);
-			await AsyncStorage.setItem('userInfo', jsonValue);
-		} catch (e: any) {
-			console.log('Error in setting storage ', e);
-		}
-	}
+    constructor(email: string, id: number = 0, password: string = '') {
+        super();
+        this.email = email;
+        this.id = id;
+        this.password = password;
+    }
 
-	async clear(): Promise<void> {
-		try {
-			await AsyncStorage.clear();
-		} catch (e) {
-			console.log('Error in clearing the system user ', e);
-		}
-		console.log('System user cleared');
-	}
+
+    async getUserByEmail() {
+        const api = new API("/get-user-by-email/");
+            const url = api.getUrl();
+            const fullUrl = `${url}/${this.email}`;
+
+            try {
+                const getUser = await fetch(fullUrl);
+                const userJSON = getUser.json();
+
+                return userJSON;
+            } catch (e: unknown) {
+                return e;
+            }
+    }
 }
