@@ -1,11 +1,9 @@
 import { Tabs } from "expo-router";
 import { useEffect, useState } from "react";
-
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import { Colors } from "@/constants/lib/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "expo-dev-client";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { User } from "../../constants/interfaces";
 import SystemUser from "../../constants/modules/SystemUserClass";
 
