@@ -26,4 +26,12 @@ export const StyleClasses = StyleSheet.create({
 		fontSize: 32,
 		fontFamily: "Red Hat Display",
 	},
+	textInput: {
+		padding: 5,
+		borderColor: "black",
+		borderWidth: 1,
+		borderStyle: "solid",
+		fontSize: 18,
+		fontFamily: "Red Hat Display"
+	},
 });

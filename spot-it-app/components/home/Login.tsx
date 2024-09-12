@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { View, Text, TextInput, StyleSheet, Pressable, Alert } from "react-native";
+import { View, Text, TextInput, StyleSheet, Pressable, Alert, GestureResponderEvent } from "react-native";
 import PrimaryButton from "../global/PrimaryButton";
 import API from "../../constants/modules/ApiClass";
 import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
 import SystemUser from "../../constants/modules/SystemUserClass";
 import { router } from "expo-router";
+import {StyleClasses} from "../../constants/lib/StyleClasses";
 
 export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
@@ -128,7 +129,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				maxLength={40}
 				autoComplete={"email"}
 				value={loginUser.email}
-				style={styles.input}
+				style={StyleClasses.textInput}
 				onChangeText={(text: string) => loginChangeHandler(text, "email")}
 				autoCapitalize="none"
 			/>
@@ -138,7 +139,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				maxLength={40}
 				autoComplete={"password"}
 				value={loginUser.password}
-				style={styles.input}
+				style={StyleClasses.textInput}
 				onChangeText={(text: string) => loginChangeHandler(text, "password")}
 				autoCapitalize="none"
 			/>
@@ -147,7 +148,10 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				<Pressable>
 					<Text style={styles.rHFont}>Forgot your password?</Text>
 				</Pressable>
-				<Pressable>
+				<Pressable
+					onPress={(e: GestureResponderEvent): void => {
+						router.navigate('/register')
+					}}>
 					<Text style={styles.rHFont}>New Here</Text>
 				</Pressable>
 			</View>
@@ -170,14 +174,6 @@ const styles = StyleSheet.create({
 		rowGap: 10,
 		padding: 20,
 		width: 400,
-	},
-	input: {
-		padding: 5,
-		borderColor: "black",
-		borderWidth: 1,
-		borderStyle: "solid",
-		fontSize: 18,
-		fontFamily: "Red Hat Display",
 	},
 	rHFont: {
 		fontFamily: "Red Hat Display",
