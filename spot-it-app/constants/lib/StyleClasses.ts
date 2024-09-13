@@ -32,6 +32,15 @@ export const StyleClasses = StyleSheet.create({
 		borderWidth: 1,
 		borderStyle: "solid",
 		fontSize: 18,
-		fontFamily: "Red Hat Display"
+		fontFamily: "Red Hat Display",
+	},
+	invalidInput: {
+		padding: 5,
+		borderColor: "#cc0000",
+		color: "#cc0000",
+		borderWidth: 1,
+		borderStyle: "solid",
+		fontSize: 18,
+		fontFamily: "Red Hat Display",
 	},
 });

@@ -18,6 +18,19 @@ export default function Register() {
 		verifyPassword: "Verify Password",
 	});
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
+	const [validEmail, setValidEmail] = useState<boolean>(true);
+
+	/**
+	 *
+	 * @param email string value that is passed in for the email
+	 * @returns true if a valid email has been provided.
+	 */
+	const emailChecker = (email: string): boolean => {
+        const emailRegex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        const currentValue: string = email;
+
+        return emailRegex.test(currentValue);
+	};
 
 	return (
 		<View style={styles.wrapper}>
@@ -30,9 +43,10 @@ export default function Register() {
 					numberOfLines={1}
 					maxLength={40}
 					value={newUser.email}
-					onChangeText={(text) => setNewUser({ ...newUser, email: text })}
+					onChangeText={(text) => setNewUser({ ...newUser, email: text.trim() })}
+					onEndEditing={(e): void => emailChecker(newUser.email) ? setValidEmail(true): setValidEmail(false)}
 					autoCapitalize="none"
-					style={[StyleClasses.textInput]}
+					style={[validEmail ? StyleClasses.textInput : StyleClasses.invalidInput]}
 				/>
 				<TextInput
 					editable
@@ -41,7 +55,7 @@ export default function Register() {
 					numberOfLines={1}
 					maxLength={40}
 					value={newUser.userName}
-					onChangeText={(text) => setNewUser({ ...newUser, userName: text })}
+					onChangeText={(text) => setNewUser({ ...newUser, userName: text.trim() })}
 					autoCapitalize="none"
 					style={[StyleClasses.textInput]}
 				/>
@@ -53,7 +67,7 @@ export default function Register() {
 					numberOfLines={1}
 					maxLength={40}
 					value={newUser.password}
-					onChangeText={(text) => setNewUser({ ...newUser, password: text })}
+					onChangeText={(text) => setNewUser({ ...newUser, password: text.trim() })}
 					autoCapitalize="none"
 					style={[StyleClasses.textInput]}
 				/>
@@ -65,7 +79,7 @@ export default function Register() {
 					secureTextEntry={hidePassword}
 					maxLength={40}
 					value={newUser.verifyPassword}
-					onChangeText={(text) => setNewUser({ ...newUser, verifyPassword: text })}
+                    onChangeText={(text) => setNewUser({ ...newUser, verifyPassword: text.trim() })}
 					autoCapitalize="none"
 					style={[StyleClasses.textInput]}
 				/>
@@ -95,5 +109,5 @@ const styles = StyleSheet.create({
 		rowGap: 10,
 		padding: 20,
 		width: 400,
-	},
+    },
 });
