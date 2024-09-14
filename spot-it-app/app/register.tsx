@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent } f
 import { useState } from "react";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import { router } from "expo-router";
+import PrimaryButton from "@/components/global/PrimaryButton";
 
 interface NewUser {
 	email: string;
@@ -30,7 +31,63 @@ export default function Register() {
         const currentValue: string = email;
 
         return emailRegex.test(currentValue);
-	};
+    };
+
+    const checkForDefaultValues = (obj: NewUser): boolean => {
+        let valid = true;
+        const defaultValues: NewUser = {
+					email: "Email",
+					userName: "Username",
+					password: "Password",
+					verifyPassword: "Verify Password",
+				};
+        const userEntries = Object.entries(obj);
+        const defaultEntries = Object.entries(defaultValues);
+
+        for (let i = 0; i < userEntries.length; i++) {
+            if (userEntries[i] === defaultEntries[i]) {
+                valid = false;
+            }
+        }
+        
+        return valid;
+    }
+
+    const checkForEmpties = (obj: NewUser): boolean => {
+        let valid = true;
+        const values = Object.values(obj);
+
+        for (let i = 0; i < values.length; i++) {
+            if (values[i].length === 0) {
+                valid = false;
+            }
+        }
+        return valid;
+    }
+
+    const passwordVerified = (password: string, verifiedPasword: string): boolean => {
+        return password === verifiedPasword;
+    }
+
+    const formVerified = (...args: Boolean[]) => {
+        let verified = true;
+
+        for (let i = 0; i < args.length; i++) {
+            if (!args[i]) {
+                verified = false;
+            }
+        }
+
+        return verified;
+    }
+    
+    const registerHandler = (): void => {
+        if (formVerified(checkForDefaultValues(newUser), checkForEmpties(newUser), passwordVerified(newUser.password, newUser.verifyPassword))) {
+            console.log('Valid registration');
+        } else {
+            console.log('Invalid registration');
+        }
+    }
 
 	return (
 		<View style={styles.wrapper}>
@@ -83,7 +140,7 @@ export default function Register() {
 					autoCapitalize="none"
 					style={[StyleClasses.textInput]}
 				/>
-				<View>
+                <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', marginTop: 10 }}>
 					<Pressable onPress={(e: GestureResponderEvent): void => router.navigate("/")}>
 						<Text>Return to Login</Text>
 					</Pressable>
@@ -91,7 +148,13 @@ export default function Register() {
 					<Pressable onPress={(e: GestureResponderEvent): void => setHidePassword(!hidePassword)}>
 						<Text>{hidePassword ? "Show Password" : "Hide Password"}</Text>
 					</Pressable>
-				</View>
+                </View>
+                
+                <PrimaryButton 
+                    text="Register"
+                    method={(): void => registerHandler()}
+                    style={{ paddingTop: 10, paddingBottom: 10 }}
+                />
 			</View>
 		</View>
 	);
@@ -106,7 +169,7 @@ const styles = StyleSheet.create({
 	innerContainer: {
 		display: "flex",
 		flexDirection: "column",
-		rowGap: 10,
+		rowGap: 15,
 		padding: 20,
 		width: 400,
     },
