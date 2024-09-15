@@ -60,3 +60,10 @@ export interface LoginProps {
 	user: User;
 	targetUrl: string;
 }
+
+export interface NewUserInterface {
+	email: string;
+	userName: string;
+	password: string;
+	verifyPassword: string;
+}

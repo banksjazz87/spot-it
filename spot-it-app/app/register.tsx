@@ -2,17 +2,13 @@ import { View, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent } f
 import { useState } from "react";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import { router } from "expo-router";
-import PrimaryButton from "@/components/global/PrimaryButton";
+import PrimaryButton from "@/components/global/PrimaryButton"; 
+import { NewUserInterface } from "@/constants/interfaces";
+import NewUserClass from "@/constants/modules/NewUserclass";
 
-interface NewUser {
-	email: string;
-	userName: string;
-	password: string;
-	verifyPassword: string;
-}
 
 export default function Register() {
-	const [newUser, setNewUser] = useState<NewUser>({
+	const [newUser, setNewUser] = useState<NewUserInterface>({
 		email: "Email",
 		userName: "Username",
 		password: "Password",
@@ -33,37 +29,37 @@ export default function Register() {
         return emailRegex.test(currentValue);
     };
 
-    const checkForDefaultValues = (obj: NewUser): boolean => {
-        let valid = true;
-        const defaultValues: NewUser = {
-					email: "Email",
-					userName: "Username",
-					password: "Password",
-					verifyPassword: "Verify Password",
-				};
-        const userEntries = Object.entries(obj);
-        const defaultEntries = Object.entries(defaultValues);
+    const checkForDefaultValues = (obj: NewUserInterface): boolean => {
+			let valid = true;
+			const defaultValues: NewUserInterface = {
+				email: "Email",
+				userName: "Username",
+				password: "Password",
+				verifyPassword: "Verify Password",
+			};
+			const userEntries = Object.entries(obj);
+			const defaultEntries = Object.entries(defaultValues);
 
-        for (let i = 0; i < userEntries.length; i++) {
-            if (userEntries[i] === defaultEntries[i]) {
-                valid = false;
-            }
-        }
-        
-        return valid;
-    }
+			for (let i = 0; i < userEntries.length; i++) {
+				if (userEntries[i] === defaultEntries[i]) {
+					valid = false;
+				}
+			}
 
-    const checkForEmpties = (obj: NewUser): boolean => {
-        let valid = true;
-        const values = Object.values(obj);
+			return valid;
+		};
 
-        for (let i = 0; i < values.length; i++) {
-            if (values[i].length === 0) {
-                valid = false;
-            }
-        }
-        return valid;
-    }
+    const checkForEmpties = (obj: NewUserInterface): boolean => {
+			let valid = true;
+			const values = Object.values(obj);
+
+			for (let i = 0; i < values.length; i++) {
+				if (values[i].length === 0) {
+					valid = false;
+				}
+			}
+			return valid;
+		};
 
     const passwordVerified = (password: string, verifiedPasword: string): boolean => {
         return password === verifiedPasword;
@@ -82,7 +78,10 @@ export default function Register() {
     }
     
     const registerHandler = (): void => {
-        if (formVerified(checkForDefaultValues(newUser), checkForEmpties(newUser), passwordVerified(newUser.password, newUser.verifyPassword))) {
+
+        const NewUser = new NewUserClass(newUser);
+
+        if (NewUser.formVerified()) {
             console.log('Valid registration');
         } else {
             console.log('Invalid registration');
