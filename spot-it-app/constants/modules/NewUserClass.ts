@@ -8,14 +8,14 @@ export default class NewUser {
 		this.userObj = userObj;
 	}
 
-	emailChecker(): boolean {
+	validEmail(): boolean {
 		const emailRegex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 		const currentValue: string = this.userObj.email;
 
 		return emailRegex.test(currentValue);
 	}
 
-	checkForDefaultValues(): boolean {
+	noDefaultValues(): boolean {
 		let valid = true;
 		const defaultValues: NewUserInterface = {
 			email: "Email",
@@ -35,7 +35,7 @@ export default class NewUser {
 		return valid;
 	}
 
-	checkForEmpties(): boolean {
+	noEmptyFields(): boolean {
 		let valid = true;
 		const values = Object.values(this.userObj);
 
@@ -61,12 +61,11 @@ export default class NewUser {
 				verified = false;
 			}
 		}
-
 		return verified;
 	};
 
-	passedAllChecks(): boolean {
-		if (this.formVerified(this.checkForDefaultValues(), this.checkForEmpties(), this.passwordVerified())) {
+	formIsValid(): boolean {
+		if (this.formVerified(this.noDefaultValues(), this.noEmptyFields(), this.passwordVerified())) {
             return true;
 		} else {
             return false;

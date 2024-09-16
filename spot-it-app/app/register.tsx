@@ -4,7 +4,7 @@ import { StyleClasses } from "@/constants/lib/StyleClasses";
 import { router } from "expo-router";
 import PrimaryButton from "@/components/global/PrimaryButton"; 
 import { NewUserInterface } from "@/constants/interfaces";
-import NewUserClass from "@/constants/modules/NewUserclass";
+import NewUserClass from "@/constants/modules/NewUserClass";
 
 
 export default function Register() {
@@ -15,73 +15,16 @@ export default function Register() {
 		verifyPassword: "Verify Password",
 	});
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
-	const [validEmail, setValidEmail] = useState<boolean>(true);
-
-	/**
-	 *
-	 * @param email string value that is passed in for the email
-	 * @returns true if a valid email has been provided.
-	 */
-	const emailChecker = (email: string): boolean => {
-        const emailRegex: RegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-        const currentValue: string = email;
-
-        return emailRegex.test(currentValue);
-    };
-
-    const checkForDefaultValues = (obj: NewUserInterface): boolean => {
-			let valid = true;
-			const defaultValues: NewUserInterface = {
-				email: "Email",
-				userName: "Username",
-				password: "Password",
-				verifyPassword: "Verify Password",
-			};
-			const userEntries = Object.entries(obj);
-			const defaultEntries = Object.entries(defaultValues);
-
-			for (let i = 0; i < userEntries.length; i++) {
-				if (userEntries[i] === defaultEntries[i]) {
-					valid = false;
-				}
-			}
-
-			return valid;
-		};
-
-    const checkForEmpties = (obj: NewUserInterface): boolean => {
-			let valid = true;
-			const values = Object.values(obj);
-
-			for (let i = 0; i < values.length; i++) {
-				if (values[i].length === 0) {
-					valid = false;
-				}
-			}
-			return valid;
-		};
-
-    const passwordVerified = (password: string, verifiedPasword: string): boolean => {
-        return password === verifiedPasword;
-    }
-
-    const formVerified = (...args: Boolean[]) => {
-        let verified = true;
-
-        for (let i = 0; i < args.length; i++) {
-            if (!args[i]) {
-                verified = false;
-            }
-        }
-
-        return verified;
-    }
+    const [validEmail, setValidEmail] = useState<boolean>(true);
     
+    const NewUser = new NewUserClass(newUser);
+
+	
     const registerHandler = (): void => {
 
         const NewUser = new NewUserClass(newUser);
 
-        if (NewUser.formVerified()) {
+        if (NewUser.formIsValid()) {
             console.log('Valid registration');
         } else {
             console.log('Invalid registration');
@@ -100,7 +43,7 @@ export default function Register() {
 					maxLength={40}
 					value={newUser.email}
 					onChangeText={(text) => setNewUser({ ...newUser, email: text.trim() })}
-					onEndEditing={(e): void => emailChecker(newUser.email) ? setValidEmail(true): setValidEmail(false)}
+					onEndEditing={(e): void => NewUser.validEmail() ? setValidEmail(true): setValidEmail(false)}
 					autoCapitalize="none"
 					style={[validEmail ? StyleClasses.textInput : StyleClasses.invalidInput]}
 				/>
@@ -117,7 +60,7 @@ export default function Register() {
 				/>
 				<TextInput
 					editable
-					textContentType="password"
+					// textContentType="password"
 					inputMode="text"
 					secureTextEntry={hidePassword}
 					numberOfLines={1}
@@ -130,7 +73,7 @@ export default function Register() {
 				<TextInput
 					editable
 					numberOfLines={1}
-					textContentType="password"
+					// textContentType="password"
 					inputMode="text"
 					secureTextEntry={hidePassword}
 					maxLength={40}
