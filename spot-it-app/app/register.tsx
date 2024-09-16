@@ -21,11 +21,9 @@ export default function Register() {
 
 	
     const registerHandler = (): void => {
-
-        const NewUser = new NewUserClass(newUser);
-
-        if (NewUser.formIsValid()) {
-            console.log('Valid registration');
+        if (NewUser.isValid()) {
+            NewUser.userEmailExists()
+                .then(data => console.log(data));
         } else {
             console.log('Invalid registration');
         }

@@ -1,5 +1,5 @@
 import UserClass from "@/constants/modules/UserClass";
-import { NewUserInterface } from "@/constants/interfaces";
+import { NewUserInterface, ApiMessage, ApiErrorResponse } from "@/constants/interfaces";
 
 export default class NewUser {
 	userObj: NewUserInterface;
@@ -53,7 +53,7 @@ export default class NewUser {
 		return password === verifiedPasword;
 	}
 
-	formVerified = (...args: Boolean[]) => {
+	formVerified(...args: boolean[]){
 		let verified = true;
 
 		for (let i = 0; i < args.length; i++) {
@@ -64,7 +64,38 @@ export default class NewUser {
 		return verified;
 	};
 
-	formIsValid(): boolean {
+	async userEmailExists(): Promise<boolean> {
+		const User = new UserClass(this.userObj.email);
+		try {
+			const userData = await User.getUserByEmail();
+
+			if (userData.data.length > 0) {
+				console.log("Got data back ", userData);
+				return true;
+			} else {
+				console.log("This email is not found ", userData);
+				return false
+			}
+		} catch (e: any) {
+			console.log('error ', e)
+			return false;
+		}
+	}
+
+	//Make sure the username doesn't already exist
+	async usernameExists() {
+		
+	}
+
+	//Create the user
+	async createUser() {
+
+	}
+
+
+
+
+	isValid(): boolean {
 		if (this.formVerified(this.noDefaultValues(), this.noEmptyFields(), this.passwordVerified())) {
             return true;
 		} else {
