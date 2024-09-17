@@ -54,7 +54,7 @@ export default class NewUser {
 		return password === verifiedPasword;
 	}
 
-	formVerified(...args: boolean[]){
+	formVerified(...args: boolean[]) {
 		let verified = true;
 
 		for (let i = 0; i < args.length; i++) {
@@ -63,7 +63,7 @@ export default class NewUser {
 			}
 		}
 		return verified;
-	};
+	}
 
 	async userEmailExists(): Promise<boolean | void> {
 		const User = new UserClass(this.userObj.email);
@@ -73,17 +73,17 @@ export default class NewUser {
 			if (userData.data.length > 0) {
 				return true;
 			} else {
-				return false
+				return false;
 			}
 		} catch (e: any) {
-			console.log('error ', e)
+			console.log("error ", e);
 			return e;
 		}
 	}
 
 	//Get the user by username
 	async getUserByUsername(): Promise<ApiDataResponse> {
-		const api = new API('/username/');
+		const api = new API("/username/");
 		const url = api.getUrl();
 		const fullUrl = `${url}/${this.userObj.userName}`;
 
@@ -92,14 +92,12 @@ export default class NewUser {
 			const jsonData = userData.json();
 
 			return jsonData;
-
 		} catch (e: any) {
 			return e;
 		}
 	}
 
-
-	async userNameExists(): Promise<boolean | null>{
+	async userNameExists(): Promise<boolean | null> {
 		try {
 			const userData = await this.getUserByUsername();
 			if (userData.data.length > 0) {
@@ -108,39 +106,32 @@ export default class NewUser {
 				return false;
 			}
 		} catch (e: any) {
-			console.log('The following error occured in getting checking if the user name exists ', e);
+			console.log("The following error occured in getting checking if the user name exists ", e);
 			return null;
 		}
 	}
 
 	//Create the user
 	async createUser(): Promise<string> {
-
 		const checkForUserName = await this.userNameExists();
 		const checkForEmail = await this.userEmailExists();
-		
+
 		if (checkForUserName && checkForEmail) {
 			return "this username and email already exist";
-
 		} else if (checkForEmail) {
-			return 'this email is already in use';
-
+			return "this email is already in use";
 		} else if (checkForUserName) {
-			return 'this ';
-			
+			return "this ";
 		} else {
-			return 'user can be entered';
+			return "user can be entered";
 		}
 	}
 
-
-
-
 	isValid(): boolean {
 		if (this.formVerified(this.noDefaultValues(), this.noEmptyFields(), this.passwordVerified())) {
-            return true;
+			return true;
 		} else {
-            return false;
+			return false;
 		}
 	}
 }
