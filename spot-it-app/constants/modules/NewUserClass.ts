@@ -2,6 +2,7 @@ import UserClass from "@/constants/modules/UserClass";
 import { NewUserInterface, ApiMessage, ApiErrorResponse, ApiDataResponse } from "@/constants/interfaces";
 import API from "@/constants/modules/ApiClass";
 
+
 export default class NewUser {
 	userObj: NewUserInterface;
 
@@ -20,7 +21,7 @@ export default class NewUser {
 		let valid = true;
 		const defaultValues: NewUserInterface = {
 			email: "Email",
-			userName: "Username",
+			username: "Username",
 			password: "Password",
 			verifyPassword: "Verify Password",
 		};
@@ -85,7 +86,7 @@ export default class NewUser {
 	async getUserByUsername(): Promise<ApiDataResponse> {
 		const api = new API("/username/");
 		const url = api.getUrl();
-		const fullUrl = `${url}/${this.userObj.userName}`;
+		const fullUrl = `${url}/${this.userObj.username}`;
 
 		try {
 			const userData = await fetch(fullUrl);
@@ -112,18 +113,34 @@ export default class NewUser {
 	}
 
 	//Create the user
-	async createUser(): Promise<string> {
+	async canCreateUser(): Promise<boolean> {
 		const checkForUserName = await this.userNameExists();
 		const checkForEmail = await this.userEmailExists();
 
 		if (checkForUserName && checkForEmail) {
-			return "this username and email already exist";
+			return false;
 		} else if (checkForEmail) {
-			return "this email is already in use";
+			return false;
 		} else if (checkForUserName) {
-			return "this ";
+			return false;
 		} else {
-			return "user can be entered";
+			return true;
+		}
+	}
+
+	async createUser(): Promise<any> {
+		try {
+			const canCreate = await this.canCreateUser();
+
+			if (canCreate) {
+				const api = new API('/add-user/', this.userObj);
+				return api.postData();
+			} else {
+				console.log('This user already exists');
+			}
+		} catch (e: any) {
+			console.log(e);
+			return e;
 		}
 	}
 

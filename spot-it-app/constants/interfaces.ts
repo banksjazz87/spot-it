@@ -63,7 +63,7 @@ export interface LoginProps {
 
 export interface NewUserInterface {
 	email: string;
-	userName: string;
+	username: string;
 	password: string;
 	verifyPassword: string;
 }

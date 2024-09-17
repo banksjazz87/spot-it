@@ -10,7 +10,7 @@ import NewUserClass from "@/constants/modules/NewUserClass";
 export default function Register() {
 	const [newUser, setNewUser] = useState<NewUserInterface>({
 		email: "Email",
-		userName: "Username",
+		username: "Username",
 		password: "Password",
 		verifyPassword: "Verify Password",
 	});
@@ -22,10 +22,9 @@ export default function Register() {
 	
     const registerHandler = (): void => {
         if (NewUser.isValid()) {
-            NewUser.userEmailExists()
-                .then(data => console.log(data));
-            
-            NewUser.getUserByUsername().then((data) => console.log(data));
+            NewUser.createUser()
+                .then(data => console.log(data))
+                .catch(err => console.log(err));
         } else {
             console.log('Invalid registration');
         }
@@ -53,8 +52,8 @@ export default function Register() {
 					inputMode="text"
 					numberOfLines={1}
 					maxLength={40}
-					value={newUser.userName}
-					onChangeText={(text) => setNewUser({ ...newUser, userName: text.trim() })}
+					value={newUser.username}
+					onChangeText={(text) => setNewUser({ ...newUser, username: text.trim() })}
 					autoCapitalize="none"
 					style={[StyleClasses.textInput]}
 				/>
