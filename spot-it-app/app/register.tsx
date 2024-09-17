@@ -24,6 +24,8 @@ export default function Register() {
         if (NewUser.isValid()) {
             NewUser.userEmailExists()
                 .then(data => console.log(data));
+            
+            NewUser.getUserByUsername().then((data) => console.log(data));
         } else {
             console.log('Invalid registration');
         }

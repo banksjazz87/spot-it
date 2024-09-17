@@ -1,5 +1,6 @@
 import UserClass from "@/constants/modules/UserClass";
-import { NewUserInterface, ApiMessage, ApiErrorResponse } from "@/constants/interfaces";
+import { NewUserInterface, ApiMessage, ApiErrorResponse, ApiDataResponse } from "@/constants/interfaces";
+import API from "@/constants/modules/ApiClass";
 
 export default class NewUser {
 	userObj: NewUserInterface;
@@ -82,9 +83,26 @@ export default class NewUser {
 		}
 	}
 
-	//Make sure the username doesn't already exist
-	async usernameExists() {
-		
+	//Get the user by username
+	async getUserByUsername(): Promise<ApiDataResponse> {
+		const api = new API('/username/');
+		const url = api.getUrl();
+		const fullUrl = `${url}/${this.userObj.userName}`;
+
+		try {
+			const userData = await fetch(fullUrl);
+			const jsonData = userData.json();
+
+			return jsonData;
+
+		} catch (e: any) {
+			return e;
+		}
+	}
+
+
+	async userNameExists(){
+
 	}
 
 	//Create the user
