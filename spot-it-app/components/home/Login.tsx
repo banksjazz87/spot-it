@@ -16,7 +16,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	const loginChangeHandler = (text: string, key: string): void => {
 		setLoginUser({
 			...loginUser,
-			[key as keyof UserLogin]: text,
+			[key as keyof UserLogin]: text.trim(),
 		});
 	};
 

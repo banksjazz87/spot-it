@@ -5,6 +5,7 @@ import { router } from "expo-router";
 import PrimaryButton from "@/components/global/PrimaryButton"; 
 import { NewUserInterface } from "@/constants/interfaces";
 import NewUserClass from "@/constants/modules/NewUserClass";
+import { ApiDataResponse } from "@/constants/interfaces";
 
 
 export default function Register() {
@@ -23,7 +24,13 @@ export default function Register() {
     const registerHandler = (): void => {
         if (NewUser.isValid()) {
             NewUser.createUser()
-                .then(data => console.log(data))
+                .then((data: ApiDataResponse | string) => {
+                    if (typeof data !== "string") {
+                        router.navigate("/");
+                    } else {
+                        console.log(data);
+                    }
+                })
                 .catch(err => console.log(err));
         } else {
             console.log('Invalid registration');

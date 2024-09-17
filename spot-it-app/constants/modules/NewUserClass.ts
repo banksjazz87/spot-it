@@ -128,18 +128,19 @@ export default class NewUser {
 		}
 	}
 
-	async createUser(): Promise<any> {
+	async createUser(): Promise<ApiDataResponse | string> {
 		try {
 			const canCreate = await this.canCreateUser();
 
 			if (canCreate) {
 				const api = new API('/add-user/', this.userObj);
-				return api.postData();
+				const addUser = await api.postData();
+				return addUser;
+
 			} else {
-				console.log('This user already exists');
+				return 'This user already exists';
 			}
 		} catch (e: any) {
-			console.log(e);
 			return e;
 		}
 	}
