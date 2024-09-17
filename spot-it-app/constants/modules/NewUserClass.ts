@@ -65,21 +65,19 @@ export default class NewUser {
 		return verified;
 	};
 
-	async userEmailExists(): Promise<boolean> {
+	async userEmailExists(): Promise<boolean | void> {
 		const User = new UserClass(this.userObj.email);
 		try {
 			const userData = await User.getUserByEmail();
 
 			if (userData.data.length > 0) {
-				console.log("Got data back ", userData);
 				return true;
 			} else {
-				console.log("This email is not found ", userData);
 				return false
 			}
 		} catch (e: any) {
 			console.log('error ', e)
-			return false;
+			return e;
 		}
 	}
 
@@ -101,13 +99,38 @@ export default class NewUser {
 	}
 
 
-	async userNameExists(){
-
+	async userNameExists(): Promise<boolean | null>{
+		try {
+			const userData = await this.getUserByUsername();
+			if (userData.data.length > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (e: any) {
+			console.log('The following error occured in getting checking if the user name exists ', e);
+			return null;
+		}
 	}
 
 	//Create the user
-	async createUser() {
+	async createUser(): Promise<string> {
 
+		const checkForUserName = await this.userNameExists();
+		const checkForEmail = await this.userEmailExists();
+		
+		if (checkForUserName && checkForEmail) {
+			return "this username and email already exist";
+
+		} else if (checkForEmail) {
+			return 'this email is already in use';
+
+		} else if (checkForUserName) {
+			return 'this ';
+			
+		} else {
+			return 'user can be entered';
+		}
 	}
 
 
