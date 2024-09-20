@@ -6,6 +6,7 @@ import PrimaryButton from "@/components/global/PrimaryButton";
 import { NewUserInterface } from "@/constants/interfaces";
 import NewUserClass from "@/constants/modules/NewUserClass";
 import { ApiDataResponse } from "@/constants/interfaces";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 
 export default function Register() {
@@ -49,7 +50,7 @@ export default function Register() {
 					maxLength={40}
 					value={newUser.email}
 					onChangeText={(text) => setNewUser({ ...newUser, email: text.trim() })}
-					onEndEditing={(e): void => NewUser.validEmail() ? setValidEmail(true): setValidEmail(false)}
+					onEndEditing={(e): void => (NewUser.validEmail() ? setValidEmail(true) : setValidEmail(false))}
 					autoCapitalize="none"
 					style={[validEmail ? StyleClasses.textInput : StyleClasses.invalidInput]}
 				/>
@@ -84,25 +85,29 @@ export default function Register() {
 					secureTextEntry={hidePassword}
 					maxLength={40}
 					value={newUser.verifyPassword}
-                    onChangeText={(text) => setNewUser({ ...newUser, verifyPassword: text.trim() })}
+					onChangeText={(text) => setNewUser({ ...newUser, verifyPassword: text.trim() })}
 					autoCapitalize="none"
 					style={[StyleClasses.textInput]}
 				/>
-                <View style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', marginTop: 10 }}>
+				<View style={{ display: "flex", justifyContent: "space-between", flexDirection: "row", marginTop: 10, paddingHorizontal: 5 }}>
 					<Pressable onPress={(e: GestureResponderEvent): void => router.navigate("/")}>
 						<Text>Return to Login</Text>
 					</Pressable>
 
 					<Pressable onPress={(e: GestureResponderEvent): void => setHidePassword(!hidePassword)}>
-						<Text>{hidePassword ? "Show Password" : "Hide Password"}</Text>
+						<Ionicons
+							name={hidePassword ? "eye-off-outline" : "eye-outline"}
+							size={24}
+							color="black"
+						/>
 					</Pressable>
-                </View>
-                
-                <PrimaryButton 
-                    text="Register"
-                    method={(): void => registerHandler()}
-                    style={{ paddingTop: 10, paddingBottom: 10 }}
-                />
+				</View>
+
+				<PrimaryButton
+					text="Register"
+					method={(): void => registerHandler()}
+					style={{ paddingTop: 10, paddingBottom: 10 }}
+				/>
 			</View>
 		</View>
 	);

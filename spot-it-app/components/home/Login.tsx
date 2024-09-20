@@ -5,15 +5,15 @@ import API from "../../constants/modules/ApiClass";
 import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
 import SystemUser from "../../constants/modules/SystemUserClass";
 import { router } from "expo-router";
-import {StyleClasses} from "../../constants/lib/StyleClasses";
+import { StyleClasses } from "../../constants/lib/StyleClasses";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
 		password: "Password",
 	});
-
-	const [hidePassword, setHidePassword] = useState<boolean>(false);
+	const [hidePassword, setHidePassword] = useState<boolean>(true);
 
 	const loginChangeHandler = (text: string, key: string): void => {
 		setLoginUser({
@@ -148,22 +148,34 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				onPressIn={(): void => {
 					if (loginUser.password === "Password") {
 						setHidePassword(true);
-						setLoginUser({ ...loginUser, password: '' });
-					} 
-				}
-					
-				}
+						setLoginUser({ ...loginUser, password: "" });
+					}
+				}}
 			/>
 
-			<View style={{ display: "flex", flexDirection: "row", columnGap: 10 }}>
-				<Pressable>
-					<Text style={styles.rHFont}>Forgot your password?</Text>
-				</Pressable>
+			<View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: 'space-between', paddingHorizontal: 5 }}>
+				<View style={{ display: 'flex', flexDirection: 'row', columnGap: 10}}>
+					<Pressable>
+						<Text style={styles.rHFont}>Forgot your password?</Text>
+					</Pressable>
+					<Pressable
+						onPress={(e: GestureResponderEvent): void => {
+							router.navigate("/register");
+						}}
+					>
+						<Text style={styles.rHFont}>New Here</Text>
+					</Pressable>
+				</View>
 				<Pressable
 					onPress={(e: GestureResponderEvent): void => {
-						router.navigate('/register')
-					}}>
-					<Text style={styles.rHFont}>New Here</Text>
+						setHidePassword(!hidePassword);
+					}}
+				>
+					<Ionicons
+						name={hidePassword ? "eye-off-outline" : "eye-outline"}
+						size={24}
+						color="black"
+					/>
 				</Pressable>
 			</View>
 
