@@ -8,6 +8,7 @@ import SystemUser from "../constants/modules/SystemUserClass";
 import Login from "../components/home/Login";
 import { User } from "../constants/interfaces";
 import { StyleClasses } from "../constants/lib/StyleClasses";
+import Logout from "@/components/global/Logout";
 
 export default function Index() {
 	const [currentUser, setCurrentUser] = useState<User>({
@@ -41,19 +42,24 @@ export default function Index() {
 		});
 	};
 
+
+	//Used to clear out the current user from the state.
+	const clearCurrentUser = (): void => {
+		setCurrentUser({
+			...currentUser,
+			username: '',
+			email: '',
+			loggedIn: false
+		});
+	}
+
 	if (currentUser.loggedIn) {
 		return (
 			<View style={styles.container}>
 				<Text style={StyleClasses.largeText}>Welcome {currentUser.username}</Text>
-				<Pressable
-					onPress={(event: GestureResponderEvent): void => {
-						setCurrentUser({ ...currentUser, username: "", loggedIn: false, email: "" });
-
-						SysUser.clear().then(() => console.log("USER CLEARED!"));
-					}}
-				>
-					<Text>Reset</Text>
-				</Pressable>
+				<Logout
+					logoutMethod={clearCurrentUser}
+				/>
 			</View>
 		);
 	} else {

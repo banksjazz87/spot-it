@@ -13,6 +13,8 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 		password: "Password",
 	});
 
+	const [hidePassword, setHidePassword] = useState<boolean>(false);
+
 	const loginChangeHandler = (text: string, key: string): void => {
 		setLoginUser({
 			...loginUser,
@@ -130,7 +132,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				autoComplete={"email"}
 				value={loginUser.email}
 				style={StyleClasses.textInput}
-				onChangeText={(text: string) => loginChangeHandler(text, "email")}
+				onChangeText={(text: string): void => loginChangeHandler(text, "email")}
 				autoCapitalize="none"
 			/>
 			<TextInput
@@ -138,10 +140,19 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				numberOfLines={1}
 				maxLength={40}
 				autoComplete={"password"}
+				secureTextEntry={hidePassword}
 				value={loginUser.password}
 				style={StyleClasses.textInput}
-				onChangeText={(text: string) => loginChangeHandler(text, "password")}
+				onChangeText={(text: string): void => loginChangeHandler(text, "password")}
 				autoCapitalize="none"
+				onPressIn={(): void => {
+					if (loginUser.password === "Password") {
+						setHidePassword(true);
+						setLoginUser({ ...loginUser, password: '' });
+					} 
+				}
+					
+				}
 			/>
 
 			<View style={{ display: "flex", flexDirection: "row", columnGap: 10 }}>

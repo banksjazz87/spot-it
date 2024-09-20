@@ -5,10 +5,14 @@ import UserClass from "../../constants/modules/UserClass";
 import { User, LoginResponse, FullUser, ApiMessage, ApiErrorResponse } from "../../constants/interfaces";
 import { router } from "expo-router";
 
-export default function Logout() {
+interface LogoutProps {
+	logoutMethod?: Function;
+}
+
+export default function Logout({ logoutMethod }: LogoutProps): React.JSX.Element {
 	const SysUser = new SystemUser();
 
-    //Gets the users email address from the async storage
+	//Gets the users email address from the async storage
 	const getUserEmail = async (): Promise<any> => {
 		try {
 			const userInfo: User | null = await SysUser.get();
@@ -18,7 +22,7 @@ export default function Logout() {
 		}
 	};
 
-    //Retrieves the user's information by email.
+	//Retrieves the user's information by email.
 	const getUser = async (email: string): Promise<any> => {
 		const api = new API("/get-user-by-email/");
 		const url = api.getUrl();
@@ -33,7 +37,7 @@ export default function Logout() {
 		}
 	};
 
-    //Logouts the user from the database
+	//Logouts the user from the database
 	const logoutUser = async (data: FullUser): Promise<any> => {
 		const api = new API("/logout-user/", data);
 
@@ -45,7 +49,7 @@ export default function Logout() {
 		}
 	};
 
-    //Clears the user from the session storage.
+	//Clears the user from the session storage.
 	const clearSysUser = (): void => {
 		SysUser.clear()
 			.then(() => {
@@ -55,12 +59,11 @@ export default function Logout() {
 			.catch((e) => console.log("Error in removing the sys user ", e));
 	};
 
-
-    /**
-     * @param obj FullUser takes an object of type FullUser
-     * @returns void
-     * @description used to fire off both the logout and clearSysUser functions.
-     */
+	/**
+	 * @param obj FullUser takes an object of type FullUser
+	 * @returns void
+	 * @description used to fire off both the logout and clearSysUser functions.
+	 */
 	const logoutAndClearUser = (obj: FullUser): void => {
 		logoutUser(obj)
 			.then((data: ApiMessage): void => {
@@ -71,8 +74,7 @@ export default function Logout() {
 			});
 	};
 
-
-    //Used to logout the current user.
+	//Used to logout the current user.
 	const logoutHandler = (): void => {
 		getUserEmail()
 			.then((data: string | null): void => {
@@ -80,7 +82,7 @@ export default function Logout() {
 					getUser(data)
 						.then((data: LoginResponse): void => {
 							if (data.data.length > 0) {
-                                logoutAndClearUser(data.data[0]);
+								logoutAndClearUser(data.data[0]);
 							}
 						})
 						.catch((err: any): void => {
@@ -93,7 +95,14 @@ export default function Logout() {
 			});
 	};
 	return (
-		<Pressable onPress={(event: GestureResponderEvent): void | string => logoutHandler()}>
+		<Pressable onPress={(event: GestureResponderEvent): void | string => {
+			if (logoutMethod) {
+				logoutHandler();
+				logoutMethod();
+			} else {
+				logoutHandler();
+			}
+		}}>
 			<Text>Logout</Text>
 		</Pressable>
 	);
