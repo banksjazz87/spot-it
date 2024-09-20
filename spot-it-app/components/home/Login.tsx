@@ -13,7 +13,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 		email: "Email",
 		password: "Password",
 	});
-	const [hidePassword, setHidePassword] = useState<boolean>(true);
+	const [hidePassword, setHidePassword] = useState<boolean>(false);
 
 	const loginChangeHandler = (text: string, key: string): void => {
 		setLoginUser({
@@ -172,7 +172,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 					}}
 				>
 					<Ionicons
-						name={hidePassword ? "eye-off-outline" : "eye-outline"}
+						name={hidePassword ? "eye-outline" : "eye-off-outline"}
 						size={24}
 						color="black"
 					/>
