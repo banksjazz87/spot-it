@@ -132,7 +132,7 @@ export default function Register() {
 
 					<Pressable onPress={(e: GestureResponderEvent): void => setHidePassword(!hidePassword)}>
 						<Ionicons
-							name={hidePassword ? "eye-outline" : "eye-off-outline"}
+							name={hidePassword ? "eye-off-outline" : "eye-outline"}
 							size={24}
 							color="black"
 						/>

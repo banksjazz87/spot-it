@@ -172,7 +172,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 					}}
 				>
 					<Ionicons
-						name={hidePassword ? "eye-outline" : "eye-off-outline"}
+						name={hidePassword ? "eye-off-outline" : "eye-outline"}
 						size={24}
 						color="black"
 					/>
