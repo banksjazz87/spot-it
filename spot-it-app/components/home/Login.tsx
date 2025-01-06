@@ -90,6 +90,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	const submitHandler = (): void => {
 		getUser()
 			.then((data: LoginResponse): void => {
+				console.log('Data here ', data);
 				//Check that we actually got a valid user
 				if (data.data.length > 0) {
 					//create object to pass back to login
@@ -133,6 +134,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				value={loginUser.email}
 				style={StyleClasses.textInput}
 				onChangeText={(text: string): void => loginChangeHandler(text, "email")}
+				onPressIn={(): void => setLoginUser({...loginUser, email: ''})}
 				autoCapitalize="none"
 			/>
 			<TextInput
