@@ -2,9 +2,7 @@
  * This is going to handle the different requests that can be made.
  */
 
-import Constants from 'expo';
-
-const manifest = Constants;
+import Constants from 'expo-constants';
 
 
 export default class API {
@@ -15,14 +13,14 @@ export default class API {
 
     constructor(path: string = '', objData: Object = {}) {
 		this.path = path;
-        this.url = process.env.EXPO_PUBLIC_API_URL;
+		this.url = `http://${Constants.expoConfig?.hostUri?.split(':').shift()?.concat(':3100')}`;
         this.apiKey = process.env.EXPO_PUBLIC_API_KEY;
         this.data = objData;
 	}
 
 	getUrl(): string {
 		const fullUrl = (((this.url + this.path) as string) + this.apiKey) as string;
-        console.log(manifest);
+		console.log('This is the local host set ', this.url);
 		return fullUrl;
     }
     

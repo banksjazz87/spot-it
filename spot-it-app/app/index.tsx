@@ -9,6 +9,8 @@ import Login from "../components/home/Login";
 import { User } from "../constants/interfaces";
 import { StyleClasses } from "../constants/lib/StyleClasses";
 import Logout from "@/components/global/Logout";
+import PrimaryButton from "@/components/global/PrimaryButton";
+import { router } from "expo-router";
 
 export default function Index() {
 	const [currentUser, setCurrentUser] = useState<User>({
@@ -57,9 +59,16 @@ export default function Index() {
 		return (
 			<View style={styles.container}>
 				<Text style={StyleClasses.largeText}>Welcome {currentUser.username}</Text>
-				<Logout
-					logoutMethod={clearCurrentUser}
-				/>
+				<View style={StyleClasses.buttonGroup}>
+					<PrimaryButton
+						text={`Continue as ${currentUser.username}`}
+						method={(): void => {
+							router.navigate("/info");
+						}}
+						style={{ paddingTop: 10, paddingBottom: 10 }}
+					/>
+						<Logout logoutMethod={clearCurrentUser} />
+				</View>
 			</View>
 		);
 	} else {
@@ -68,7 +77,7 @@ export default function Index() {
 				<Login
 					loginUpdater={updateUser}
 					user={currentUser}
-					targetUrl={"/info"}
+					targetUrl={"/profile"}
 				/>
 			</View>
 		);
@@ -80,6 +89,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		rowGap: 40,
+		rowGap: 20,
 	},
+	
 });

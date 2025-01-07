@@ -43,4 +43,9 @@ export const StyleClasses = StyleSheet.create({
 		fontSize: 18,
 		fontFamily: "Red Hat Display",
 	},
+	buttonGroup: {
+		display: "flex",
+		rowGap: 20,
+		alignItems: 'center',
+	},
 });
