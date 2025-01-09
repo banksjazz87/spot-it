@@ -125,7 +125,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	};
 
 	return (
-		<View style={styles.loginContainer}>
+		<View style={StyleClasses.loginContainer}>
 			<TextInput
 				editable
 				numberOfLines={1}
@@ -157,7 +157,11 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 
 			<View style={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: 'space-between', paddingHorizontal: 5 }}>
 				<View style={{ display: 'flex', flexDirection: 'row', columnGap: 10}}>
-					<Pressable>
+					<Pressable
+						onPress={(e: GestureResponderEvent): void => {
+							router.navigate('/reset-password');
+						}}
+					>
 						<Text style={styles.rHFont}>Forgot your password?</Text>
 					</Pressable>
 					<Pressable

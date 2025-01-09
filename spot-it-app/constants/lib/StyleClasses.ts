@@ -46,6 +46,13 @@ export const StyleClasses = StyleSheet.create({
 	buttonGroup: {
 		display: "flex",
 		rowGap: 20,
-		alignItems: 'center',
+		alignItems: "center",
+	},
+	loginContainer: {
+		display: "flex",
+		flexDirection: "column",
+		rowGap: 10,
+		padding: 20,
+		width: 400,
 	},
 });
