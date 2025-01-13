@@ -1,3 +1,5 @@
+import { type Href } from 'expo-router';
+
 export type ImageProperties = {
 	key: string;
 	url: any;
@@ -93,7 +95,7 @@ export interface ApiErrorResponse {
 export interface LoginProps {
 	loginUpdater: Function;
 	user: User;
-	targetUrl: string;
+	targetUrl: Href<string | object>;
 }
 
 export interface NewUserInterface {
