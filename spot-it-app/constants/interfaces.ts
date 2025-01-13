@@ -39,6 +39,41 @@ export interface ApiMessage {
 	message: string;
 	status: number;
 }
+
+export interface APIError {
+	status: number;
+	message: string;
+}
+
+export interface APIResponse<T> {
+	status: number, 
+	message: string,
+	data?: T
+}
+
+export interface SQLResponse {
+	fieldCount: number,
+	affectedRows: number,
+	insertId: number,
+	serverStatus: number,
+	warningCount: number,
+	message: string,
+	protocol41: boolean,
+	changedRows: number
+}
+
+
+export interface EmailData {
+	id: number;
+	email: string;
+	username: string;
+	password: string;
+	loggedIn: 0 | 1;
+	lastLoggedIn: string;
+	lastSeen: string;
+	tempPassword: string;
+}
+
 export interface ApiDataResponse extends ApiMessage {
 	data: object[];
 	message: string;

@@ -20,7 +20,6 @@ export default class API {
 
 	getUrl(): string {
 		const fullUrl = (((this.url + this.path) as string) + this.apiKey) as string;
-		console.log('This is the local host set ', this.url);
 		return fullUrl;
     }
     
