@@ -1,4 +1,6 @@
 import { View, Modal, StyleSheet, Text, Pressable } from "react-native";
+import { StyleClasses } from "@/constants/lib/StyleClasses";
+import PrimaryButton from "./PrimaryButton";
 
 interface AppModalProps {
 	modalVisible: boolean;
@@ -23,10 +25,23 @@ export default function AppModal({ modalVisible, visibleHandler, message, accept
 		>
 			<View style={styles.modalContainer}>
 				<View style={styles.modalBox}>
-					<Text>{message}</Text>
-					<Pressable onPress={(): void => acceptHandler()}>
-						<Text>{acceptText}</Text>
-					</Pressable>
+                    <Text style={StyleClasses.mediumText}>{message}</Text>
+                    
+                    <View style={styles.btnGroup}>
+                    <PrimaryButton
+                        text={acceptText}
+                            method={(): void => acceptHandler()}
+                            style={{width: 150, paddingLeft: 10, paddingRight: 10}}
+                    />
+
+                    {rejectHandler && rejectText &&
+                        <PrimaryButton 
+                        text={rejectText}
+                        method={(): void => rejectHandler()}
+                        style={{ backgroundColor: 'red', width: 150, paddingLeft: 10, paddingRight: 10}}
+                        />
+                    }
+                    </View>
 				</View>
 			</View>
 		</Modal>
@@ -38,12 +53,20 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		justifyContent: "center",
-		backgroundColor: "rgba(0, 0, 0, .2)",
-		color: "white",
+		backgroundColor: "rgba(0, 0, 0, .8)",
+        color: "white",
+        padding: 20
 	},
 
 	modalBox: {
 		backgroundColor: "white",
-		color: "black",
-	},
+        color: "black",
+        padding: 20,
+    },
+    btnGroup: {
+        display: 'flex',
+        flexDirection: 'row',
+        rowGap: 10,
+        columnGap: 20
+    }
 });
