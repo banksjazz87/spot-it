@@ -24,24 +24,24 @@ export default function AppModal({ modalVisible, visibleHandler, message, accept
 			}}
 		>
 			<View style={styles.modalContainer}>
-				<View style={styles.modalBox}>
-                    <Text style={StyleClasses.mediumText}>{message}</Text>
-                    
-                    <View style={styles.btnGroup}>
-                    <PrimaryButton
-                        text={acceptText}
-                            method={(): void => acceptHandler()}
-                            style={{width: 150, paddingLeft: 10, paddingRight: 10}}
-                    />
+				<View style={[styles.modalBox]}>
+					<Text style={StyleClasses.mediumText}>{message}</Text>
 
-                    {rejectHandler && rejectText &&
-                        <PrimaryButton 
-                        text={rejectText}
-                        method={(): void => rejectHandler()}
-                        style={{ backgroundColor: 'red', width: 150, paddingLeft: 10, paddingRight: 10}}
-                        />
-                    }
-                    </View>
+					<View style={styles.btnGroup}>
+						<PrimaryButton
+							text={acceptText}
+							method={(): void => acceptHandler()}
+							style={{ width: 150, paddingLeft: 10, paddingRight: 10 }}
+						/>
+
+						{rejectHandler && rejectText && (
+							<PrimaryButton
+								text={rejectText}
+								method={(): void => rejectHandler()}
+								style={{ backgroundColor: "#FF0000", width: 150, paddingLeft: 10, paddingRight: 10 }}
+							/>
+						)}
+					</View>
 				</View>
 			</View>
 		</Modal>
@@ -62,6 +62,16 @@ const styles = StyleSheet.create({
 		backgroundColor: "white",
         color: "black",
         padding: 20,
+        paddingBottom: 60,
+        paddingTop: 60,
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: 20, 
+        borderRadius: 10,
+        shadowOffset: { width: 10, height: 20 },
+        shadowOpacity: .8,
+        shadowRadius: 5,
+        shadowColor: 'black'
     },
     btnGroup: {
         display: 'flex',

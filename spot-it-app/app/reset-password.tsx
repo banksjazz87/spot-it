@@ -10,8 +10,8 @@ import AppModal from "@/components/global/AppModal";
 
 export default function ResetPassword(): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
-	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-	const [modalText, setModalText] = useState<string>("");
+	const [isModalVisible, setIsModalVisible] = useState<boolean>(true);
+	const [modalText, setModalText] = useState<string>("This is a temporary message just to start styling so oh yeah cool beans.");
 	const [validSubmission, setValidSubmission] = useState<boolean>(false);
 
 	const emailChangeHandler = (text: string): void => {
