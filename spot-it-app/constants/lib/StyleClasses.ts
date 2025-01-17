@@ -55,4 +55,18 @@ export const StyleClasses = StyleSheet.create({
 		padding: 20,
 		width: 400,
 	},
+	modalOverlay: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		backgroundColor: "rgba(0, 0, 0, .8)",
+		color: "white",
+		padding: 20,
+	},
+	btnGroup: {
+		display: "flex",
+		flexDirection: "row",
+		rowGap: 10,
+		columnGap: 20,
+	},
 });

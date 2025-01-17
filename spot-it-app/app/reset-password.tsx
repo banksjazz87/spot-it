@@ -10,9 +10,10 @@ import AppModal from "@/components/global/AppModal";
 
 export default function ResetPassword(): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
-	const [isModalVisible, setIsModalVisible] = useState<boolean>(true);
+	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 	const [modalText, setModalText] = useState<string>("This is a temporary message just to start styling so oh yeah cool beans.");
 	const [validSubmission, setValidSubmission] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const emailChangeHandler = (text: string): void => {
 		setUserEmail(text);
@@ -61,7 +62,6 @@ export default function ResetPassword(): JSX.Element {
 							if (typeof final !== "undefined" && final.status === 200) {
 								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
 
-								setIsModalVisible(true);
 								setModalText("Your password has been reset! Check your email for the new password and use the link provided to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
 								setValidSubmission(true);
 
@@ -104,7 +104,7 @@ export default function ResetPassword(): JSX.Element {
 					acceptText={"Okay"}
 					acceptHandler={(): void => {
 						if (validSubmission) {
-							setIsModalVisible(false);
+							setIsModalVisible(true);
 						} else {
 							setIsModalVisible(false);
 						}

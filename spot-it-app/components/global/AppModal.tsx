@@ -23,11 +23,11 @@ export default function AppModal({ modalVisible, visibleHandler, message, accept
 				visibleHandler();
 			}}
 		>
-			<View style={styles.modalContainer}>
+			<View style={StyleClasses.modalOverlay}>
 				<View style={[styles.modalBox]}>
 					<Text style={StyleClasses.mediumText}>{message}</Text>
 
-					<View style={styles.btnGroup}>
+					<View style={StyleClasses.btnGroup}>
 						<PrimaryButton
 							text={acceptText}
 							method={(): void => acceptHandler()}
@@ -49,15 +49,6 @@ export default function AppModal({ modalVisible, visibleHandler, message, accept
 }
 
 const styles = StyleSheet.create({
-	modalContainer: {
-		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
-		backgroundColor: "rgba(0, 0, 0, .8)",
-        color: "white",
-        padding: 20
-	},
-
 	modalBox: {
 		backgroundColor: "white",
         color: "black",
@@ -73,10 +64,4 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         shadowColor: 'black'
     },
-    btnGroup: {
-        display: 'flex',
-        flexDirection: 'row',
-        rowGap: 10,
-        columnGap: 20
-    }
 });
