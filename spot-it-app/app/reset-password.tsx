@@ -7,13 +7,14 @@ import { StyleClasses } from "@/constants/lib/StyleClasses";
 import API from "@/constants/modules/ApiClass";
 import { APIResponse, EmailData, SQLResponse, APIError } from "@/constants/interfaces";
 import AppModal from "@/components/global/AppModal";
+import LoadingModal from "@/components/global/LoadingModal";
 
 export default function ResetPassword(): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
 	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 	const [modalText, setModalText] = useState<string>("This is a temporary message just to start styling so oh yeah cool beans.");
 	const [validSubmission, setValidSubmission] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
 	const emailChangeHandler = (text: string): void => {
 		setUserEmail(text);
@@ -115,6 +116,12 @@ export default function ResetPassword(): JSX.Element {
 				/>
 			)}
 
+			{isLoading && (
+				<LoadingModal
+					isLoading={isLoading}
+					visibleHandler={(): void => setIsLoading(!isLoading)}
+				/>
+			)}
 
 			<Text style={[StyleClasses.headingOne, { textAlign: "left", textTransform: "uppercase", fontWeight: 700 }]}>Request New Password</Text>
 			<TextInput
