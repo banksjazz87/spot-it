@@ -68,5 +68,6 @@ export const StyleClasses = StyleSheet.create({
 		flexDirection: "row",
 		rowGap: 10,
 		columnGap: 20,
+		justifyContent: 'center'
 	},
 });

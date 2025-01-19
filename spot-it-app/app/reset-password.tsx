@@ -14,7 +14,7 @@ export default function ResetPassword(): JSX.Element {
 	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
 	const [modalText, setModalText] = useState<string>("This is a temporary message just to start styling so oh yeah cool beans.");
 	const [validSubmission, setValidSubmission] = useState<boolean>(false);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const emailChangeHandler = (text: string): void => {
 		setUserEmail(text);
@@ -47,8 +47,16 @@ export default function ResetPassword(): JSX.Element {
 		}
 	};
 
+	const displayAppModalMessage = (message: string): void => {
+		setIsModalVisible(true);
+		setModalText(message);
+	}
+
+
 	const submitHandler = (): void => {
-		//Get the current user
+		setIsLoading(true);
+
+		// Get the current user
 		getUserDetails(userEmail)
 			.then((data: undefined | APIResponse<EmailData>): void => {
 				//Check the user's email data
@@ -63,29 +71,42 @@ export default function ResetPassword(): JSX.Element {
 							if (typeof final !== "undefined" && final.status === 200) {
 								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
 
-								setModalText("Your password has been reset! Check your email for the new password and use the link provided to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
+								displayAppModalMessage("Your password has been reset! Check your email for the new password and use the link provided to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
 								setValidSubmission(true);
+								
+
+								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
 
 								//Failed in reaching out to the API
 							} else if (typeof final === "undefined") {
+								displayAppModalMessage('Unable to create a new password');
 								return final;
 
 								//Returned no results
 							} else {
+							
+								displayAppModalMessage(`The following error occurred in sending the reset email to ${neededData.email}, ${final.message}`);
+
 								console.log(`The following error occurred in sending the reset email to ${neededData.email}, ${final.message}.`);
 							}
 						})
 						.catch((error: APIError): void => {
+							displayAppModalMessage(error.message);
 							console.log(error.message);
-						});
+						})
+						.finally((): void => {
+							setIsLoading(false);
+						})
 
-					//Failure in accessing the API
+				//Failure in accessing the API
 				} else if (typeof data === "undefined") {
+					setIsLoading(false);
 					return data;
 
-					//No record found for the provided email
+				//No record found for the provided email
 				} else {
-					console.log(`We have no record of this email in our database.`);
+					setIsLoading(false);
+					displayAppModalMessage("We have no record of this email in our database.");
 				}
 			})
 
@@ -97,29 +118,33 @@ export default function ResetPassword(): JSX.Element {
 
 	return (
 		<SafeAreaView style={[StyleClasses.loginContainer, { justifyContent: "center", flex: 1 }]}>
-			{isModalVisible && (
+			{isLoading && (
+				<LoadingModal
+					isLoading={isLoading}
+					visibleHandler={(): void => setIsLoading(!isLoading)}
+				/>
+			)}
+			{isModalVisible && validSubmission && (
 				<AppModal
 					modalVisible={isModalVisible}
 					visibleHandler={(): void => setIsModalVisible(!isModalVisible)}
 					message={modalText}
 					acceptText={"Okay"}
-					acceptHandler={(): void => {
-						if (validSubmission) {
-							setIsModalVisible(true);
-						} else {
-							setIsModalVisible(false);
-						}
-					}}
+					acceptHandler={(): void => router.navigate("/")}
 					closeHandler={(): void => setIsModalVisible(false)}
 					rejectText="Cancel"
 					rejectHandler={(): void => setIsModalVisible(false)}
 				/>
 			)}
 
-			{isLoading && (
-				<LoadingModal
-					isLoading={isLoading}
-					visibleHandler={(): void => setIsLoading(!isLoading)}
+			{isModalVisible && !validSubmission && (
+				<AppModal
+					modalVisible={isModalVisible}
+					visibleHandler={(): void => setIsModalVisible(!isModalVisible)}
+					message={modalText}
+					acceptText={"Okay"}
+					acceptHandler={(): void => setIsModalVisible(false)}
+					closeHandler={(): void => setIsModalVisible(false)}
 				/>
 			)}
 
