@@ -13,7 +13,8 @@ const easing = Easing.bezier(0.28, 1.32, 0.27, -0.59);
 
 export default function LoadingModal({ isLoading, visibleHandler }: LoadingModalProps): React.JSX.Element {
 
-	const [isRotating, setIsRotating] = useState<boolean>(true);
+    const [isRotating, setIsRotating] = useState<boolean>(true);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
 	const rotation = useSharedValue<number>(0);
     const animatedRotate = useAnimatedStyle(
@@ -28,9 +29,11 @@ export default function LoadingModal({ isLoading, visibleHandler }: LoadingModal
 				setIsRotating(false);
                 cancelAnimation(rotation);
                 visibleHandler();
+                setShowModal(false);
 			}, 1500);
 		} else {
-			setIsRotating(true);
+            setIsRotating(true);
+            setShowModal(true);
 		}
 	}, [isLoading]);
 
@@ -47,10 +50,8 @@ export default function LoadingModal({ isLoading, visibleHandler }: LoadingModal
 		<Modal
 			animationType="fade"
 			transparent={true}
-			visible={isLoading}
-			onRequestClose={(): void => {
-				visibleHandler();
-			}}
+			visible={showModal}
+			onRequestClose={(): void => setShowModal(false)}
 		>
 			<View style={StyleClasses.modalOverlay}>
 				<Animated.View style={[styles.box, animatedRotate]} />

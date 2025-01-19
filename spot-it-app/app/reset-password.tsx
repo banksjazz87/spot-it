@@ -52,6 +52,13 @@ export default function ResetPassword(): JSX.Element {
 		setModalText(message);
 	}
 
+	const delayedFailureMessage = (message: string): void => {
+		setTimeout((): void => {
+			displayAppModalMessage(message);
+			setValidSubmission(false);
+		}, 500);
+	}
+
 
 	const submitHandler = (): void => {
 		setIsLoading(true);
@@ -59,8 +66,9 @@ export default function ResetPassword(): JSX.Element {
 		// Get the current user
 		getUserDetails(userEmail)
 			.then((data: undefined | APIResponse<EmailData>): void => {
+
 				//Check the user's email data
-				if (typeof data !== "undefined" && data.status === 200) {
+				if (typeof data?.data !== "undefined" && data?.status === 200) {
 					//User data
 					const neededData = data.data as EmailData;
 
@@ -71,20 +79,18 @@ export default function ResetPassword(): JSX.Element {
 							if (typeof final !== "undefined" && final.status === 200) {
 								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
 
-								displayAppModalMessage("Your password has been reset! Check your email for the new password and use the link provided to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
+								displayAppModalMessage("Your password has been reset! Check your email for the new password and click okay below to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
 								setValidSubmission(true);
-								
 
 								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
 
 								//Failed in reaching out to the API
 							} else if (typeof final === "undefined") {
-								displayAppModalMessage('Unable to create a new password');
+								displayAppModalMessage("Unable to create a new password");
 								return final;
 
 								//Returned no results
 							} else {
-							
 								displayAppModalMessage(`The following error occurred in sending the reset email to ${neededData.email}, ${final.message}`);
 
 								console.log(`The following error occurred in sending the reset email to ${neededData.email}, ${final.message}.`);
@@ -96,23 +102,20 @@ export default function ResetPassword(): JSX.Element {
 						})
 						.finally((): void => {
 							setIsLoading(false);
-						})
+						});
 
-				//Failure in accessing the API
-				} else if (typeof data === "undefined") {
+					//No record found for the provided email
+				} else if (typeof data?.data === "undefined" && data?.status === 200) {
 					setIsLoading(false);
-					return data;
-
-				//No record found for the provided email
+					delayedFailureMessage("The entered email doesn't exist in the database.");
 				} else {
 					setIsLoading(false);
-					displayAppModalMessage("We have no record of this email in our database.");
+					delayedFailureMessage(`The following error occurred in retrieving the user with the provided email, ${data?.message}`);
 				}
 			})
-
-			//Error in retrieving the user by email
 			.catch((error: APIError): void => {
-				console.log(error.message);
+				setIsLoading(false);
+				delayedFailureMessage(`The following error occurred in retrieving the user with the provided email, ${error?.message}`);
 			});
 	};
 
