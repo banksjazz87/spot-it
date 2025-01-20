@@ -24,13 +24,13 @@ export default function LoadingModal({ isLoading, visibleHandler }: LoadingModal
 	);
 
 	useEffect((): void => {
-		if (!isLoading) {
+        if (!isLoading) {
 			setTimeout((): void => {
 				setIsRotating(false);
-                cancelAnimation(rotation);
-                visibleHandler();
-                setShowModal(false);
-			}, 1500);
+				cancelAnimation(rotation);
+				visibleHandler();
+				setShowModal(false);
+			}, 500);
 		} else {
             setIsRotating(true);
             setShowModal(true);

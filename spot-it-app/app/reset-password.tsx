@@ -5,9 +5,10 @@ import PrimaryButton from "@/components/global/PrimaryButton";
 import { router, Stack } from "expo-router";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import API from "@/constants/modules/ApiClass";
-import { APIResponse, EmailData, SQLResponse, APIError } from "@/constants/interfaces";
+import { APIResponse, EmailData, SQLResponse, APIError, User } from "@/constants/interfaces";
 import AppModal from "@/components/global/AppModal";
 import LoadingModal from "@/components/global/LoadingModal";
+import SystemUser from "@/constants/modules/SystemUserClass";
 
 export default function ResetPassword(): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
@@ -19,8 +20,6 @@ export default function ResetPassword(): JSX.Element {
 	const emailChangeHandler = (text: string): void => {
 		setUserEmail(text);
 	};
-
-	useEffect((): void => console.log(isModalVisible), [isModalVisible]);
 
 	//Used to get the user details based on the provided email, this is fired in the submit handler.
 	const getUserDetails = async (email: string): Promise<APIResponse<EmailData> | undefined> => {
@@ -50,15 +49,28 @@ export default function ResetPassword(): JSX.Element {
 	const displayAppModalMessage = (message: string): void => {
 		setIsModalVisible(true);
 		setModalText(message);
-	}
+	};
 
 	const delayedFailureMessage = (message: string): void => {
 		setTimeout((): void => {
 			displayAppModalMessage(message);
 			setValidSubmission(false);
 		}, 500);
-	}
+	};
 
+	const SysUser = new SystemUser();
+
+	const updateSysUser = (userObj: User): void => {
+		SysUser.clear().then((): void => {
+			SysUser.set(userObj);
+		});
+	};
+
+	const clearSysUserWithMessage = (message: string): void => {
+		SysUser.clear().then((): void => {
+			delayedFailureMessage(message);
+		});
+	};
 
 	const submitHandler = (): void => {
 		setIsLoading(true);
@@ -66,7 +78,6 @@ export default function ResetPassword(): JSX.Element {
 		// Get the current user
 		getUserDetails(userEmail)
 			.then((data: undefined | APIResponse<EmailData>): void => {
-
 				//Check the user's email data
 				if (typeof data?.data !== "undefined" && data?.status === 200) {
 					//User data
@@ -77,18 +88,22 @@ export default function ResetPassword(): JSX.Element {
 						.then((final: APIResponse<SQLResponse[]> | undefined): void => {
 							//Verify that the new password has been sent
 							if (typeof final !== "undefined" && final.status === 200) {
-								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
+								const currentUser = {
+									username: "",
+									email: userEmail,
+									loggedIn: false,
+									passwordReset: true,
+								};
 
+								updateSysUser(currentUser);
+								SysUser.get().then((obj: User | null): void => console.log(obj));
 								displayAppModalMessage("Your password has been reset! Check your email for the new password and click okay below to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
 								setValidSubmission(true);
-
-								console.log(`The reset email has been sent to the provided email address ${neededData.email}.`);
 
 								//Failed in reaching out to the API
 							} else if (typeof final === "undefined") {
 								displayAppModalMessage("Unable to create a new password");
 								return final;
-
 								//Returned no results
 							} else {
 								displayAppModalMessage(`The following error occurred in sending the reset email to ${neededData.email}, ${final.message}`);
@@ -107,15 +122,15 @@ export default function ResetPassword(): JSX.Element {
 					//No record found for the provided email
 				} else if (typeof data?.data === "undefined" && data?.status === 200) {
 					setIsLoading(false);
-					delayedFailureMessage("The entered email doesn't exist in the database.");
+					clearSysUserWithMessage("The entered email doesn't exist in the database.");
 				} else {
 					setIsLoading(false);
-					delayedFailureMessage(`The following error occurred in retrieving the user with the provided email, ${data?.message}`);
+					clearSysUserWithMessage(`The following error occurred in retrieving the user with the provided email, ${data?.message}`);
 				}
 			})
 			.catch((error: APIError): void => {
 				setIsLoading(false);
-				delayedFailureMessage(`The following error occurred in retrieving the user with the provided email, ${error?.message}`);
+				clearSysUserWithMessage(`The following error occurred in retrieving the user with the provided email, ${error?.message}`);
 			});
 	};
 
@@ -208,5 +223,3 @@ const styles = StyleSheet.create({
 		backgroundColor: "rgba(0, 0, 0, .8)",
 	},
 });
-
-
