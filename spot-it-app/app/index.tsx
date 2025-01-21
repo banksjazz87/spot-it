@@ -17,7 +17,6 @@ export default function Index() {
 		username: "",
 		email: "",
 		loggedIn: false,
-		passwordReset: false
 	});
 
 	const SysUser = new SystemUser();
@@ -30,7 +29,6 @@ export default function Index() {
 					username: data.username,
 					email: data.email,
 					loggedIn: true,
-					passwordReset: false
 				});
 			}
 		});

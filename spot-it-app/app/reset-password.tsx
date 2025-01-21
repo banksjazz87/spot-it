@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import { View, Text, TextInput, StyleSheet, Pressable, Alert, GestureResponderEvent, Modal } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import PrimaryButton from "@/components/global/PrimaryButton";
-import { router, Stack } from "expo-router";
+import { router } from "expo-router";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import API from "@/constants/modules/ApiClass";
 import { APIResponse, EmailData, SQLResponse, APIError, User } from "@/constants/interfaces";
 import AppModal from "@/components/global/AppModal";
 import LoadingModal from "@/components/global/LoadingModal";
+import RequestTempPassword from "@/components/resetPassword/RequestTempPassword";
 import SystemUser from "@/constants/modules/SystemUserClass";
 
 export default function ResetPassword(): JSX.Element {
@@ -58,20 +59,7 @@ export default function ResetPassword(): JSX.Element {
 		}, 500);
 	};
 
-	const SysUser = new SystemUser();
-
-	const updateSysUser = (userObj: User): void => {
-		SysUser.clear().then((): void => {
-			SysUser.set(userObj);
-		});
-	};
-
-	const clearSysUserWithMessage = (message: string): void => {
-		SysUser.clear().then((): void => {
-			delayedFailureMessage(message);
-		});
-	};
-
+	
 	const submitHandler = (): void => {
 		setIsLoading(true);
 
@@ -88,15 +76,7 @@ export default function ResetPassword(): JSX.Element {
 						.then((final: APIResponse<SQLResponse[]> | undefined): void => {
 							//Verify that the new password has been sent
 							if (typeof final !== "undefined" && final.status === 200) {
-								const currentUser = {
-									username: "",
-									email: userEmail,
-									loggedIn: false,
-									passwordReset: true,
-								};
-
-								updateSysUser(currentUser);
-								SysUser.get().then((obj: User | null): void => console.log(obj));
+								
 								displayAppModalMessage("Your password has been reset! Check your email for the new password and click okay below to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
 								setValidSubmission(true);
 
@@ -122,15 +102,15 @@ export default function ResetPassword(): JSX.Element {
 					//No record found for the provided email
 				} else if (typeof data?.data === "undefined" && data?.status === 200) {
 					setIsLoading(false);
-					clearSysUserWithMessage("The entered email doesn't exist in the database.");
+					delayedFailureMessage("The entered email doesn't exist in the database.");
 				} else {
 					setIsLoading(false);
-					clearSysUserWithMessage(`The following error occurred in retrieving the user with the provided email, ${data?.message}`);
+					delayedFailureMessage(`The following error occurred in retrieving the user with the provided email, ${data?.message}`);
 				}
 			})
 			.catch((error: APIError): void => {
 				setIsLoading(false);
-				clearSysUserWithMessage(`The following error occurred in retrieving the user with the provided email, ${error?.message}`);
+				delayedFailureMessage(`The following error occurred in retrieving the user with the provided email, ${error?.message}`);
 			});
 	};
 
@@ -166,7 +146,7 @@ export default function ResetPassword(): JSX.Element {
 				/>
 			)}
 
-			<Text style={[StyleClasses.headingOne, { textAlign: "left", textTransform: "uppercase", fontWeight: 700 }]}>Request New Password</Text>
+			<Text style={[StyleClasses.headingOne, { textAlign: "left", textTransform: "uppercase", fontWeight: 700 }]}>Reset Password</Text>
 			<TextInput
 				editable
 				numberOfLines={1}
@@ -203,6 +183,14 @@ export default function ResetPassword(): JSX.Element {
 					submitHandler();
 				}}
 				style={{ paddingTop: 10, paddingBottom: 10 }}
+			/>
+
+			<RequestTempPassword
+				startLoadingHandler={(): void => setIsLoading(true)}
+				stopLoadingHandler={(): void => setIsLoading(false)}
+				modalMessageHandler={(message: string): void => displayAppModalMessage(message)}
+				delayedModalMessage={(message: string): void => delayedFailureMessage(message)}
+				setIsValid={(): void => setValidSubmission(true)}
 			/>
 		</SafeAreaView>
 	);

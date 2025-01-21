@@ -11,7 +11,6 @@ export type User = {
 	email: string;
 	loggedIn: boolean;
 	password?: string;
-	passwordReset: boolean;
 }
 
 export interface UserLogin {
