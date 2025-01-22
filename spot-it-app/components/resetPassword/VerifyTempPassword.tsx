@@ -4,16 +4,18 @@ import { StyleClasses } from "@/constants/lib/StyleClasses";
 import PrimaryButton from "../global/PrimaryButton";
 import API from "@/constants/modules/ApiClass";
 import { APIResponse, FullUser } from "@/constants/interfaces";
+import { start } from "repl";
 
 interface VerifyTempPasswordProps {
 	userEmail: string;
-	loadingHandler: Function;
+    startLoadingHandler: Function;
+    stopLoadingHandler: Function;
 	modalMessageHandler: Function;
 	delayedModalMessage: Function;
 	validTempHandler: Function;
 }
 
-export default function VerifyTempPassword({ userEmail, loadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler }: VerifyTempPasswordProps): JSX.Element {
+export default function VerifyTempPassword({ userEmail, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler }: VerifyTempPasswordProps): JSX.Element {
 	const [tempPassword, setTempPassword] = useState<string>("Temporary Password");
 
 	const tempPassWordHandler = (text: string): void => {
@@ -36,28 +38,28 @@ export default function VerifyTempPassword({ userEmail, loadingHandler, modalMes
 	};
 
     const submitHandler = (): void => {
-        loadingHandler();
+        startLoadingHandler();
+        let modalMessage = '';
 
-		getUserWithTempPassword()
+        getUserWithTempPassword()
             .then((data: APIResponse<FullUser> | null): void => {
-                loadingHandler();
-
                 if (data) {
                     if (data.status === 200) {
-                        modalMessageHandler('The temp password has been confirmed.  Please update your password before continuing.')
+                        modalMessage = `${data.message}`;
                     } else {
-                        modalMessageHandler('The following error occurred in validating the temp password ', data.message);
+                        modalMessage = `${data.message}`;
                     }
                 } else {
-                    modalMessageHandler('An error occurred in accessing the API.');
-                }
-                
-			})
+                    modalMessage = "An error occurred in accessing the API.";
+                } 
+            })
             .catch((error: any): void => {
-                loadingHandler();
-                delayedModalMessage('The following error occurred in validating the temp password ', error);
-				console.log("The following error occurred in getting the user with a temp password ", error);
-			});
+                modalMessage = `The following error occurred in validating the temp password: ${error}`;
+            })
+            .finally((): void => {
+                stopLoadingHandler();
+                delayedModalMessage(modalMessage);
+            });
 	};
 
 	return (
@@ -69,7 +71,7 @@ export default function VerifyTempPassword({ userEmail, loadingHandler, modalMes
 				maxLength={40}
 				value={tempPassword}
 				style={StyleClasses.textInput}
-				onChangeText={(text: string): void => tempPassWordHandler(text)}
+				onChangeText={(text: string): void => tempPassWordHandler(text.trim())}
 				onPressIn={(): void => setTempPassword("")}
 				autoCapitalize="none"
 			/>

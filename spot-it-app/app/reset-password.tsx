@@ -55,7 +55,6 @@ export default function ResetPassword(): JSX.Element {
 				/>
 			)}
 
-
 			{!validSubmission && (
 				<RequestTempPassword
 					startLoadingHandler={(): void => setIsLoading(true)}
@@ -70,7 +69,11 @@ export default function ResetPassword(): JSX.Element {
 			{validSubmission && (
 				<VerifyTempPassword
 					userEmail={userResetEmail}
-					loadingHandler={(): void => setIsLoading(!isLoading)}
+					startLoadingHandler={(): void => setIsLoading(true)}
+					stopLoadingHandler={(): void => setIsLoading(false)}
+					modalMessageHandler={(message: string): void => displayAppModalMessage(message)}
+					delayedModalMessage={(message: string): void => delayedFailureMessage(message)}
+					validTempHandler={(): void => setIsValidTempPassword(true)}
 				/>
 			)}
 		</SafeAreaView>
