@@ -17,6 +17,8 @@ export default function ResetPassword(): JSX.Element {
 	const [modalText, setModalText] = useState<string>("This is a temporary message just to start styling so oh yeah cool beans.");
 	const [validSubmission, setValidSubmission] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [userResetEmail, setUserResetEmail] = useState<string>("");
+	const [isValidTempPassword, setIsValidTempPassword] = useState<boolean>(false);
 	
 
 
@@ -41,20 +43,8 @@ export default function ResetPassword(): JSX.Element {
 					visibleHandler={(): void => setIsLoading(!isLoading)}
 				/>
 			)}
-			{isModalVisible && validSubmission && (
-				<AppModal
-					modalVisible={isModalVisible}
-					visibleHandler={(): void => setIsModalVisible(!isModalVisible)}
-					message={modalText}
-					acceptText={"Okay"}
-					acceptHandler={(): void => router.navigate("/")}
-					closeHandler={(): void => setIsModalVisible(false)}
-					rejectText="Cancel"
-					rejectHandler={(): void => setIsModalVisible(false)}
-				/>
-			)}
 
-			{isModalVisible && !validSubmission && (
+			{isModalVisible && (
 				<AppModal
 					modalVisible={isModalVisible}
 					visibleHandler={(): void => setIsModalVisible(!isModalVisible)}
@@ -65,6 +55,7 @@ export default function ResetPassword(): JSX.Element {
 				/>
 			)}
 
+
 			{!validSubmission && (
 				<RequestTempPassword
 					startLoadingHandler={(): void => setIsLoading(true)}
@@ -72,15 +63,16 @@ export default function ResetPassword(): JSX.Element {
 					modalMessageHandler={(message: string): void => displayAppModalMessage(message)}
 					delayedModalMessage={(message: string): void => delayedFailureMessage(message)}
 					setIsValid={(): void => setValidSubmission(true)}
+					updateUserEmail={(text: string): void => setUserResetEmail(text)}
 				/>
 			)}
 
 			{validSubmission && (
-				<VerifyTempPassword />
+				<VerifyTempPassword
+					userEmail={userResetEmail}
+					loadingHandler={(): void => setIsLoading(!isLoading)}
+				/>
 			)}
-
-
-			
 		</SafeAreaView>
 	);
 }

@@ -13,9 +13,10 @@ interface RequestTempPassword {
 	modalMessageHandler: Function;
     delayedModalMessage: Function;
     setIsValid: Function;
+    updateUserEmail: Function;
 }
 
-export default function RequestTempPassword({ startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, setIsValid }: RequestTempPassword): JSX.Element {
+export default function RequestTempPassword({ startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, setIsValid, updateUserEmail }: RequestTempPassword): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
 
 	const emailChangeHandler = (text: string): void => {
@@ -62,9 +63,10 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 					generateNewPassword(neededData)
 						.then((final: APIResponse<SQLResponse[]> | undefined): void => {
 							//Verify that the new password has been sent
-							if (typeof final !== "undefined" && final.status === 200) {
-								modalMessageHandler("Your password has been reset! Check your email for the new password and click okay below to log in. Didn’t see the email? Check your spam folder. Need help? Contact support.");
-								setIsValid();
+                            if (typeof final !== "undefined" && final.status === 200) {
+                                setIsValid();
+								updateUserEmail(userEmail);
+								modalMessageHandler("Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. Didn’t see the email? Check your spam folder. Need help? Contact support.");
 
 								//Failed in reaching out to the API
 							} else if (typeof final === "undefined") {
@@ -135,9 +137,7 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 
 			<PrimaryButton
 				text="Submit"
-				method={() => {
-					submitHandler();
-				}}
+				method={() => submitHandler()}
 				style={{ paddingTop: 10, paddingBottom: 10 }}
 			/>
 		</>
