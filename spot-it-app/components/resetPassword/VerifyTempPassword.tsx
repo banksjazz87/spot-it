@@ -43,14 +43,10 @@ export default function VerifyTempPassword({ userEmail, startLoadingHandler, sto
 
         getUserWithTempPassword()
             .then((data: APIResponse<FullUser> | null): void => {
-                if (data) {
-                    if (data.status === 200) {
-                        modalMessage = `${data.message}`;
-                    } else {
-                        modalMessage = `${data.message}`;
-                    }
+                if (data?.status === 200) {
+                   modalMessage = "Thanks for validating the temporary password, please take a moment to update your password."
                 } else {
-                    modalMessage = "An error occurred in accessing the API.";
+                    modalMessage = "Oh no, that was the incorrect temporary password.  Please try again, or request a new one."
                 } 
             })
             .catch((error: any): void => {
