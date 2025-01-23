@@ -9,6 +9,7 @@ import { APIResponse, EmailData, SQLResponse, APIError, User } from "@/constants
 import AppModal from "@/components/global/AppModal";
 import LoadingModal from "@/components/global/LoadingModal";
 import RequestTempPassword from "@/components/resetPassword/RequestTempPassword";
+import CreateNewPassword from "@/components/resetPassword/CreateNewPassword";
 import VerifyTempPassword from "@/components/resetPassword/VerifyTempPassword";
 import SystemUser from "@/constants/modules/SystemUserClass";
 
@@ -33,6 +34,13 @@ export default function ResetPassword(): JSX.Element {
 			setValidSubmission(false);
 		}, 500);
 	};
+
+	const dealyedModalMessage = (message: string): void => {
+		setTimeout((): void => {
+			setIsModalVisible(true);
+			setModalText(message);
+		}, 500);
+	}
 
 	
 	return (
@@ -66,15 +74,19 @@ export default function ResetPassword(): JSX.Element {
 				/>
 			)}
 
-			{validSubmission && (
+			{validSubmission && !isValidTempPassword && (
 				<VerifyTempPassword
 					userEmail={userResetEmail}
 					startLoadingHandler={(): void => setIsLoading(true)}
 					stopLoadingHandler={(): void => setIsLoading(false)}
 					modalMessageHandler={(message: string): void => displayAppModalMessage(message)}
-					delayedModalMessage={(message: string): void => delayedFailureMessage(message)}
-					validTempHandler={(): void => setIsValidTempPassword(true)}
+					delayedModalMessage={(message: string): void => dealyedModalMessage(message)}
+					validTempHandler={(bool: boolean): void => setIsValidTempPassword(bool)}
 				/>
+			)}
+
+			{isValidTempPassword && (
+				<CreateNewPassword/>
 			)}
 		</SafeAreaView>
 	);
