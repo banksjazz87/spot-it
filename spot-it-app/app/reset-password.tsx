@@ -5,7 +5,7 @@ import PrimaryButton from "@/components/global/PrimaryButton";
 import { router } from "expo-router";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import API from "@/constants/modules/ApiClass";
-import { APIResponse, EmailData, SQLResponse, APIError, User } from "@/constants/interfaces";
+import { APIResponse, EmailData, SQLResponse, APIError, User, UserId } from "@/constants/interfaces";
 import AppModal from "@/components/global/AppModal";
 import LoadingModal from "@/components/global/LoadingModal";
 import RequestTempPassword from "@/components/resetPassword/RequestTempPassword";
@@ -20,6 +20,12 @@ export default function ResetPassword(): JSX.Element {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [userResetEmail, setUserResetEmail] = useState<string>("");
 	const [isValidTempPassword, setIsValidTempPassword] = useState<boolean>(false);
+	const [userDetails, setUserDetails] = useState<UserId>({
+		id: -1,
+		username: '',
+		email: '',
+		loggedIn: false
+	});
 	
 
 
@@ -40,6 +46,15 @@ export default function ResetPassword(): JSX.Element {
 			setIsModalVisible(true);
 			setModalText(message);
 		}, 500);
+	}
+
+	const updateUserDetails = (userObj: UserId): void => {
+		setUserDetails({...userDetails,
+			id: userObj.id,
+			username: userObj.username,
+			email: userObj.email,
+			loggedIn: userObj.loggedIn,
+		});
 	}
 
 	
@@ -70,18 +85,19 @@ export default function ResetPassword(): JSX.Element {
 					modalMessageHandler={(message: string): void => displayAppModalMessage(message)}
 					delayedModalMessage={(message: string): void => delayedFailureMessage(message)}
 					setIsValid={(): void => setValidSubmission(true)}
-					updateUserEmail={(text: string): void => setUserResetEmail(text)}
+					updateUserDetails={(obj: UserId): void => updateUserDetails(obj)}
 				/>
 			)}
 
 			{validSubmission && !isValidTempPassword && (
 				<VerifyTempPassword
-					userEmail={userResetEmail}
+					userEmail={userDetails.email}
 					startLoadingHandler={(): void => setIsLoading(true)}
 					stopLoadingHandler={(): void => setIsLoading(false)}
 					modalMessageHandler={(message: string): void => displayAppModalMessage(message)}
 					delayedModalMessage={(message: string): void => dealyedModalMessage(message)}
 					validTempHandler={(bool: boolean): void => setIsValidTempPassword(bool)}
+					resetForm={(): void => setValidSubmission(false)}
 				/>
 			)}
 

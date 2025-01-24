@@ -13,10 +13,10 @@ interface RequestTempPassword {
 	modalMessageHandler: Function;
     delayedModalMessage: Function;
     setIsValid: Function;
-    updateUserEmail: Function;
+    updateUserDetails: Function;
 }
 
-export default function RequestTempPassword({ startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, setIsValid, updateUserEmail }: RequestTempPassword): JSX.Element {
+export default function RequestTempPassword({ startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, setIsValid, updateUserDetails }: RequestTempPassword): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
 
 	const emailChangeHandler = (text: string): void => {
@@ -65,10 +65,10 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 							//Verify that the new password has been sent
                             if (typeof final !== "undefined" && final.status === 200) {
                                 setIsValid();
-								updateUserEmail(userEmail);
-								modalMessageHandler("Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. Didn’t see the email? Check your spam folder. Need help? Contact support.");
-
-								//Failed in reaching out to the API
+                                updateUserDetails(final.data);
+                                modalMessageHandler("Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. Didn’t see the email? Check your spam folder. Need help? Contact support.");
+                                
+							//Failed in reaching out to the API
 							} else if (typeof final === "undefined") {
 								modalMessageHandler("Unable to create a new password");
 								return final;

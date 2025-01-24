@@ -1,10 +1,11 @@
-import { View, Text, Pressable, TextInput } from "react-native";
+import { View, Text, Pressable, TextInput, GestureResponderEvent } from "react-native";
 import { useState } from "react";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import PrimaryButton from "../global/PrimaryButton";
 import API from "@/constants/modules/ApiClass";
 import { APIResponse, FullUser } from "@/constants/interfaces";
 import { start } from "repl";
+import { GestureDetectorBridge } from "react-native-screens";
 
 interface VerifyTempPasswordProps {
 	userEmail: string;
@@ -12,10 +13,11 @@ interface VerifyTempPasswordProps {
     stopLoadingHandler: Function;
 	modalMessageHandler: Function;
 	delayedModalMessage: Function;
-	validTempHandler: Function;
+    validTempHandler: Function;
+    resetForm: Function
 }
 
-export default function VerifyTempPassword({ userEmail, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler }: VerifyTempPasswordProps): JSX.Element {
+export default function VerifyTempPassword({ userEmail, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler, resetForm }: VerifyTempPasswordProps): JSX.Element {
 	const [tempPassword, setTempPassword] = useState<string>("Temporary Password");
 
 	const tempPassWordHandler = (text: string): void => {
@@ -74,7 +76,11 @@ export default function VerifyTempPassword({ userEmail, startLoadingHandler, sto
 				onPressIn={(): void => setTempPassword("")}
 				autoCapitalize="none"
 			/>
-			<Text>Please fill in the space above with the temporary password that was sent to your email.</Text>
+            <Text>Please fill in the space above with the temporary password that was sent to your email.</Text>
+            
+            <Pressable onPress={(event: GestureResponderEvent): void => resetForm()}>
+                <Text>Request a new Temporary Password</Text>
+            </Pressable>
 
 			<PrimaryButton
 				text="Submit"

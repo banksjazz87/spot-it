@@ -2,6 +2,7 @@ import { View, Text, Pressable, StyleSheet, TextInput, GestureResponderEvent } f
 import { useEffect, useState } from "react";
 import PrimaryButton from "../global/PrimaryButton";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
+import { Colors } from '@/constants/lib/Colors';
 
 export default function CreateNewPassword(): JSX.Element {
 
@@ -46,7 +47,7 @@ export default function CreateNewPassword(): JSX.Element {
 			<PrimaryButton
 				text="Submit"
 				method={() => submitHandler()}
-				style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: isMatching ? 'blue' : 'black' }}
+				style={{ paddingTop: 10, paddingBottom: 10, backgroundColor: isMatching ? Colors.blue.background : 'black' }}
 			/>
 		</>
 	);
