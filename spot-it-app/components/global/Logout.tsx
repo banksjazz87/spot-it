@@ -81,8 +81,8 @@ export default function Logout({ logoutMethod }: LogoutProps): React.JSX.Element
 				if (data && data.length > 0) {
 					getUser(data)
 						.then((data: LoginResponse): void => {
-							if (data.data.length > 0) {
-								logoutAndClearUser(data.data[0]);
+							if (data.status === 200) {
+								logoutAndClearUser(data.data);
 							}
 						})
 						.catch((err: any): void => {

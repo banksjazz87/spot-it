@@ -92,12 +92,12 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 			.then((data: LoginResponse): void => {
 				console.log('Data here ', data);
 				//Check that we actually got a valid user
-				if (data.data.length > 0) {
+				if (data.status === 200) {
 					//create object to pass back to login
 					const currentUserId: UserId = {
-						id: data.data[0].id,
-						username: data.data[0].username,
-						email: data.data[0].email,
+						id: data.data.id,
+						username: data.data.username,
+						email: data.data.email,
 						loggedIn: 1 ? true : false,
 					};
 
@@ -178,7 +178,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 					}}
 				>
 					<Ionicons
-						name={hidePassword ? "eye-off-outline" : "eye-outline"}
+						name={!hidePassword ? "eye-off-outline" : "eye-outline"}
 						size={24}
 						color="black"
 					/>

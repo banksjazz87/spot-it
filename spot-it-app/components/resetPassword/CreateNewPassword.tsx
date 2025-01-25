@@ -6,7 +6,6 @@ import { Colors } from '@/constants/lib/Colors';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import API from "@/constants/modules/ApiClass";
 import { UserId, ApiMessage } from "@/constants/interfaces";
-import { router } from "expo-router";
 
 
 interface CreateNewPasswordProps {
@@ -14,12 +13,13 @@ interface CreateNewPasswordProps {
     delayedModalMessage: Function;
     startLoadingHandler: Function;
     stopLoadingHandler: Function;
+    resetHandler: Function;
 }
 
 const newPasswordPlaceholder: string = 'New Password';
 const validatePlaceholder: string = 'Re-enter the password';
 
-export default function CreateNewPassword({ user, delayedModalMessage, startLoadingHandler, stopLoadingHandler }: CreateNewPasswordProps): JSX.Element {
+export default function CreateNewPassword({ user, delayedModalMessage, startLoadingHandler, stopLoadingHandler, resetHandler }: CreateNewPasswordProps): JSX.Element {
     const [newPassword, setNewPassword] = useState<string>(newPasswordPlaceholder);
     const [validatePassword, setValidatePassword] = useState<string>(validatePlaceholder);
     const [isMatching, setIsMatching] = useState<boolean>(false);
@@ -47,6 +47,7 @@ export default function CreateNewPassword({ user, delayedModalMessage, startLoad
         api.putData().then((data: ApiMessage): void => {
             if (data.status === 200) {
                 delayedModalMessage('Thanks for updating your password!  Please log in with your new password to continue.');
+                resetHandler();
             } else {
                 delayedModalMessage(`Oh no!  The following error has occurred in updating your password: ${data.message} please reach out to our support team at banksjazz87@gmail.com`);
             }
@@ -56,7 +57,8 @@ export default function CreateNewPassword({ user, delayedModalMessage, startLoad
         }).finally((): void => {
             stopLoadingHandler();
         });
-	};
+    };
+    
 	return (
 		<>
 			<Text style={[StyleClasses.headingOne, { textAlign: "left", textTransform: "uppercase", fontWeight: 700 }]}>Create A New Password</Text>

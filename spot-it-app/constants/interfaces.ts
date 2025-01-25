@@ -37,7 +37,7 @@ export interface FullUser {
 }
 
 export interface ApiMessage {
-	data: object[];
+	data: object[] | object;
 	message: string;
 	status: number;
 }
@@ -77,14 +77,14 @@ export interface EmailData {
 }
 
 export interface ApiDataResponse extends ApiMessage {
-	data: object[];
+	data: object[] | object;
 	message: string;
 	status: number;
 	valid: boolean;
 }
 
 export interface LoginResponse extends ApiDataResponse {
-	data: FullUser[];
+	data: FullUser;
 }
 
 export interface ApiErrorResponse {

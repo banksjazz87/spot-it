@@ -26,6 +26,7 @@ export default function ResetPassword(): JSX.Element {
 		email: '',
 		loggedIn: false
 	});
+	const [isReset, setIsReset] = useState<boolean>(false);
 	
 
 
@@ -57,6 +58,15 @@ export default function ResetPassword(): JSX.Element {
 		});
 	}
 
+	const modalAcceptHandler = (e: GestureResponderEvent): void => {
+		if (isReset) {
+			setIsModalVisible(false);
+			router.navigate("/");
+		} else {
+			setIsModalVisible(false);
+		}
+	}
+
 	
 	return (
 		<SafeAreaView style={[StyleClasses.loginContainer, { justifyContent: "center", flex: 1 }]}>
@@ -73,7 +83,7 @@ export default function ResetPassword(): JSX.Element {
 					visibleHandler={(): void => setIsModalVisible(!isModalVisible)}
 					message={modalText}
 					acceptText={"Okay"}
-					acceptHandler={(): void => setIsModalVisible(false)}
+					acceptHandler={modalAcceptHandler}
 					closeHandler={(): void => setIsModalVisible(false)}
 				/>
 			)}
@@ -107,6 +117,7 @@ export default function ResetPassword(): JSX.Element {
 					delayedModalMessage={(message: string): void => dealyedModalMessage(message)}
 					startLoadingHandler={(): void => setIsLoading(true)}
 					stopLoadingHandler={(): void => setIsLoading(false)}
+					resetHandler={(): void => setIsReset(true)}
 				/>
 			)}
 		</SafeAreaView>
