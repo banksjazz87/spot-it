@@ -57,7 +57,8 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 				//Check the user's email data
 				if (typeof data?.data !== "undefined" && data?.status === 200) {
 					//User data
-					const neededData = data.data as EmailData;
+                    const neededData = data.data as EmailData;
+                    updateUserDetails(data.data);
 
 					//Create new password
 					generateNewPassword(neededData)
@@ -65,7 +66,6 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 							//Verify that the new password has been sent
                             if (typeof final !== "undefined" && final.status === 200) {
                                 setIsValid();
-                                updateUserDetails(final.data);
                                 modalMessageHandler("Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. Didn’t see the email? Check your spam folder. Need help? Contact support.");
                                 
 							//Failed in reaching out to the API

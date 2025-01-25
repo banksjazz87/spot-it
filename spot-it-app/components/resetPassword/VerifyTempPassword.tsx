@@ -6,9 +6,10 @@ import API from "@/constants/modules/ApiClass";
 import { APIResponse, FullUser } from "@/constants/interfaces";
 import { start } from "repl";
 import { GestureDetectorBridge } from "react-native-screens";
+import { UserId } from "@/constants/interfaces";
 
 interface VerifyTempPasswordProps {
-	userEmail: string;
+	user: UserId;
     startLoadingHandler: Function;
     stopLoadingHandler: Function;
 	modalMessageHandler: Function;
@@ -17,7 +18,7 @@ interface VerifyTempPasswordProps {
     resetForm: Function
 }
 
-export default function VerifyTempPassword({ userEmail, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler, resetForm }: VerifyTempPasswordProps): JSX.Element {
+export default function VerifyTempPassword({ user, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler, resetForm }: VerifyTempPasswordProps): JSX.Element {
 	const [tempPassword, setTempPassword] = useState<string>("Temporary Password");
 
 	const tempPassWordHandler = (text: string): void => {
@@ -27,7 +28,7 @@ export default function VerifyTempPassword({ userEmail, startLoadingHandler, sto
 	const getUserWithTempPassword = async (): Promise<APIResponse<FullUser> | null> => {
 		const api = new API("/get-user-with-temp-password/");
 		const url = api.getUrl();
-		const fullUrl = `${url}/${userEmail}/${tempPassword}`;
+		const fullUrl = `${url}/${user.id}/${tempPassword}`;
 
 		try {
 			const getUser: Response = await fetch(fullUrl);
