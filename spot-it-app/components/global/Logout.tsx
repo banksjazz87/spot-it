@@ -2,7 +2,7 @@ import { View, Text, Pressable, GestureResponderEvent } from "react-native";
 import SystemUser from "../../constants/modules/SystemUserClass";
 import API from "../../constants/modules/ApiClass";
 import UserClass from "../../constants/modules/UserClass";
-import { User, LoginResponse, FullUser, ApiMessage, ApiErrorResponse } from "../../constants/interfaces";
+import { User, APIResponse, FullUser, ApiMessage, ApiErrorResponse } from "../../constants/interfaces";
 import { router } from "expo-router";
 
 interface LogoutProps {
@@ -80,8 +80,8 @@ export default function Logout({ logoutMethod }: LogoutProps): React.JSX.Element
 			.then((data: string | null): void => {
 				if (data && data.length > 0) {
 					getUser(data)
-						.then((data: LoginResponse): void => {
-							if (data.status === 200) {
+						.then((data: APIResponse<FullUser>): void => {
+							if (data.status === 200 && data.data) {
 								logoutAndClearUser(data.data);
 							}
 						})

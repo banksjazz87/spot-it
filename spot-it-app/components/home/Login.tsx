@@ -2,7 +2,7 @@ import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, Pressable, Alert, GestureResponderEvent } from "react-native";
 import PrimaryButton from "../global/PrimaryButton";
 import API from "../../constants/modules/ApiClass";
-import { UserLogin, UserId, ApiMessage, LoginResponse, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
+import { UserLogin, UserId, APIResponse, FullUser, ApiErrorResponse, LoginProps } from "../../constants/interfaces";
 import SystemUser from "../../constants/modules/SystemUserClass";
 import { router } from "expo-router";
 import { StyleClasses } from "../../constants/lib/StyleClasses";
@@ -89,21 +89,21 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 
 	const submitHandler = (): void => {
 		getUser()
-			.then((data: LoginResponse): void => {
+			.then((data: APIResponse<FullUser>): void => {
 				console.log('Data here ', data);
 				//Check that we actually got a valid user
-				if (data.status === 200) {
+				if (data.status === 200 && data.data) {
 					//create object to pass back to login
 					const currentUserId: UserId = {
 						id: data.data.id,
 						username: data.data.username,
-						email: data.data.email,
+						email: data.data?.email,
 						loggedIn: 1 ? true : false,
 					};
 
 					//Login the user
 					login(currentUserId)
-						.then((data: LoginResponse): void => {
+						.then((data: APIResponse<FullUser>): void => {
 							if (data.status === 200) {
 								loginUpdater(currentUserId.username, loginUser.email);
                                 updateSystemUser(currentUserId);
