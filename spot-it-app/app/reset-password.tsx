@@ -105,6 +105,8 @@ export default function ResetPassword(): JSX.Element {
 				<CreateNewPassword
 					user={userDetails}
 					delayedModalMessage={(message: string): void => dealyedModalMessage(message)}
+					startLoadingHandler={(): void => setIsLoading(true)}
+					stopLoadingHandler={(): void => setIsLoading(false)}
 				/>
 			)}
 		</SafeAreaView>
