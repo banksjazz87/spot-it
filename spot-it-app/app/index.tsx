@@ -1,4 +1,4 @@
-import { Pressable, Text, View, StyleSheet, GestureResponderEvent } from "react-native";
+import { Pressable, Text, View, StyleSheet, GestureResponderEvent, SafeAreaView } from "react-native";
 import { useState, useEffect } from "react";
 import { ImageProperties } from "@/constants/interfaces";
 import CharacterImages from "@/constants/lib/CharacterImages";
@@ -57,7 +57,7 @@ export default function Index() {
 
 	if (currentUser.loggedIn) {
 		return (
-			<View style={styles.container}>
+			<SafeAreaView style={styles.container}>
 				<Text style={StyleClasses.largeText}>Welcome {currentUser.username}</Text>
 				<View style={StyleClasses.buttonGroup}>
 					<PrimaryButton
@@ -67,19 +67,19 @@ export default function Index() {
 						}}
 						style={{ paddingTop: 10, paddingBottom: 10 }}
 					/>
-						<Logout logoutMethod={clearCurrentUser} />
+					<Logout logoutMethod={clearCurrentUser} />
 				</View>
-			</View>
+			</SafeAreaView>
 		);
 	} else {
 		return (
-			<View style={styles.container}>
+			<SafeAreaView style={styles.container}>
 				<Login
 					loginUpdater={updateUser}
 					user={currentUser}
 					targetUrl={"/profile"}
 				/>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }

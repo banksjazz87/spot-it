@@ -159,14 +159,14 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 				<View style={{ display: 'flex', flexDirection: 'row', columnGap: 10}}>
 					<Pressable
 						onPress={(e: GestureResponderEvent): void => {
-							router.navigate('/reset-password');
+							router.navigate('/register-reset/reset-password');
 						}}
 					>
 						<Text style={styles.rHFont}>Forgot your password?</Text>
 					</Pressable>
 					<Pressable
 						onPress={(e: GestureResponderEvent): void => {
-							router.navigate("/register");
+							router.navigate("/register-reset/register");
 						}}
 					>
 						<Text style={styles.rHFont}>New Here</Text>

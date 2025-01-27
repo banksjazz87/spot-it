@@ -128,7 +128,7 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 
 				<Pressable
 					onPress={(e: GestureResponderEvent): void => {
-						router.navigate("/register");
+						router.navigate("/register-reset/reset-password");
 					}}
 				>
 					<Text>Create New Account</Text>
