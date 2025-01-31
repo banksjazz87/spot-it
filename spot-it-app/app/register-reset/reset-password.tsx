@@ -12,6 +12,8 @@ import RequestTempPassword from "@/components/resetPassword/RequestTempPassword"
 import CreateNewPassword from "@/components/resetPassword/CreateNewPassword";
 import VerifyTempPassword from "@/components/resetPassword/VerifyTempPassword";
 import SystemUser from "@/constants/modules/SystemUserClass";
+import Header from "@/components/resetPassword/Header";
+import { useNavigation } from "expo-router";
 
 export default function ResetPassword(): JSX.Element {
 	const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -27,7 +29,17 @@ export default function ResetPassword(): JSX.Element {
 		loggedIn: false
 	});
 	const [isReset, setIsReset] = useState<boolean>(false);
+	const [pageTitle, setPageTitle] = useState<string>("Reset Password");
+
+	const navigation = useNavigation();
 	
+
+	useEffect((): void => {
+		console.log('HEREEEEEE ', pageTitle);
+		navigation.setOptions({
+			header: () => <Header title={pageTitle} />,
+		});
+	}, [pageTitle]);
 
 
 	const displayAppModalMessage = (message: string): void => {
@@ -96,6 +108,7 @@ export default function ResetPassword(): JSX.Element {
 					delayedModalMessage={(message: string): void => delayedFailureMessage(message)}
 					setIsValid={(): void => setValidSubmission(true)}
 					updateUserDetails={(obj: UserId): void => updateUserDetails(obj)}
+					updatePageTitle={(text: string): void => setPageTitle(text)}
 				/>
 			)}
 
@@ -108,6 +121,7 @@ export default function ResetPassword(): JSX.Element {
 					delayedModalMessage={(message: string): void => dealyedModalMessage(message)}
 					validTempHandler={(bool: boolean): void => setIsValidTempPassword(bool)}
 					resetForm={(): void => setValidSubmission(false)}
+					updatePageTitle={(text: string): void => setPageTitle(text)}
 				/>
 			)}
 

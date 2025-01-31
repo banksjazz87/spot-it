@@ -13,10 +13,12 @@ interface RequestTempPassword {
 	modalMessageHandler: Function;
     delayedModalMessage: Function;
     setIsValid: Function;
-    updateUserDetails: Function;
+	updateUserDetails: Function;
+	updatePageTitle: Function;
 }
 
-export default function RequestTempPassword({ startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, setIsValid, updateUserDetails }: RequestTempPassword): JSX.Element {
+
+export default function RequestTempPassword({ startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, setIsValid, updateUserDetails, updatePageTitle }: RequestTempPassword): JSX.Element {
 	const [userEmail, setUserEmail] = useState<string>("Email");
 
 	const emailChangeHandler = (text: string): void => {
@@ -57,18 +59,21 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 				//Check the user's email data
 				if (typeof data?.data !== "undefined" && data?.status === 200) {
 					//User data
-                    const neededData = data.data as EmailData;
-                    updateUserDetails(data.data);
+					const neededData = data.data as EmailData;
+					updateUserDetails(data.data);
 
 					//Create new password
 					generateNewPassword(neededData)
 						.then((final: APIResponse<SQLResponse[]> | undefined): void => {
 							//Verify that the new password has been sent
-                            if (typeof final !== "undefined" && final.status === 200) {
-                                setIsValid();
-                                modalMessageHandler(`Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. \n\nDidn’t see the email? Check your spam folder. Need help? Contact support.`);
-                                
-							//Failed in reaching out to the API
+							if (typeof final !== "undefined" && final.status === 200) {
+								setIsValid();
+								modalMessageHandler(
+									`Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. \n\nDidn’t see the email? Check your spam folder. Need help? Contact support.`
+								);
+								updatePageTitle('Validate Temporary');
+
+								//Failed in reaching out to the API
 							} else if (typeof final === "undefined") {
 								modalMessageHandler("Unable to create a new password");
 								return final;
@@ -104,7 +109,6 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 
 	return (
 		<>
-			<Text style={[StyleClasses.headingOne, { textAlign: "left", textTransform: "uppercase", fontWeight: 700 }]}>Reset Password</Text>
 			<TextInput
 				editable
 				numberOfLines={1}

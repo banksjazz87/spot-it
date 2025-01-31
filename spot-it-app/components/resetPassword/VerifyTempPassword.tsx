@@ -10,15 +10,16 @@ import { UserId } from "@/constants/interfaces";
 
 interface VerifyTempPasswordProps {
 	user: UserId;
-    startLoadingHandler: Function;
-    stopLoadingHandler: Function;
+	startLoadingHandler: Function;
+	stopLoadingHandler: Function;
 	modalMessageHandler: Function;
 	delayedModalMessage: Function;
-    validTempHandler: Function;
-    resetForm: Function
+	validTempHandler: Function;
+	resetForm: Function;
+	updatePageTitle: Function;
 }
 
-export default function VerifyTempPassword({ user, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler, resetForm }: VerifyTempPasswordProps): JSX.Element {
+export default function VerifyTempPassword({ user, startLoadingHandler, stopLoadingHandler, modalMessageHandler, delayedModalMessage, validTempHandler, resetForm, updatePageTitle }: VerifyTempPasswordProps): JSX.Element {
 	const [tempPassword, setTempPassword] = useState<string>("Temporary Password");
 
 	const tempPassWordHandler = (text: string): void => {
@@ -49,7 +50,8 @@ export default function VerifyTempPassword({ user, startLoadingHandler, stopLoad
             .then((data: APIResponse<FullUser> | null): void => {
                 if (data?.status === 200) {
                     modalMessage = "Thanks for validating the temporary password, please take a moment to update your password."
-                    tempIsValid = true;
+					tempIsValid = true;
+					updatePageTitle('Create New Password');
                 } else {
                     modalMessage = "Oh no, that was the incorrect temporary password.  Please try again, or request a new one."
                 } 
@@ -66,7 +68,6 @@ export default function VerifyTempPassword({ user, startLoadingHandler, stopLoad
 
 	return (
 		<>
-			<Text style={[StyleClasses.headingOne, { textAlign: "left", textTransform: "uppercase", fontWeight: 700 }]}>Temporary Password</Text>
 			<TextInput
 				editable
 				numberOfLines={1}
@@ -77,11 +78,12 @@ export default function VerifyTempPassword({ user, startLoadingHandler, stopLoad
 				onPressIn={(): void => setTempPassword("")}
 				autoCapitalize="none"
 			/>
-            <Text>Please fill in the space above with the temporary password that was sent to your email.</Text>
-            
-            <Pressable onPress={(event: GestureResponderEvent): void => resetForm()}>
-                <Text>Request a new Temporary Password</Text>
-            </Pressable>
+
+			<Text>Please fill in the space above with the temporary password that was sent to your email.</Text>
+
+			<Pressable onPress={(event: GestureResponderEvent): void => resetForm()}>
+				<Text>Request a new Temporary Password</Text>
+			</Pressable>
 
 			<PrimaryButton
 				text="Submit"

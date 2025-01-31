@@ -13,22 +13,6 @@ export default function Layout(): React.JSX.Element {
 		<Stack>
 			<Stack.Screen
 				name="reset-password"
-				options={{
-					header: () => (
-						<View style={styles.headerContainer}>
-							<Text style={styles.whiteHeading}>Reset Password</Text>
-							<Pressable
-								onPress={() => router.navigate("/")}
-							>
-								<Ionicons
-									name="log-in-outline"
-									size={36}
-									color="white"
-								/>
-							</Pressable>
-						</View>
-					),
-				}}
 			/>
 			<Stack.Screen
 				name="register"
