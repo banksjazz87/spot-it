@@ -68,6 +68,23 @@ export const StyleClasses = StyleSheet.create({
 		flexDirection: "row",
 		rowGap: 10,
 		columnGap: 20,
-		justifyContent: 'center'
+		justifyContent: "center",
+	},
+	stackHeaderLarge: {
+		display: "flex",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		paddingBottom: 10,
+		paddingTop: 30,
+		backgroundColor: "black",
+		paddingLeft: 10,
+		paddingRight: 10,
+		alignItems: "center",
+	},
+	stackHeading: {
+		color: "white",
+		fontSize: 24,
+		fontWeight: "600",
+		textTransform: "uppercase",
 	},
 });

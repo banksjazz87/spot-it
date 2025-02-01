@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TextInput, Pressable, GestureResponderEvent, Modal } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { StyleClasses } from "@/constants/lib/StyleClasses";
 import { router } from "expo-router";
 import PrimaryButton from "@/components/global/PrimaryButton";
@@ -7,6 +7,8 @@ import { NewUserInterface } from "@/constants/interfaces";
 import NewUserClass from "@/constants/modules/NewUserClass";
 import { ApiDataResponse } from "@/constants/interfaces";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import ResetRegisterHeader from "@/components/global/ResetRegisterHeader";
+import { useNavigation } from "expo-router";
 
 export default function Register() {
 	const [newUser, setNewUser] = useState<NewUserInterface>({
@@ -20,6 +22,13 @@ export default function Register() {
 	const [modalVisible, setModalVisible] = useState<boolean>(false);
 
 	const NewUser = new NewUserClass(newUser);
+	const navigation = useNavigation();
+
+	useEffect((): void => {
+		navigation.setOptions({
+			header: (): React.JSX.Element => <ResetRegisterHeader title="New Account" />
+		})
+	})
 
 	const registerHandler = (): void => {
 		if (NewUser.isValid()) {
@@ -72,8 +81,6 @@ export default function Register() {
 					</Modal>
 				</View>
 
-
-				<Text>Create an account</Text>
 				<TextInput
 					editable
 					textContentType="emailAddress"

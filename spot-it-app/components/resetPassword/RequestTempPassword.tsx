@@ -69,7 +69,7 @@ export default function RequestTempPassword({ startLoadingHandler, stopLoadingHa
 							if (typeof final !== "undefined" && final.status === 200) {
 								setIsValid();
 								modalMessageHandler(
-									`Your password has been reset! Check your email for the new password and click okay below submit your temporary password and reset your password. \n\nDidn’t see the email? Check your spam folder. Need help? Contact support.`
+									`Your password has been reset! \n\nCheck your email for the new password and click okay below submit your temporary password and reset your password. \n\nDidn’t see the email? Check your spam folder. Need help? Contact support.`
 								);
 								updatePageTitle('Validate Temporary');
 

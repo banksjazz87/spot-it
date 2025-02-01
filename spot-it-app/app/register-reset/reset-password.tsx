@@ -12,7 +12,7 @@ import RequestTempPassword from "@/components/resetPassword/RequestTempPassword"
 import CreateNewPassword from "@/components/resetPassword/CreateNewPassword";
 import VerifyTempPassword from "@/components/resetPassword/VerifyTempPassword";
 import SystemUser from "@/constants/modules/SystemUserClass";
-import Header from "@/components/resetPassword/Header";
+import ResetRegisterHeader from "@/components/global/ResetRegisterHeader";
 import { useNavigation } from "expo-router";
 
 export default function ResetPassword(): JSX.Element {
@@ -35,9 +35,8 @@ export default function ResetPassword(): JSX.Element {
 	
 
 	useEffect((): void => {
-		console.log('HEREEEEEE ', pageTitle);
 		navigation.setOptions({
-			header: () => <Header title={pageTitle} />,
+			header: () => <ResetRegisterHeader title={pageTitle} />,
 		});
 	}, [pageTitle]);
 

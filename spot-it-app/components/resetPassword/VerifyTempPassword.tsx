@@ -81,7 +81,11 @@ export default function VerifyTempPassword({ user, startLoadingHandler, stopLoad
 
 			<Text>Please fill in the space above with the temporary password that was sent to your email.</Text>
 
-			<Pressable onPress={(event: GestureResponderEvent): void => resetForm()}>
+			<Pressable onPress={(event: GestureResponderEvent): void => {
+				resetForm();
+				updatePageTitle("Reset Password");
+			}
+			}>
 				<Text>Request a new Temporary Password</Text>
 			</Pressable>
 
