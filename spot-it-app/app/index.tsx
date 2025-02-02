@@ -9,6 +9,7 @@ import Login from "../components/home/Login";
 import { User } from "../constants/interfaces";
 import { StyleClasses } from "../constants/lib/StyleClasses";
 import Logout from "@/components/global/Logout";
+import LoadingModal from "@/components/global/LoadingModal";
 import PrimaryButton from "@/components/global/PrimaryButton";
 import { router } from "expo-router";
 
@@ -18,6 +19,7 @@ export default function Index() {
 		email: "",
 		loggedIn: false,
 	});
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const SysUser = new SystemUser();
 
@@ -58,6 +60,9 @@ export default function Index() {
 	if (currentUser.loggedIn) {
 		return (
 			<SafeAreaView style={styles.container}>
+				<LoadingModal
+					isLoading={isLoading}
+				/>
 				<Text style={StyleClasses.largeText}>Welcome {currentUser.username}</Text>
 				<View style={StyleClasses.buttonGroup}>
 					<PrimaryButton
@@ -74,6 +79,9 @@ export default function Index() {
 	} else {
 		return (
 			<SafeAreaView style={styles.container}>
+				<LoadingModal 
+					isLoading={isLoading}
+				/>
 				<Login
 					loginUpdater={updateUser}
 					user={currentUser}

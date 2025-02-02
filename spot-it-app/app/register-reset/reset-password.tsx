@@ -84,7 +84,6 @@ export default function ResetPassword(): JSX.Element {
 			{isLoading && (
 				<LoadingModal
 					isLoading={isLoading}
-					visibleHandler={(): void => setIsLoading(!isLoading)}
 				/>
 			)}
 

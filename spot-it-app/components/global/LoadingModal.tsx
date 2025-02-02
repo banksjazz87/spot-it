@@ -5,13 +5,12 @@ import Animated, { useSharedValue, withSpring, withRepeat, withTiming, useAnimat
 
 interface LoadingModalProps {
 	isLoading: boolean;
-	visibleHandler: Function;
 }
 
 const duration = 2000;
 const easing = Easing.bezier(0.28, 1.32, 0.27, -0.59);
 
-export default function LoadingModal({ isLoading, visibleHandler }: LoadingModalProps): React.JSX.Element {
+export default function LoadingModal({ isLoading }: LoadingModalProps): React.JSX.Element {
 
     const [isRotating, setIsRotating] = useState<boolean>(true);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -28,7 +27,6 @@ export default function LoadingModal({ isLoading, visibleHandler }: LoadingModal
 			setTimeout((): void => {
 				setIsRotating(false);
 				cancelAnimation(rotation);
-				visibleHandler();
 				setShowModal(false);
 			}, 500);
 		} else {
