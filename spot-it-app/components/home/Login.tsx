@@ -8,7 +8,7 @@ import { router } from "expo-router";
 import { StyleClasses } from "../../constants/lib/StyleClasses";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
+export default function Login({ loginUpdater, user, targetUrl, startLoading, stopLoading }: LoginProps) {
 	const [loginUser, setLoginUser] = useState<UserLogin>({
 		email: "Email",
 		password: "Password",
@@ -88,6 +88,7 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 	};
 
 	const submitHandler = (): void => {
+		startLoading();
 		getUser()
 			.then((data: APIResponse<FullUser>): void => {
 				console.log("Data here ", data);
@@ -115,13 +116,16 @@ export default function Login({ loginUpdater, user, targetUrl }: LoginProps) {
 						.catch((err: ApiErrorResponse): void => {
 							throwServerError(err.message);
 						})
+						.finally((): void => stopLoading());
 				} else {
 					throwInvalidUserAlert();
 				}
 			})
 			.catch((err: ApiErrorResponse): void => {
+				stopLoading();
 				throwServerError(err.message);
 			})
+			.finally((): void => stopLoading());
 	};
 
 	return (

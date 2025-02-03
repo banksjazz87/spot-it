@@ -95,6 +95,8 @@ export interface ApiErrorResponse {
 export interface LoginProps {
 	loginUpdater: Function;
 	user: User;
+	startLoading: Function;
+	stopLoading: Function;
 	targetUrl: Href<string | object>;
 }
 

@@ -86,6 +86,8 @@ export default function Index() {
 					loginUpdater={updateUser}
 					user={currentUser}
 					targetUrl={"/profile"}
+					startLoading={(): void => setIsLoading(true)}
+					stopLoading={(): void => setIsLoading(false)}
 				/>
 			</SafeAreaView>
 		);
