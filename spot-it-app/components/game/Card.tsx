@@ -43,8 +43,8 @@ export function Card({ images, newMatch, sharedImage, countHandler }: CardProps)
 const styles = StyleSheet.create({
 	card: {
 		backgroundColor: "white",
-		height: 280,
-		width: 280,
+		height: 285,
+		width: 285,
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",

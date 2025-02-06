@@ -7,6 +7,7 @@ import { Card } from "../../components/game/Card";
 import { Colors } from "../../constants/lib/Colors";
 import PrimaryButton from "@/components/global/PrimaryButton";
 import Timer from "@/components/game/Timer";
+import AppModal from "@/components/global/AppModal";
 
 export default function Game() {
 	const initImage: ImageProperties = {
@@ -83,11 +84,11 @@ export default function Game() {
 	useEffect(() => {
 		if (timedGame && countDownTimer > 0) {
 			const intervalId: NodeJS.Timeout = setInterval(() => {
-				setCountDownTimer(c => c - 1);
+				setCountDownTimer((c) => c - 1);
 			}, 1000);
 
 			return () => clearInterval(intervalId);
-		} 
+		}
 	}, [timedGame, countDownTimer]);
 
 	useEffect(() => {
@@ -98,8 +99,6 @@ export default function Game() {
 		}
 	}, [countDownTimer]);
 
-	
-
 	//Used to update the current match, when this is updated, everything else updates as well.
 	const createNewMatch = (): void => {
 		const randomNum = new LayoutConstructor(CharacterImages).getRandomNumber();
@@ -107,31 +106,92 @@ export default function Game() {
 		setSharedImage(CharacterImages[randomNum]);
 	};
 
-	if (matchIndex === -1 && !timedGame) {
-		return (
-			<View
-				style={{
-					flex: 1,
-					justifyContent: "center",
-					alignItems: "center",
-					rowGap: 40,
-				}}
-			>
-				<PrimaryButton
-					method={(): void => createNewMatch()}
-					text="One Player Game"
-					style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
-				/>
-				<PrimaryButton
-					method={(): void => {
-						setTimedGame(true);
-					}}
-					text="Timed Game"
-					style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
-				/>
-			</View>
-		);
-	} else if (matchIndex === -1 && timedGame) {
+	// if (matchIndex === -1 && !timedGame) {
+	// 	return (
+	// 		<View
+	// 			style={{
+	// 				flex: 1,
+	// 				justifyContent: "center",
+	// 				alignItems: "center",
+	// 				rowGap: 40,
+	// 			}}
+	// 		>
+	// 			<PrimaryButton
+	// 				method={(): void => createNewMatch()}
+	// 				text="One Player Game"
+	// 				style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
+	// 			/>
+	// 			<PrimaryButton
+	// 				method={(): void => {
+	// 					setTimedGame(true);
+	// 				}}
+	// 				text="Timed Game"
+	// 				style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
+	// 			/>
+	// 		</View>
+	// 	);
+	// } else if (matchIndex === -1 && timedGame) {
+	// 	return (
+	// 		<View style={styles.countDown}>
+	// 			<Text style={timedGame && countDownTimer !== 0 ? [{ display: "flex" }, styles.countDownNumber] : { display: "none" }}>{countDownTimer}</Text>
+	// 		</View>
+	// 	);
+	// } else {
+	// 	return (
+	// 		<View
+	// 			style={{
+	// 				flex: 1,
+	// 				justifyContent: "center",
+	// 				alignItems: "center",
+	// 				rowGap: 20,
+	// 			}}
+	// 		>
+	// 			<View
+	// 				style={{
+	// 					display: "flex",
+	// 					flexDirection: "row",
+	// 					justifyContent: 'space-between',
+	// 					alignItems: "center",
+	// 					columnGap: 20,
+	// 				}}
+	// 			>
+	// 				<Text style={styles.countNumber}>{numberOfMatches}</Text>
+	// 				<PrimaryButton
+	// 					method={(): void => {
+	// 						setSharedImage(initImage);
+	// 						setMatchIndex(-1);
+	// 						setCountDownTimer(3);
+	// 						setTimedGame(false);
+	// 						setStartGameTimer(false);
+	// 						setNumberOfMatches(0);
+	// 					}}
+	// 					text={"Restart"}
+	// 				/>
+	// 				<Timer
+	// 					start={startGameTimer}
+	// 					stop={(): void => setStartGameTimer(false)}
+	// 					display={showTimer}
+	// 				/>
+	// 			</View>
+
+	// 			<Card
+	// 				images={cardOne}
+	// 				newMatch={createNewMatch}
+	// 				sharedImage={sharedImage}
+	// 				countHandler={(): void => setNumberOfMatches((c) => c + 1)}
+	// 			/>
+	// 			<Card
+	// 				images={cardTwo}
+	// 				newMatch={createNewMatch}
+	// 				sharedImage={sharedImage}
+	// 				countHandler={(): void => setNumberOfMatches((c) => c + 1)}
+	// 			/>
+	// 		</View>
+	// 	);
+	// }
+
+	//COUNTDOWN TO START GAME
+	if (matchIndex === -1 && timedGame) {
 		return (
 			<View style={styles.countDown}>
 				<Text style={timedGame && countDownTimer !== 0 ? [{ display: "flex" }, styles.countDownNumber] : { display: "none" }}>{countDownTimer}</Text>
@@ -144,70 +204,93 @@ export default function Game() {
 					flex: 1,
 					justifyContent: "center",
 					alignItems: "center",
-					rowGap: 20,
+					rowGap: !timedGame && matchIndex === 1 ? 40 : 20,
 				}}
 			>
-				<View
-					style={{
-						display: "flex",
-						flexDirection: "row",
-						justifyContent: 'space-between',
-						alignItems: "center",
-						columnGap: 20,
-					}}
-				>
-					<Text style={styles.countNumber}>{numberOfMatches}</Text>
-					<PrimaryButton
-						method={(): void => {
-							setSharedImage(initImage);
-							setMatchIndex(-1);
-							setCountDownTimer(3);
-							setTimedGame(false);
-							setStartGameTimer(false);
-							setNumberOfMatches(0);
-						}}
-						text={"Restart"}
-					/>
-					<Timer
-						start={startGameTimer}
-						stop={(): void => setStartGameTimer(false)}
-						display={showTimer}
-					/>
-				</View>
+				{/** MAIN MENU */}
+				{matchIndex === -1 && !timedGame && (
+					<>
+						<PrimaryButton
+							method={(): void => createNewMatch()}
+							text="One Player Game"
+							style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
+						/>
+						<PrimaryButton
+							method={(): void => {
+								setTimedGame(true);
+							}}
+							text="Timed Game"
+							style={{ paddingTop: 20, paddingBottom: 20, width: 370 }}
+						/>
+					</>
+				)}
 
-				<Card
-					images={cardOne}
-					newMatch={createNewMatch}
-					sharedImage={sharedImage}
-					countHandler={(): void => setNumberOfMatches((c) => c + 1)}
-				/>
-				<Card
-					images={cardTwo}
-					newMatch={createNewMatch}
-					sharedImage={sharedImage}
-					countHandler={(): void => setNumberOfMatches((c) => c + 1)}
-				/>
+				{/** GAME PLAY VIEW */}
+				{matchIndex > -1 && (
+					<>
+						<View
+							style={{
+								display: "flex",
+								flexDirection: "row",
+								justifyContent: "space-between",
+								alignItems: "center",
+								columnGap: 20,
+							}}
+						>
+							<Text style={styles.countNumber}>{numberOfMatches}</Text>
+							<PrimaryButton
+								method={(): void => {
+									setSharedImage(initImage);
+									setMatchIndex(-1);
+									setCountDownTimer(3);
+									setTimedGame(false);
+									setStartGameTimer(false);
+									setNumberOfMatches(0);
+								}}
+								text={"Restart"}
+							/>
+							<Timer
+								start={startGameTimer}
+								stop={(): void => setStartGameTimer(false)}
+								display={showTimer}
+							/>
+						</View>
+
+						<Card
+							images={cardOne}
+							newMatch={createNewMatch}
+							sharedImage={sharedImage}
+							countHandler={(): void => setNumberOfMatches((c) => c + 1)}
+						/>
+						<Card
+							images={cardTwo}
+							newMatch={createNewMatch}
+							sharedImage={sharedImage}
+							countHandler={(): void => setNumberOfMatches((c) => c + 1)}
+						/>
+					</>
+				)}
 			</View>
 		);
-	}
+	}	
 }
 
 const styles = StyleSheet.create({
 	countDown: {
 		display: "flex",
 		justifyContent: "center",
-		alignItems: "center", 
+		alignItems: "center",
 		flex: 1,
 	},
 	countDownNumber: {
 		fontSize: 80,
-		fontWeight: 700
+		fontWeight: 700,
 	},
 	countNumber: {
 		marginTop: 20,
-		fontFamily: "Red Hat Display", 
-		letterSpacing: 2, 
-		fontSize: 20, 
-		fontWeight: 900
-	}
+		fontFamily: "Red Hat Display",
+		letterSpacing: 2,
+		fontSize: 20,
+		fontWeight: 900,
+	},
 });

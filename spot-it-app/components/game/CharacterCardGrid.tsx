@@ -135,7 +135,7 @@ export default function CharacterCardGrid({ items, getNewMatch, sharedImage, cou
 								<Pressable
 									key={`button_${y}_${b}`}
 									style={[positionTopRow(y, b), positionMiddleRow(x, b), positionBottomRow(items, y, b)]}
-									onPress={(e) => imageHandler(e, sharedImage, a)}
+									onPress={(e: GestureResponderEvent.GestureResponderEvent): void => imageHandler(e, sharedImage, a)}
 								>
 									<Image
 										source={a.url}

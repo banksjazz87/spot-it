@@ -10,7 +10,7 @@ interface TimerProps {
 
 export default function Timer({ start, stop, display }: TimerProps) {
 	const [seconds, setSeconds] = useState<string>("00");
-	const [minutes, setMinutes] = useState<string>("3");
+	const [minutes, setMinutes] = useState<string>("1");
 
     useEffect(() => {
         //Make sure the imter has started
